@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hunters — Hunters of the Shattered Coast</title>
+<meta name="description" content="Usable, saveable, printable character sheets for all 28 Hunters of the Shattered Coast playbooks.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero no-print">
+<p class="kicker">A Fantasy Reskin of the Classic Hunter Playbooks</p>
+<h1>Hunters of the Shattered Coast</h1>
+<p class="premise">Pick a playbook, make your hunter, pick your moves. Everything you change saves in this browser automatically — and prints cleanly for the table.</p>
+</header>
+<nav class="sticky no-print" aria-label="Site navigation">
+<a href="index.html">How to Play</a><a href="keepers.html">Keeper's Korner</a><a href="hunters.html">Hunters</a><a href="playbooks.pdf">First 12 as PDF</a>
+</nav>
+<main>
+<div class="toolbar no-print" id="toolbar">
+  <label>Your hunters
+    <select id="hunterSelect" aria-label="Your hunters"></select>
+  </label>
+  <button type="button" id="btnNew">New Hunter</button>
+  <button type="button" id="btnDup">Duplicate</button>
+  <button type="button" id="btnDel">Delete</button>
+  <button type="button" id="btnExport">Export JSON</button>
+  <button type="button" id="btnImport">Import JSON</button>
+  <input type="file" id="importFile" accept=".json,application/json" hidden>
+  <button type="button" id="btnPrint" class="primary">Print Sheet</button>
+  <span id="saveStatus" role="status">Not saved yet</span>
+</div>
+
+<section id="picker" class="no-print" aria-label="Choose a playbook">
+  <h2>Choose a playbook</h2>
+  <p>The original 12, then the 16 new ones from the wider world. Picking a playbook changes the sheet below — your hunter's name and notes stay with the hunter, not the playbook.</p>
+  <div id="pickerGroups"></div>
+</section>
+
+<section id="sheet" aria-label="Character sheet" aria-live="polite"></section>
+
+<section class="no-print">
+  <h2>How saving works</h2>
+  <p>Every change is saved automatically to this browser (localStorage), under your hunter's name — so you can keep several hunters and come back to them. It does <strong>not</strong> sync to other devices or browsers. Use <strong>Export JSON</strong> to back a hunter up or move them to another device, and <strong>Import JSON</strong> to bring them back. <strong>Print Sheet</strong> prints only the sheet itself, with your picked moves, trackers, and notes.</p>
+  <p>Veteran start (level 13 conversions): +1 to two ratings, two extra moves, three improvements (one may be advanced), luck starts at 6 of 7, plus a scar, a famed deed, and an old debt. Those fields are on every sheet.</p>
+  <p><a class="btn ghost" href="playbooks.pdf">Download the first 12 playbooks as a PDF</a></p>
+</section>
+</main>
+<footer class="no-print">
+<p>An unofficial fan conversion for private table use. Playbooks restructured and rewritten for a fantasy campaign about hunting a pirate lord; keep your original rulebook at the table for the full text of the game.</p>
+<p>Hunters of the Shattered Coast</p>
+</footer>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
