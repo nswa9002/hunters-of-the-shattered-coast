@@ -1,5 +1,10 @@
 // Hunters of the Shattered Coast — interactive character sheets.
 // Plain JS, no dependencies. State lives in localStorage (this browser only).
+// Two stages: SETUP (pick a playbook, build the hunter) then PLAYER SHEET
+// (the finished hunter, clean and printable). Both views are the same hunter:
+// the view is stored on the hunter object, so switching never loses anything.
+// Old saves (without a `view` field) open on the sheet if the hunter has a
+// name, and in setup if they don't — nothing is lost in the migration.
 (function () {
   'use strict';
   var STORE = 'hsc-hunters-v1';
@@ -25,7 +30,7 @@
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '',
       ratingIdx: 0, harm: 0, luckUsed: 1, xp: 0, unstable: false,
       gear: [], moves: moves, scar: '', deed: '', debt: '', treasure: '',
-      notes: '', improvements: [], trackers: {}
+      notes: '', improvements: [], trackers: {}, view: 'setup'
     };
   }
 
@@ -39,6 +44,16 @@
     hunters = [newHunter('foretold')];
     activeId = hunters[0].id;
   }
+  // Migrate old saves: no `view` field yet — named hunters open on their
+  // finished sheet, unnamed ones open in setup. Nothing else changes.
+  hunters.forEach(function (h) {
+    if (!h.view) h.view = h.name ? 'sheet' : 'setup';
+    if (typeof h.luckUsed !== 'number') h.luckUsed = 1;
+    if (!Array.isArray(h.moves)) h.moves = [];
+    if (!Array.isArray(h.gear)) h.gear = [];
+    if (!Array.isArray(h.improvements)) h.improvements = [];
+    if (!h.trackers) h.trackers = {};
+  });
   function active() {
     for (var i = 0; i < hunters.length; i++) if (hunters[i].id === activeId) return hunters[i];
     activeId = hunters[0].id;
@@ -89,7 +104,38 @@
     }).join('');
   }
 
-  function renderSheet() {
+  // ---------- shared bits for both views ----------
+  function movesPickerHtml(h, pb) {
+    return pb.moves.map(function (m, i) {
+      var checked = h.moves.indexOf(i) !== -1;
+      return '<li><label class="movepick"><input type="checkbox" data-move="' + i + '"' + (checked ? ' checked' : '') + (m.fixed ? ' disabled' : '') + '>' +
+        '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></label></li>';
+    }).join('');
+  }
+  function myMovesHtml(h, pb) {
+    var list = h.moves.map(function (i) {
+      var m = pb.moves[i];
+      if (!m) return '';
+      return '<li><strong>' + esc(m.name) + '</strong> — ' + esc(m.text) + '</li>';
+    }).join('');
+    return list ? '<ul class="mymoves">' + list + '</ul>' : '<p class="muted">No moves picked yet — go to Edit setup and tick moves, and they will appear here.</p>';
+  }
+  function trackerHtml(h, pb) {
+    var out = (pb.trackers || []).map(function (tr) {
+      var val = h.trackers[tr.key] || 0;
+      return '<p><strong>' + esc(tr.label) + ':</strong> ' + boxes(tr.boxes, val, 'tr:' + tr.key) +
+        ' <span class="muted">' + esc(tr.note || '') + '</span></p>';
+    }).join('');
+    return out;
+  }
+  function featHtml(pb) {
+    return (pb.features || []).map(function (f) {
+      return '<h3>' + esc(f.title) + '</h3><p>' + esc(f.text) + '</p>';
+    }).join('');
+  }
+
+  // ---------- stage 1: SETUP ----------
+  function renderSetup() {
     var h = active();
     var pb = playbook(h.playbook);
     var fixedCount = pb.moves.filter(function (m) { return m.fixed; }).length;
@@ -97,27 +143,6 @@
     var picked = h.moves.length;
     var gearItems = splitList(pb.gear);
     var impItems = splitList(pb.improvements);
-
-    var movesHtml = pb.moves.map(function (m, i) {
-      var checked = h.moves.indexOf(i) !== -1;
-      return '<li><label class="movepick"><input type="checkbox" data-move="' + i + '"' + (checked ? ' checked' : '') + (m.fixed ? ' disabled' : '') + '>' +
-        '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></label></li>';
-    }).join('');
-
-    var myMoves = h.moves.map(function (i) {
-      var m = pb.moves[i];
-      return '<li><strong>' + esc(m.name) + '</strong> — ' + esc(m.text) + '</li>';
-    }).join('');
-
-    var featHtml = (pb.features || []).map(function (f) {
-      return '<h3>' + esc(f.title) + '</h3><p>' + esc(f.text) + '</p>';
-    }).join('');
-
-    var trackerHtml = (pb.trackers || []).map(function (tr) {
-      var val = h.trackers[tr.key] || 0;
-      return '<p><strong>' + esc(tr.label) + ':</strong> ' + boxes(tr.boxes, val, 'tr:' + tr.key) +
-        ' <span class="muted">' + esc(tr.note || '') + '</span></p>';
-    }).join('');
 
     var gearHtml = gearItems.map(function (g, i) {
       var checked = h.gear.indexOf(i) !== -1;
@@ -134,44 +159,93 @@
     }).join('');
 
     $('#sheet').innerHTML =
-      '<article class="sheet">' +
-      '<h2>' + esc(pb.name) + ' <span class="muted">(' + esc(pb.orig) + ')</span></h2>' +
+      '<article class="sheet setup">' +
+      '<h2>Set up your hunter — ' + esc(pb.name) + ' <span class="muted">(' + esc(pb.orig) + ')</span></h2>' +
       '<blockquote>' + esc(pb.quote) + '</blockquote>' +
+      '<p class="muted">Step 1 — pick a playbook above. Step 2 — fill in the hunter below. Step 3 — press <strong>Build my sheet</strong> at the bottom to see the finished sheet. Everything saves in this browser as you go.</p>' +
+      '<h3>Name &amp; pronouns</h3>' +
       '<div class="fieldrow"><label>Name <input type="text" data-field="name" value="' + esc(h.name) + '" placeholder="Your hunter\u2019s name"></label>' +
       '<label>Pronouns <input type="text" data-field="pronouns" value="' + esc(h.pronouns) + '" placeholder="she / he / they"></label></div>' +
-      '<p><strong>Look:</strong> ' + esc(pb.look) + '</p>' +
+      '<h3>Look</h3><p><strong>Pick from the lists:</strong> ' + esc(pb.look) + '</p>' +
       '<label class="blocklabel">My look <input type="text" data-field="look" value="' + esc(h.look) + '" placeholder="Pick from the lists above, or write your own"></label>' +
       '<h3>Ratings — pick one line</h3><ul class="checklist">' + ratingHtml + '</ul>' +
-      '<div class="trackers">' +
-      '<p><strong>Harm:</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
-      '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
-      '<p><strong>Luck:</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Veteran start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
-      '<p><strong>Experience:</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
-      trackerHtml +
-      '</div>' +
-      featHtml +
-      '<h3>Moves — picked ' + picked + ' of ' + expected + ' expected' + (picked > expected ? ' (you have ' + (picked - expected) + ' extra — that is fine, just noted)' : '') + '</h3>' +
-      '<ul class="checklist moves">' + movesHtml + '</ul>' +
-      '<h3>My Moves</h3>' +
-      (myMoves ? '<ul class="mymoves">' + myMoves + '</ul>' : '<p class="muted">No moves picked yet — tick moves above and they will appear here.</p>') +
-      '<h3>Gear</h3><ul class="checklist">' + gearHtml + '</ul>' +
-      '<h3>History</h3><p>' + esc(pb.history) + '</p>' +
       '<h3>Veteran start — level 13</h3>' +
       '<div class="fieldrow"><label>Scar <input type="text" data-field="scar" value="' + esc(h.scar) + '" placeholder="A limp, a hand that shakes near bells…"></label>' +
       '<label>Famed deed <input type="text" data-field="deed" value="' + esc(h.deed) + '" placeholder="The deed the ports still sing about"></label></div>' +
       '<div class="fieldrow"><label>Old debt <input type="text" data-field="debt" value="' + esc(h.debt) + '" placeholder="A debt someone can collect"></label>' +
       '<label>Signature treasure <input type="text" data-field="treasure" value="' + esc(h.treasure) + '" placeholder="Your best magic item, translated into tags"></label></div>' +
+      '<h3>Gear — pick what you carry</h3><ul class="checklist">' + gearHtml + '</ul>' +
+      '<h3>History</h3><p>' + esc(pb.history) + '</p>' +
+      '<h3>Moves — picked ' + picked + ' of ' + expected + ' expected' + (picked > expected ? ' (you have ' + (picked - expected) + ' extra — that is fine, just noted)' : '') + '</h3>' +
+      '<p class="muted">Tick the moves you want. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
+      '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
       '<h3>Improvements</h3><ul class="checklist">' + impHtml + '</ul>' +
       '<h3>Notes &amp; history</h3><textarea data-field="notes" rows="5" placeholder="History picks, allies, enemies, consumed magics, rotes, and anything else worth remembering…">' + esc(h.notes) + '</textarea>' +
+      '<p><button type="button" class="primary big" data-action="build-sheet">Build my sheet — see my sheet</button></p>' +
       '</article>';
     renderPicker();
     renderSelect();
   }
 
-  function renderAll() { renderSheet(); }
+  // ---------- stage 2: PLAYER SHEET ----------
+  function renderSheetView() {
+    var h = active();
+    var pb = playbook(h.playbook);
+    var gearItems = splitList(pb.gear);
+    var impItems = splitList(pb.improvements);
+    var pickedGear = h.gear.map(function (i) { return gearItems[i]; }).filter(function (g) { return g; });
+    var pickedImp = h.improvements.map(function (i) { return impItems[i]; }).filter(function (g) { return g; });
 
-  // Events (delegated on the sheet)
+    $('#sheet').innerHTML =
+      '<article class="sheet">' +
+      '<p class="no-print"><button type="button" data-action="edit-setup">← Edit setup</button></p>' +
+      '<h2>' + esc(h.name || 'Unnamed hunter') + '</h2>' +
+      '<p><strong>' + esc(pb.name) + '</strong> <span class="muted">(' + esc(pb.orig) + ')</span>' +
+      (h.pronouns ? ' · ' + esc(h.pronouns) : '') + '</p>' +
+      '<blockquote>' + esc(pb.quote) + '</blockquote>' +
+      (h.look ? '<p><strong>Look:</strong> ' + esc(h.look) + '</p>' : '<p class="muted"><strong>Look:</strong> ' + esc(pb.look) + '</p>') +
+      '<h3>Ratings</h3><p class="ratings">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + '</p>' +
+      '<div class="trackers">' +
+      '<p><strong>Harm:</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
+      '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
+      '<p><strong>Luck:</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Veteran start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
+      '<p><strong>Experience:</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
+      trackerHtml(h, pb) +
+      '</div>' +
+      featHtml(pb) +
+      '<h3>My Moves</h3>' + myMovesHtml(h, pb) +
+      '<h3>Gear</h3>' + (pickedGear.length ? '<ul><li>' + pickedGear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear picked — go to Edit setup to pick gear.</p>') +
+      '<h3>History</h3><p>' + esc(pb.history) + '</p>' +
+      '<h3>Veteran start — level 13</h3>' +
+      '<ul>' +
+      '<li><strong>Scar:</strong> ' + esc(h.scar || '—') + '</li>' +
+      '<li><strong>Famed deed:</strong> ' + esc(h.deed || '—') + '</li>' +
+      '<li><strong>Old debt:</strong> ' + esc(h.debt || '—') + '</li>' +
+      '<li><strong>Signature treasure:</strong> ' + esc(h.treasure || '—') + '</li>' +
+      '</ul>' +
+      (pickedImp.length ? '<h3>Improvements taken</h3><ul><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
+      (h.notes ? '<h3>Notes</h3><p>' + esc(h.notes).replace(/\n/g, '<br>') + '</p>' : '') +
+      '<p class="no-print"><button type="button" data-action="edit-setup">← Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
+      '</article>';
+    renderSelect();
+  }
+
+  function renderAll() {
+    var h = active();
+    var picker = $('#picker');
+    if (picker) picker.style.display = h.view === 'sheet' ? 'none' : '';
+    if (h.view === 'sheet') renderSheetView(); else renderSetup();
+  }
+
+  // Events (delegated on the document)
   document.addEventListener('click', function (e) {
+    var act = e.target.closest('[data-action]');
+    if (act) {
+      var a = act.getAttribute('data-action');
+      if (a === 'build-sheet') { active().view = 'sheet'; save(); renderAll(); return; }
+      if (a === 'edit-setup') { active().view = 'setup'; save(); renderAll(); return; }
+      if (a === 'print-sheet') { window.print(); return; }
+    }
     var b = e.target.closest('[data-pb]');
     if (b) { active().playbook = b.getAttribute('data-pb'); active().moves = playbook(b.getAttribute('data-pb')).moves.map(function (m, i) { return m.fixed ? i : -1; }).filter(function (i) { return i >= 0; }); active().gear = []; active().improvements = []; active().trackers = {}; save(); renderAll(); return; }
     var box = e.target.closest('[data-box]');
@@ -188,7 +262,7 @@
     if (t.matches('[data-move]')) {
       var i = +t.getAttribute('data-move');
       h.moves = t.checked ? h.moves.concat([i]).sort(function (a, b) { return a - b; }) : h.moves.filter(function (x) { return x !== i; });
-      save(); renderSheet(); return;
+      save(); renderAll(); return;
     }
     if (t.matches('[data-gear]')) {
       var gi = +t.getAttribute('data-gear');
@@ -241,12 +315,18 @@
       try {
         var h = JSON.parse(r.result);
         if (!h || !h.playbook || !playbook(h.playbook)) throw new Error('not a hunter file');
-        h.id = uid(); hunters.push(h); activeId = h.id; save(); renderAll();
+        h.id = uid(); if (!h.view) h.view = h.name ? 'sheet' : 'setup';
+        hunters.push(h); activeId = h.id; save(); renderAll();
       } catch (err) { alert('That file did not look like an exported hunter.'); }
     };
     r.readAsText(f); e.target.value = '';
   });
-  $('#btnPrint').addEventListener('click', function () { window.print(); });
+  $('#btnPrint').addEventListener('click', function () {
+    // Printing is for the finished sheet: if still in setup, build the
+    // sheet first, then print it.
+    if (active().view !== 'sheet') { active().view = 'sheet'; save(); renderAll(); }
+    window.print();
+  });
 
   renderAll();
   save();

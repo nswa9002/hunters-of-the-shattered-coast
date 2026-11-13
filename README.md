@@ -15,11 +15,28 @@ consolidated 2025 pack.
   the Pirate Lord sheet (wants, hidden weaknesses, the Tide, his fleet),
   running the hunt and the shape of a voyage, and the ship & company sheet.
 - `hunters.html` — **Hunters**: interactive character sheets for all 28
-  playbooks. Pick a playbook, fill in name/pronouns/look, pick a ratings
-  line, tap harm/luck/experience trackers, tick gear and improvements, and
-  pick moves — picked moves appear in a "My Moves" section on the sheet.
+  playbooks, in two stages. **Setup first:** pick a playbook, fill in
+  name/pronouns, look, a ratings line, veteran-start fields (scar, famed
+  deed, old debt, signature treasure), gear, history, and the moves picker
+  (picked X of Y expected). Press **Build my sheet**. **Player sheet
+  second:** the finished hunter — name, playbook, look, ratings, clickable
+  harm/luck/experience/unstable trackers, My Moves with the full text of
+  the picked moves, gear, special feature, scar/deed/debt/treasure, notes.
+  **Edit setup** goes back to setup keeping everything; **Print Sheet**
+  prints only the sheet. Setup and sheet are two views of the same hunter.
+  The six magic playbooks (Battle-Mage, Witch, Touched, Cursed, Channeler,
+  Fae-Blooded) also offer the 8 Alternative Weird moves as pickable moves.
+- `reference.html` — **Moves Reference**: the condensed reference sheets —
+  Hunter Agenda, all 8 basic moves in full (10+ / 7-9 / 12+ and the Use
+  Magic glitch list), the Alternative Weird moves and Phenomena, harm /
+  armour / luck / recovery / levelling / end of session, the Keeper's
+  reference (Agenda, Principles, Keeper moves, Harm moves, Pirate Lord /
+  captain / port-folk / location moves), and voyage & threat creation
+  (including the countdown names vs the site's Tide).
 - `data.js` — all 28 playbooks' data (quotes, looks, ratings, moves, gear,
-  history, improvements), shared by the Hunters page.
+  history, improvements), shared by the Hunters page. 236 moves total:
+  188 playbook moves + 48 Alternative Weird moves (8 each on the 6 magic
+  playbooks).
 - `app.js` — the Hunters sheet app. No build step, no server, no external
   dependencies.
 - `style.css` — dark nautical / parchment styling, mobile-friendly, with a
@@ -39,8 +56,8 @@ export to move a hunter.
 ## Publish on GitHub Pages
 
 Push these files to the root of the repository's `main` branch:
-`index.html`, `keepers.html`, `hunters.html`, `data.js`, `app.js`,
-`style.css`, `playbooks.pdf`, `README.md`. Pages is already enabled from
+`index.html`, `keepers.html`, `hunters.html`, `reference.html`, `data.js`,
+`app.js`, `style.css`, `playbooks.pdf`, `README.md`. Pages is already enabled from
 `main` / (root) at `https://nswa9002.github.io/hunters-of-the-shattered-coast/`.
 
 To update the site later, edit the files, commit, and push to `main` — Pages
