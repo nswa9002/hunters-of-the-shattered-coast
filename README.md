@@ -26,6 +26,10 @@ consolidated 2025 pack.
   prints only the sheet. Setup and sheet are two views of the same hunter.
   The six magic playbooks (Battle-Mage, Witch, Touched, Cursed, Channeler,
   Fae-Blooded) also offer the 8 Alternative Weird moves as pickable moves.
+  A **Dice tray** sits below the sheet: tap a rating to roll 2d6 + that
+  rating (taken from the hunter's chosen ratings line), with a situational
+  +1/−1 adjuster for forward/ongoing, the 12+/10+/7–9/miss bands, and a
+  short roll log. Rolls are not saved; the tray never prints.
 - `reference.html` — **Moves Reference**: the condensed reference sheets —
   Hunter Agenda, all 8 basic moves in full (10+ / 7-9 / 12+ and the Use
   Magic glitch list), the Alternative Weird moves and Phenomena, harm /

@@ -235,6 +235,54 @@
     var picker = $('#picker');
     if (picker) picker.style.display = h.view === 'sheet' ? 'none' : '';
     if (h.view === 'sheet') renderSheetView(); else renderSetup();
+    renderDiceTray();
+  }
+
+  // ---------- dice tray (2d6 + rating) ----------
+  // Rolls are table tools, not hunter data: the log lives only while the
+  // page is open and is never written to localStorage.
+  var RATINGS = ['Charm', 'Cool', 'Sharp', 'Tough', 'Weird'];
+  var diceMod = 0;
+  var diceLog = [];
+  function parseRatings(line) {
+    var out = {};
+    (line || '').replace(/(\w+)\s*([+-]\d+)/g, function (m, k, v) { out[k] = +v; return m; });
+    return out;
+  }
+  function diceBand(total) {
+    if (total >= 12) return { cls: 'band-hit', label: 'Advanced hit — 12+! The Chronicler owes you something extra.' };
+    if (total >= 10) return { cls: 'band-hit', label: 'Hit — full success.' };
+    if (total >= 7) return { cls: 'band-partial', label: 'Partial — 7–9. It works, with a cost or a catch.' };
+    return { cls: 'band-miss', label: 'Miss — mark 1 experience, and the Chronicler makes a move.' };
+  }
+  function renderDiceTray() {
+    var wrap = $('#diceRatingBtns');
+    if (!wrap) return;
+    var h = active();
+    var pb = playbook(h.playbook);
+    var vals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
+    wrap.innerHTML = RATINGS.map(function (r) {
+      var v = vals[r];
+      var sign = (v == null ? '' : (v >= 0 ? ' +' + v : ' ' + v));
+      return '<button type="button" data-dice="' + r + '">' + r + sign + '</button>';
+    }).join('');
+    var mv = $('#diceModVal');
+    if (mv) mv.textContent = (diceMod >= 0 ? '+' : '') + diceMod;
+  }
+  function doRoll(mod, label) {
+    var d1 = 1 + Math.floor(Math.random() * 6);
+    var d2 = 1 + Math.floor(Math.random() * 6);
+    var total = d1 + d2 + mod;
+    var band = diceBand(total);
+    var modTxt = (mod >= 0 ? ' +' + mod : ' ' + mod);
+    var res = $('#diceResult');
+    if (res) res.innerHTML = '<span class="die">' + d1 + '</span> + <span class="die">' + d2 + '</span>' + modTxt + ' = <strong>' + total + '</strong> — <span class="' + band.cls + '">' + esc(band.label) + '</span> <span class="muted">(' + esc(label) + ')</span>';
+    diceLog.unshift({ d1: d1, d2: d2, mod: mod, total: total, label: label, band: band.label });
+    if (diceLog.length > 8) diceLog.length = 8;
+    var log = $('#diceLog');
+    if (log) log.innerHTML = diceLog.map(function (r) {
+      return '<li><span class="die">' + r.d1 + '</span> + <span class="die">' + r.d2 + '</span>' + (r.mod >= 0 ? ' +' + r.mod : ' ' + r.mod) + ' = <strong>' + r.total + '</strong> — ' + esc(r.label) + ' · ' + esc(r.band) + '</li>';
+    }).join('');
   }
 
   // Events (delegated on the document)
@@ -327,6 +375,31 @@
     if (active().view !== 'sheet') { active().view = 'sheet'; save(); renderAll(); }
     window.print();
   });
+
+  // Dice tray events (delegated on the tray; it is static HTML, so the
+  // listeners survive every sheet re-render).
+  var tray = $('#diceTray');
+  if (tray) {
+    tray.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-dice]') : null;
+      if (b) {
+        var h = active(); var pb = playbook(h.playbook);
+        var vals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
+        var v = vals[b.getAttribute('data-dice')] || 0;
+        doRoll(v + diceMod, b.getAttribute('data-dice') + (diceMod ? ' (situational ' + (diceMod >= 0 ? '+' : '') + diceMod + ')' : ''));
+        return;
+      }
+      if (e.target.id === 'diceFlat') { doRoll(diceMod, 'Flat 2d6'); return; }
+      if (e.target.id === 'diceModUp') { diceMod = Math.min(3, diceMod + 1); renderDiceTray(); return; }
+      if (e.target.id === 'diceModDown') { diceMod = Math.max(-3, diceMod - 1); renderDiceTray(); return; }
+      if (e.target.id === 'diceClear') {
+        diceLog = [];
+        var log = $('#diceLog'); if (log) log.innerHTML = '';
+        var res = $('#diceResult'); if (res) res.textContent = 'No roll yet — tap a rating above.';
+        return;
+      }
+    });
+  }
 
   renderAll();
   save();

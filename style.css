@@ -85,6 +85,20 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .trackers p{margin:.6rem 0}
 .muted{color:var(--muted);font-size:.92rem}
 .mymoves li{margin:.4rem 0}
+/* --- Dice tray --- */
+.dice-row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.7rem 0}
+.dice-row button{font-family:inherit;font-size:1rem;padding:.55rem .9rem;border-radius:6px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);cursor:pointer}
+.dice-row button:hover{border-color:var(--gold)}
+.dice-mod{display:inline-flex;gap:.4rem;align-items:center}
+.dice-mod button{padding:.3rem .7rem}
+.dice-result{font-size:1.15rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.8rem 1rem}
+.dice-result .die,.dice-log .die{display:inline-block;min-width:1.9rem;text-align:center;background:var(--panel2);border:1px solid var(--gold-dim);border-radius:6px;padding:.05rem .35rem;margin:0 .1rem;font-weight:bold}
+.dice-result .band-hit{color:#8fd694;font-weight:bold}
+.dice-result .band-partial{color:var(--teal);font-weight:bold}
+.dice-result .band-miss{color:var(--red);font-weight:bold}
+.dice-log{list-style:none;padding-left:0}
+.dice-log li{margin:.3rem 0;padding:.35rem .6rem;background:var(--bg2);border-radius:6px;font-size:.95rem}
+
 @media(max-width:640px){.fieldrow{grid-template-columns:1fr}.pickgrid{grid-template-columns:1fr 1fr}}
 @media print{
   body{background:#fff;color:#111;font-size:11pt}
