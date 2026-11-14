@@ -2,9 +2,11 @@
 
 A player-facing static site for the *Hunters of the Shattered Coast*
 playbooks: a fantasy reskin of the classic hunter playbooks in which
-veteran heroes (converted from a D&D 5e level 13 campaign) hunt one
-Pirate Lord across the Shattered Coast. Now with **28 playbooks** — the
-original 12, plus 16 more from the consolidated 2025 pack.
+veteran heroes (converted from a D&D 5e level 13 campaign) hunt the
+Twelve Pirate Lords across the Shattered Coast — a different lord each
+voyage, and that week's lord is the voyage's monster. Now with **28
+playbooks** — the original 12, plus 16 more from the consolidated
+2025 pack.
 
 There is no Keeper content on this site. It is written for players:
 how to play, your character sheet, and the moves reference.
@@ -12,7 +14,9 @@ how to play, your character sheet, and the moves reference.
 ## Pages
 
 - `index.html` — **How to Play**: welcome, the hunt-has-changed
-  conversion table, how a roll works, your ratings, harm / luck /
+  conversion table, the Twelve Lords (one lord, one voyage — Lord One
+  is Marook, who dual-wields berserker axes; Lords Two–Twelve are yet
+  to be revealed), how a roll works, your ratings, harm / luck /
   experience, converting your level 13 hero + veteran start, your ship
   (player-facing: name, kind, qualities, hull harm, crew, funds), and
   the short basic moves.
@@ -69,10 +73,8 @@ Push these files to the root of the repository's `main` branch:
 `app.js`, `style.css`, `playbooks.pdf`, `README.md`. Pages is already enabled from
 `main` / (root) at `https://nswa9002.github.io/hunters-of-the-shattered-coast/`.
 
-NOTE: `keepers.html` was deleted from this local site. It still exists in
-the GitHub repo — push-files cannot delete a file, so it must be deleted
-from the repo separately (GitHub web UI or API delete), otherwise the old
-Keeper's Korner page stays live.
+NOTE: `keepers.html` was deleted from this local site and from the
+GitHub repo (commit 6515afb), so the old Keeper's Korner page is gone.
 
 To update the site later, edit the files, commit, and push to `main` — Pages
 republishes automatically.
