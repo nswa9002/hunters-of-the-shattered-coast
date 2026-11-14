@@ -111,3 +111,67 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   a{color:#111;text-decoration:none}
   .box{color:#111}
 }
+
+/* --- Stylised character sheet (player-facing parchment) --- */
+.character-sheet{
+  background:linear-gradient(180deg,#f6ecd2,#efe2c2 60%,#e9d9b4);
+  color:#2b2118;border:2px solid var(--gold-dim);border-radius:14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);padding:1.6rem 1.8rem;
+}
+.character-sheet h2,.character-sheet h3,.character-sheet h4{color:#3a2a12}
+.character-sheet .sheet-banner{
+  text-align:center;border-bottom:3px double #a8822e;padding:.4rem 0 1rem;margin-bottom:.6rem;
+}
+.character-sheet .sheet-playbook{
+  font-size:1.5rem;font-weight:bold;letter-spacing:.14em;text-transform:uppercase;
+  color:#7a5c14;margin:.2rem 0;
+}
+.character-sheet .sheet-quote{font-style:italic;color:#5c4a26;margin:.2rem 0;max-width:34rem;margin-left:auto;margin-right:auto}
+.character-sheet .sheet-name{
+  font-size:2.3rem;text-align:center;margin:.4em 0 .1em;letter-spacing:.02em;
+}
+.character-sheet .sheet-sub{text-align:center;color:#6b5636;font-style:italic;margin-top:0}
+.character-sheet .sheet-look{text-align:center}
+.character-sheet .sheet-h{
+  border-bottom:2px solid #a8822e;padding-bottom:.25em;margin-top:1.8em;
+  letter-spacing:.08em;text-transform:uppercase;font-size:1.05rem;
+}
+.character-sheet .muted{color:#6b5636}
+.character-sheet .stat-row{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:.8rem 0}
+.character-sheet .stat-box{
+  flex:1 1 5.2rem;max-width:7rem;text-align:center;background:#fbf3dd;
+  border:2px solid #a8822e;border-radius:10px;padding:.55rem .3rem;
+}
+.character-sheet .stat-name{display:block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#7a5c14}
+.character-sheet .stat-val{display:block;font-size:1.7rem;font-weight:bold;color:#2b2118;line-height:1.2}
+.character-sheet .sheet-ratings-line{text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:.85rem}
+.character-sheet .tracker-row{margin:.7rem 0}
+.character-sheet .box{color:#7a5c14}
+.character-sheet .box:hover{color:#a8822e}
+.character-sheet .move-cards{display:grid;gap:.7rem;margin:.7rem 0}
+.character-sheet .move-card{
+  background:#fbf3dd;border:1px solid #c9a94f;border-left:5px solid #a8822e;
+  border-radius:8px;padding:.7rem .9rem;
+}
+.character-sheet .move-card h4{margin:.1em 0 .3em;font-size:1.05rem;color:#3a2a12}
+.character-sheet .move-card p{margin:.2rem 0}
+.character-sheet .legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.7rem 0}
+.character-sheet .legend-item{
+  background:#fbf3dd;border:1px solid #c9a94f;border-radius:8px;padding:.6rem .8rem;
+}
+.character-sheet .legend-label{display:block;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#7a5c14;font-weight:bold}
+.character-sheet .sheet-list li{margin:.35rem 0}
+.character-sheet .sheet-actions{margin:.5rem 0}
+.character-sheet .sheet-actions button{font-family:inherit;font-size:.95rem;padding:.5rem .9rem;border-radius:6px;border:1px solid #a8822e;background:#fbf3dd;color:#2b2118;cursor:pointer}
+.character-sheet .sheet-actions button.primary{background:var(--gold);color:#1a1206;font-weight:bold}
+@media(max-width:640px){.character-sheet{padding:1.1rem}.character-sheet .legend-grid{grid-template-columns:1fr}.character-sheet .sheet-name{font-size:1.8rem}}
+@media print{
+  .character-sheet{background:#fff !important;color:#111;border:1px solid #666;box-shadow:none;border-radius:0;padding:0}
+  .character-sheet h2,.character-sheet h3,.character-sheet h4,.character-sheet .sheet-playbook{color:#111}
+  .character-sheet .sheet-banner{border-bottom:2px solid #666}
+  .character-sheet .stat-box,.character-sheet .move-card,.character-sheet .legend-item{background:#fff;border:1px solid #999;break-inside:avoid}
+  .character-sheet .move-card{border-left:3px solid #666}
+  .character-sheet .muted,.character-sheet .sheet-sub,.character-sheet .sheet-quote{color:#333}
+  .character-sheet .stat-name{color:#333}
+  .character-sheet .box{color:#111}
+}

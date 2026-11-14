@@ -116,9 +116,17 @@
     var list = h.moves.map(function (i) {
       var m = pb.moves[i];
       if (!m) return '';
-      return '<li><strong>' + esc(m.name) + '</strong> — ' + esc(m.text) + '</li>';
+      return '<article class="move-card"><h4>' + esc(m.name) + '</h4><p>' + esc(m.text) + '</p></article>';
     }).join('');
-    return list ? '<ul class="mymoves">' + list + '</ul>' : '<p class="muted">No moves picked yet — go to Edit setup and tick moves, and they will appear here.</p>';
+    return list ? '<div class="move-cards">' + list + '</div>' : '<p class="muted">No moves picked yet — go to Edit setup and tick moves, and they will appear here.</p>';
+  }
+  function statBoxesHtml(h, pb) {
+    var vals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
+    return ['Charm', 'Cool', 'Sharp', 'Tough', 'Weird'].map(function (r) {
+      var v = vals[r];
+      var txt = (v == null ? '—' : (v >= 0 ? '+' + v : '' + v));
+      return '<div class="stat-box"><span class="stat-name">' + r + '</span><span class="stat-val">' + txt + '</span></div>';
+    }).join('');
   }
   function trackerHtml(h, pb) {
     var out = (pb.trackers || []).map(function (tr) {
@@ -197,35 +205,35 @@
     var pickedImp = h.improvements.map(function (i) { return impItems[i]; }).filter(function (g) { return g; });
 
     $('#sheet').innerHTML =
-      '<article class="sheet">' +
-      '<p class="no-print"><button type="button" data-action="edit-setup">← Edit setup</button></p>' +
-      '<h2>' + esc(h.name || 'Unnamed hunter') + '</h2>' +
-      '<p><strong>' + esc(pb.name) + '</strong> <span class="muted">(' + esc(pb.orig) + ')</span>' +
-      (h.pronouns ? ' · ' + esc(h.pronouns) : '') + '</p>' +
-      '<blockquote>' + esc(pb.quote) + '</blockquote>' +
-      (h.look ? '<p><strong>Look:</strong> ' + esc(h.look) + '</p>' : '<p class="muted"><strong>Look:</strong> ' + esc(pb.look) + '</p>') +
-      '<h3>Ratings</h3><p class="ratings">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + '</p>' +
-      '<div class="trackers">' +
-      '<p><strong>Harm:</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
+      '<article class="sheet character-sheet">' +
+      '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button></p>' +
+      '<div class="sheet-banner"><p class="sheet-playbook">' + esc(pb.name) + '</p>' +
+      '<p class="sheet-quote">\u201c' + esc(pb.quote) + '\u201d</p></div>' +
+      '<h2 class="sheet-name">' + esc(h.name || 'Unnamed hunter') + '</h2>' +
+      '<p class="sheet-sub">' + esc(pb.orig) + (h.pronouns ? ' \u00b7 ' + esc(h.pronouns) : '') + '</p>' +
+      (h.look ? '<p class="sheet-look"><strong>Look:</strong> ' + esc(h.look) + '</p>' : '') +
+      '<h3 class="sheet-h">Ratings</h3><div class="stat-row">' + statBoxesHtml(h, pb) + '</div>' +
+      '<p class="sheet-ratings-line muted">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + '</p>' +
+      '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
+      '<p class="tracker-row"><strong>Harm</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
       '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
-      '<p><strong>Luck:</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Veteran start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
-      '<p><strong>Experience:</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
+      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Veteran start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
+      '<p class="tracker-row"><strong>Experience</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
       trackerHtml(h, pb) +
       '</div>' +
       featHtml(pb) +
-      '<h3>My Moves</h3>' + myMovesHtml(h, pb) +
-      '<h3>Gear</h3>' + (pickedGear.length ? '<ul><li>' + pickedGear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear picked — go to Edit setup to pick gear.</p>') +
-      '<h3>History</h3><p>' + esc(pb.history) + '</p>' +
-      '<h3>Veteran start — level 13</h3>' +
-      '<ul>' +
-      '<li><strong>Scar:</strong> ' + esc(h.scar || '—') + '</li>' +
-      '<li><strong>Famed deed:</strong> ' + esc(h.deed || '—') + '</li>' +
-      '<li><strong>Old debt:</strong> ' + esc(h.debt || '—') + '</li>' +
-      '<li><strong>Signature treasure:</strong> ' + esc(h.treasure || '—') + '</li>' +
-      '</ul>' +
-      (pickedImp.length ? '<h3>Improvements taken</h3><ul><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
-      (h.notes ? '<h3>Notes</h3><p>' + esc(h.notes).replace(/\n/g, '<br>') + '</p>' : '') +
-      '<p class="no-print"><button type="button" data-action="edit-setup">← Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
+      '<h3 class="sheet-h">My Moves</h3>' + myMovesHtml(h, pb) +
+      '<h3 class="sheet-h">Gear</h3>' + (pickedGear.length ? '<ul class="sheet-list"><li>' + pickedGear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear picked — go to Edit setup to pick gear.</p>') +
+      '<h3 class="sheet-h">Your Legend</h3><div class="legend-grid">' +
+      '<div class="legend-item"><span class="legend-label">Scar</span><span>' + esc(h.scar || '—') + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Famed deed</span><span>' + esc(h.deed || '—') + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Old debt</span><span>' + esc(h.debt || '—') + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Signature treasure</span><span>' + esc(h.treasure || '—') + '</span></div>' +
+      '</div>' +
+      '<h3 class="sheet-h">History</h3><p>' + esc(pb.history) + '</p>' +
+      (pickedImp.length ? '<h3 class="sheet-h">Improvements taken</h3><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
+      (h.notes ? '<h3 class="sheet-h">Notes</h3><p>' + esc(h.notes).replace(/\n/g, '<br>') + '</p>' : '') +
+      '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
       '</article>';
     renderSelect();
   }
@@ -250,10 +258,10 @@
     return out;
   }
   function diceBand(total) {
-    if (total >= 12) return { cls: 'band-hit', label: 'Advanced hit — 12+! The Chronicler owes you something extra.' };
+    if (total >= 12) return { cls: 'band-hit', label: 'Advanced hit — 12+! Something extra goes your way.' };
     if (total >= 10) return { cls: 'band-hit', label: 'Hit — full success.' };
     if (total >= 7) return { cls: 'band-partial', label: 'Partial — 7–9. It works, with a cost or a catch.' };
-    return { cls: 'band-miss', label: 'Miss — mark 1 experience, and the Chronicler makes a move.' };
+    return { cls: 'band-miss', label: 'Miss — mark 1 experience, and trouble arrives.' };
   }
   function renderDiceTray() {
     var wrap = $('#diceRatingBtns');
