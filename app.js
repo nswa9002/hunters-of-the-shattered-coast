@@ -87,7 +87,7 @@
     // All 28 playbooks together in one group — never split into original/new.
     var html = '<h3>All 28 playbooks</h3><div class="pickgrid">';
     PLAYBOOKS.forEach(function (p) {
-      html += '<button type="button" class="pickbtn' + (active().playbook === p.id ? ' on' : '') + '" data-pb="' + p.id + '">' + esc(p.name) + '<span>' + esc(p.orig) + '</span></button>';
+      html += '<button type="button" class="pickbtn' + (active().playbook === p.id ? ' on' : '') + '" data-pb="' + p.id + '">' + esc(p.name) + '</button>';
     });
     html += '</div>';
     $('#pickerGroups').innerHTML = html;
@@ -165,16 +165,16 @@
 
     $('#sheet').innerHTML =
       '<article class="sheet setup">' +
-      '<h2>Set up your hunter — ' + esc(pb.name) + ' <span class="muted">(' + esc(pb.orig) + ')</span></h2>' +
+      '<h2>Set up your hunter — ' + esc(pb.name) + '</h2>' +
       '<blockquote>' + esc(pb.quote) + '</blockquote>' +
-      '<p class="muted">Step 1 — pick a playbook above. Step 2 — fill in the hunter below. Step 3 — press <strong>Build my sheet</strong> at the bottom to see the finished sheet. Everything saves in this browser as you go.</p>' +
+      '<p class="muted">Step 1 — choose your playbook above. Step 2 — fill in your hunter below. Step 3 — press <strong>Build my sheet</strong> at the bottom to see the finished sheet. Everything saves in this browser as you go.</p>' +
       '<h3>Name &amp; pronouns</h3>' +
       '<div class="fieldrow"><label>Name <input type="text" data-field="name" value="' + esc(h.name) + '" placeholder="Your hunter\u2019s name"></label>' +
       '<label>Pronouns <input type="text" data-field="pronouns" value="' + esc(h.pronouns) + '" placeholder="she / he / they"></label></div>' +
       '<h3>Look</h3><p><strong>Pick from the lists:</strong> ' + esc(pb.look) + '</p>' +
       '<label class="blocklabel">My look <input type="text" data-field="look" value="' + esc(h.look) + '" placeholder="Pick from the lists above, or write your own"></label>' +
       '<h3>Ratings — pick one line</h3><ul class="checklist">' + ratingHtml + '</ul>' +
-      '<h3>Veteran start — level 13</h3>' +
+      '<h3>Seasoned start</h3>' +
       '<div class="fieldrow"><label>Scar <input type="text" data-field="scar" value="' + esc(h.scar) + '" placeholder="A limp, a hand that shakes near bells…"></label>' +
       '<label>Famed deed <input type="text" data-field="deed" value="' + esc(h.deed) + '" placeholder="The deed the ports still sing about"></label></div>' +
       '<div class="fieldrow"><label>Old debt <input type="text" data-field="debt" value="' + esc(h.debt) + '" placeholder="A debt someone can collect"></label>' +
@@ -207,14 +207,14 @@
       '<div class="sheet-banner"><p class="sheet-playbook">' + esc(pb.name) + '</p>' +
       '<p class="sheet-quote">\u201c' + esc(pb.quote) + '\u201d</p></div>' +
       '<h2 class="sheet-name">' + esc(h.name || 'Unnamed hunter') + '</h2>' +
-      '<p class="sheet-sub">' + esc(pb.orig) + (h.pronouns ? ' \u00b7 ' + esc(h.pronouns) : '') + '</p>' +
+      (h.pronouns ? '<p class="sheet-sub">' + esc(h.pronouns) + '</p>' : '') +
       (h.look ? '<p class="sheet-look"><strong>Look:</strong> ' + esc(h.look) + '</p>' : '') +
       '<h3 class="sheet-h">Ratings</h3><div class="stat-row">' + statBoxesHtml(h, pb) + '</div>' +
       '<p class="sheet-ratings-line muted">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + '</p>' +
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<p class="tracker-row"><strong>Harm</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
       '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
-      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Veteran start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
+      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Seasoned start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
       '<p class="tracker-row"><strong>Experience</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
       trackerHtml(h, pb) +
       '</div>' +

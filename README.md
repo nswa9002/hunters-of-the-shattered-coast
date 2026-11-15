@@ -1,28 +1,31 @@
 # Hunters of the Shattered Coast — GitHub Pages site
 
 A player-facing static site for the *Hunters of the Shattered Coast*
-playbooks: a fantasy reskin of the classic hunter playbooks in which
-veteran heroes (converted from a D&D 5e level 13 campaign) hunt the
+playbooks: a fantasy game in which seasoned hunters hunt the
 Twelve Pirate Lords across the Shattered Coast — a different lord each
 voyage, and that week's lord is the voyage's monster. Now with **28
 playbooks** — the original 12, plus 16 more from the consolidated
-2025 pack.
+2025 pack. The site teaches a hunter who has never played, in
+in-character voice, and stands on its own — no knowledge of any
+other game is assumed.
 
 There is no Keeper content on this site. It is written for players:
 how to play, your character sheet, and the moves reference.
 
 ## Pages
 
-- `index.html` — **How to Play**: welcome, the hunt-has-changed
-  conversion table, the Twelve Lords (one lord, one voyage — Lord One
-  is Marook, who dual-wields berserker axes; Lords Two–Twelve are yet
-  to be revealed), how a roll works, your ratings, harm / luck /
-  experience, converting your level 13 hero + veteran start, your ship
-  (player-facing: name, kind, qualities, hull harm, crew, funds), and
-  the short basic moves.
+- `index.html` — **How to Play**: a beginner's guide in teaching
+  order — welcome, your hunter (playbook, ratings, look, gear, moves),
+  how a roll works, the short basic moves, harm / luck / experience,
+  a voyage (how one voyage flows, the Twelve Lords — one lord, one
+  voyage; Lord One is Marook, who dual-wields berserker axes; Lords
+  Two–Twelve are yet to be revealed), your ship (player-facing: name,
+  kind, qualities, hull harm, crew, funds), make your hunter, and an
+  appendix at the end for seasoned heroes bringing a D&D 5e level 13
+  character (playbook-by-story table + seasoned start).
 - `hunters.html` — **Hunters**: interactive character sheets for all 28
   playbooks, in two stages. **Setup first:** pick a playbook, fill in
-  name/pronouns, look, a ratings line, veteran-start fields (scar, famed
+  name/pronouns, look, a ratings line, seasoned-start fields (scar, famed
   deed, old debt, signature treasure), gear, history, and the moves picker
   (picked X of Y expected). Press **Build my sheet**. **Player sheet
   second:** a stylised parchment character sheet — playbook banner and
@@ -40,7 +43,7 @@ how to play, your character sheet, and the moves reference.
   short roll log. Rolls are not saved; the tray never prints.
 - `reference.html` — **Moves Reference**: the player-facing condensed
   reference sheets — Hunter Agenda, all 8 basic moves in full (10+ /
-  7-9 / 12+ and the Use Magic glitch list), the Alternative Weird moves
+  7-9 / 12+ and the Work Sorcery glitch list), the Alternative Weird moves
   and Phenomena (player-facing: the extra Search for Clues questions and
   phenomenon types), and harm / armour / luck / recovery / levelling /
   end of session (player side only).
@@ -82,5 +85,4 @@ republishes automatically.
 ## Source
 
 Content is condensed faithfully from the two source playbook PDFs. An
-unofficial fan conversion for private table use; keep the original rulebook
-at the table for the full text of the game.
+unofficial fan-made game for private table use.
