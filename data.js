@@ -7,7 +7,7 @@ const PLAYBOOKS = [
   "name": "The Foretold",
   "orig": "Chosen",
   "group": "original",
-  "quote": "Your birth was sung in prophecy. You alone can end the Pirate Lord — and if you fall, the Coast falls with you.",
+  "quote": "Your birth was sung in prophecy. You alone can end one of the Twelve — and if you fall, the Coast falls with you.",
   "look": "Weathered / youthful / haunted / regal face · Blazing, sorrowful, starry, unblinking eyes · Pilgrim's garb, admiral's coat, salt-stained finery, humble robes",
   "ratings": [
    "Charm+2 Cool-1 Sharp+1 Tough+2 Weird-1",
@@ -20,7 +20,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Your fate & fated weapon",
-    "text": "How fate found you (pick one): nightmares and visions; a mad prophet named you; an ancient order raised you in secret; the Pirate Lord himself came for you as a child; the drowned bell rang your name. Build your fated weapon: form (pick 1) — staff (1-harm hand/close), haft (2-harm hand heavy), grip-and-blade (1-harm hand balanced), chain (1-harm hand area). Add three edges: long, heavy, magic, silver, fire, holy, far-reaching, quick. Choose a material: star-iron, drowned gold, dragon bone, living coral. Gear: protective garb worth 1-armour, if you wish, plus your fated weapon."
+    "text": "How fate found you (pick one): nightmares and visions; a mad prophet named you; an ancient order raised you in secret; one of the Twelve came for you as a child; the drowned bell rang your name. Build your fated weapon: form (pick 1) — staff (1-harm hand/close), haft (2-harm hand heavy), grip-and-blade (1-harm hand balanced), chain (1-harm hand area). Add three edges: long, heavy, magic, silver, fire, holy, far-reaching, quick. Choose a material: star-iron, drowned gold, dragon bone, living coral. Gear: protective garb worth 1-armour, if you wish, plus your fated weapon."
    }
   ],
   "moves": [
@@ -78,7 +78,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Your old trade (pick one)",
-    "text": "Smuggler of cursed cargo. / Harbour thief and lock-picker. / Press-gang runner who sold sailors to ships — including, once, his. / Forger of charts and letters of marque. / Fence for the Pirate Lord's own loot, until you saw whose it was."
+    "text": "Smuggler of cursed cargo. / Harbour thief and lock-picker. / Press-gang runner who sold sailors to ships — including, once, his. / Forger of charts and letters of marque. / Fence for a pirate lord's own loot, until you saw whose it was."
    },
    {
     "title": "Gear — pick three",
@@ -119,7 +119,7 @@ const PLAYBOOKS = [
   ],
   "pick": 3,
   "gear": "Boarding axe (2-harm hand messy) · Hand crossbow (2-harm close reload quiet) · Short bow (2-harm close/far quiet) · Rapier (2-harm hand precise) · Throwing knives (1-harm close many) · Armoured coat (1-armour hidden)",
-  "history": "You stole something precious from them — do they know? / They sprang you from the gaol — what did you promise? / You sold them out once, cheap. They forgave you. Mostly. / They are your only honest friend. / You owe the Pirate Lord's fence a fortune, together.",
+  "history": "You stole something precious from them — do they know? / They sprang you from the gaol — what did you promise? / You sold them out once, cheap. They forgave you. Mostly. / They are your only honest friend. / You owe a Pirate Lord's fence a fortune, together.",
   "improvements": "+1 Sharp (max +3) · +1 Charm (max +3) · +1 Cool (max +2) · +1 Tough (max +2) · Another Cutpurse move · A safehouse in every major port"
  },
  {
@@ -140,7 +140,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Your mission (pick one)",
-    "text": "End the Pirate Lord's patron — the thing beneath the waves that feeds him. / Carry the harbour bell to the isle where it must be rung. / Redeem him: he was once of your order. / Guard one hunter in this company, though they must never know why. / Rebuild the drowned shrine in every port he has burned."
+    "text": "End one of the Twelve's patron — the thing beneath the waves that feeds them. / Carry the harbour bell to the isle where it must be rung. / Redeem him: he was once of your order. / Guard one hunter in this company, though they must never know why. / Rebuild the drowned shrine in every port he has burned."
    },
    {
     "title": "Gear — pick two, plus a holy symbol",
@@ -227,7 +227,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "The Weakness",
-    "text": "You are the company's living index of the Pirate Lord's lore. Once per voyage, name a fact about him, his fleet or his curse that you “remember reading”: the Chronicler makes it true, with one sting in it.",
+    "text": "You are the company's living index of the Twelve's lore. Once per voyage, name a fact about one of them, their fleet or their curse that you “remember reading”: the Chronicler makes it true, with one sting in it.",
     "fixed": false
    },
    {
@@ -290,7 +290,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Against All Sense",
-    "text": "Once per voyage, declare a wild theory about the Pirate Lord's plan. If the table laughs, mark experience. If it proves true, take +1 forward every time it saves the company.",
+    "text": "Once per voyage, declare a wild theory about one of the Twelve's plans. If the table laughs, mark experience. If it proves true, take +1 forward every time it saves the company.",
     "fixed": false
    },
    {
@@ -357,7 +357,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Forbidden Knowledge",
-    "text": "Your order keeps lore it does not share. Once per voyage, ask the Chronicler one question about the Pirate Lord or the drowned god. The answer is true — and asking marks you.",
+    "text": "Your order keeps lore it does not share. Once per voyage, ask the Chronicler one question about one of the Twelve or the drowned god. The answer is true — and asking marks you.",
     "fixed": false
    }
   ],
@@ -465,7 +465,7 @@ const PLAYBOOKS = [
   ],
   "pick": 2,
   "gear": "Cutlass (2-harm hand) · Hand crossbow (2-harm close reload) · Great knife (1-harm hand) · Harpoon (2-harm close, barbed)",
-  "history": "You lost control once and nearly killed them — how did they stop you? / They tried to end you, and you proved your heart — what convinced them? / You saved them from another of your kind. / You are bound to them by an old sea-oath. / The Pirate Lord offered you a place. They know. Nobody else does.",
+  "history": "You lost control once and nearly killed them — how did they stop you? / They tried to end you, and you proved your heart — what convinced them? / You saved them from another of your kind. / You are bound to them by an old sea-oath. / One of the Twelve offered you a place. They know. Nobody else does.",
   "improvements": "+1 Weird (max +3) · +1 Tough (max +3) · +1 Cool (max +2) · +1 Charm (max +2) · Another Cursed move · Another natural weapon"
  },
  {
@@ -517,7 +517,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Slippery When Ordinary",
-    "text": "Curses, scrying and curse-senses slide off you: the Pirate Lord's sorcery cannot find you unless you make yourself remarkable.",
+    "text": "Curses, scrying and curse-senses slide off you: one of the Twelve's sorcery cannot find you unless you make yourself remarkable.",
     "fixed": false
    }
   ],
@@ -815,7 +815,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "I Know My Prey",
-    "text": "Take +1 ongoing whenever you knowingly investigate, pursue or fight the Pirate Lord's own — his captains, his crews, his cursed servants: the ones who did it, or their kind.",
+    "text": "Take +1 ongoing whenever you knowingly investigate, pursue or fight one of the Twelve's own — their captains, their crews, their cursed servants: the ones who did it, or their kind.",
     "fixed": true
    },
    {
@@ -1374,7 +1374,7 @@ const PLAYBOOKS = [
    "Charm+1 Cool-1 Sharp+2 Tough 0 Weird+1",
    "Charm+2 Cool+1 Sharp+1 Tough 0 Weird-1"
   ],
-  "luck": "When you spend a point of Luck, your next ordinary case will turn out to be a voyage for your company after all — and the Pirate Lord's people will focus their attention on you.",
+  "luck": "When you spend a point of Luck, your next ordinary case will turn out to be a voyage for your company after all — and one of the Twelve's people will focus their attention on you.",
   "features": [
    {
     "title": "The Inquisitor's Code — pick one sentence, with the Chronicler",

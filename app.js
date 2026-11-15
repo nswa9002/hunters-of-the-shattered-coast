@@ -84,15 +84,12 @@
   }
 
   function renderPicker() {
-    var groups = { original: 'The original 12', 'new': 'The 16 new playbooks' };
-    var html = '';
-    ['original', 'new'].forEach(function (g) {
-      html += '<h3>' + groups[g] + '</h3><div class="pickgrid">';
-      PLAYBOOKS.filter(function (p) { return p.group === g; }).forEach(function (p) {
-        html += '<button type="button" class="pickbtn' + (active().playbook === p.id ? ' on' : '') + '" data-pb="' + p.id + '">' + esc(p.name) + '<span>' + esc(p.orig) + '</span></button>';
-      });
-      html += '</div>';
+    // All 28 playbooks together in one group — never split into original/new.
+    var html = '<h3>All 28 playbooks</h3><div class="pickgrid">';
+    PLAYBOOKS.forEach(function (p) {
+      html += '<button type="button" class="pickbtn' + (active().playbook === p.id ? ' on' : '') + '" data-pb="' + p.id + '">' + esc(p.name) + '<span>' + esc(p.orig) + '</span></button>';
     });
+    html += '</div>';
     $('#pickerGroups').innerHTML = html;
   }
 
