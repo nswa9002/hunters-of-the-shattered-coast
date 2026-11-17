@@ -13,27 +13,38 @@ How to Play section and no Keeper content on this site.
 ## Pages
 
 - `index.html` — **Hunters** (home): interactive character sheets for
-  all 28 playbooks, in two stages. **Setup first:** pick a playbook,
-  fill in name/pronouns, look, a ratings line, seasoned-start fields
-  (scar, famed deed, old debt, signature treasure), gear, history, and
-  the moves picker (picked X of Y expected). Press **Build my sheet**.
-  **Player sheet second:** a stylised parchment character sheet —
-  playbook banner and quote, big hunter name, ratings as stat boxes,
-  harm/luck/experience/unstable trackers, My Moves as readable cards,
-  gear, a "Your Legend" section (scar, famed deed, old debt, signature
-  treasure), history, improvements taken, and notes. **Edit setup** goes
-  back to setup keeping everything; **Print Sheet** prints only the
-  finished sheet; **Print Blank Sheet** prints the chosen playbook's
-  sheet with everything empty — blank name, look, gear, unticked moves
-  and empty trackers, with ruled write-in lines — ready to fill in by
-  hand, without changing the saved hunter. Setup and sheet are two
-  views of the same hunter. The six magic playbooks (Battle-Mage,
-  Witch, Touched, Cursed, Channeler, Fae-Blooded) also offer the 8
-  Alternative Weird moves as pickable moves. A **Dice tray** sits below
-  the sheet: tap a rating to roll 2d6 + that rating (taken from the
-  hunter's chosen ratings line), with a situational +1/−1 adjuster for
-  forward/ongoing, the 12+/10+/7–9/miss bands, and a short roll log.
-  Rolls are not saved; the tray never prints.
+  all 28 playbooks, in two stages. **Setup first:** pick a playbook
+  (each button shows the playbook's name and its quote as the blurb),
+  fill in name/pronouns, look (type it in, or upload a photo — shrunk
+  client-side to ~480px and saved in the browser, printed on the
+  sheet), a ratings line, seasoned-start fields (scar, famed deed, old
+  debt, signature treasure, plus up to 3 powers carried over from a
+  D&D life), gear from the D&D weapon conversion chart, and the moves
+  picker (exactly 3 chosen moves). Improvements are point-based: 10
+  points to spend at the seasoned start (+1 rating = 2, another move
+  from your own playbook = 2, any other improvement = 2, an advanced
+  improvement = 3, a move from a different playbook = 3). Press
+  **Build my sheet**. **Player sheet second:** a stylised parchment
+  character sheet — playbook banner and quote, big hunter name, photo
+  if uploaded, ratings as stat boxes (with any +1 improvements
+  applied), harm/luck/experience/unstable trackers, My Moves as
+  readable cards (including any cross-playbook move, marked with where
+  it came from), gear, a "Your Legend" section (scar, famed deed, old
+  debt, signature treasure), powers carried over, improvements taken
+  with their point costs, and notes. There is no History section any
+  more. **Edit setup** goes back to setup keeping everything; **Print
+  Sheet** prints only the finished sheet; **Print Blank Sheet** prints
+  the chosen playbook's sheet with everything empty — blank name, look,
+  gear, unticked moves and empty trackers, with ruled write-in lines —
+  ready to fill in by hand, without changing the saved hunter. Setup
+  and sheet are two views of the same hunter. The six magic playbooks
+  (Battle-Mage, Witch, Touched, Cursed, Channeler, Fae-Blooded) also
+  offer the 8 Alternative Weird moves as pickable moves. A **Dice
+  tray** sits below the sheet: tap a rating to roll 2d6 + that rating
+  (taken from the hunter's chosen ratings line, with +1 improvements
+  applied), with a situational +1/−1 adjuster for forward/ongoing, the
+  12+/10+/7–9/miss bands, and a short roll log. Rolls are not saved;
+  the tray never prints.
 - `hunters.html` — a redirect to `index.html`, kept so old links to
   the Hunters page do not 404. (The Hunters page used to live here;
   it is now the home page.)
@@ -46,10 +57,18 @@ How to Play section and no Keeper content on this site.
 - `data.js` — all 28 playbooks' data (quotes, looks, ratings, moves, gear,
   history, improvements), shared by the Hunters page. 236 moves total:
   188 playbook moves + 48 Alternative Weird moves (8 each on the 6 magic
-  playbooks).
+  playbooks). Unchanged by the seasoned-start rework — the look lists,
+  gear lists and history text are still in the data, but the setup no
+  longer shows the look helper lists, the gear checkboxes or history.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
-  dependencies. Save format unchanged: old saves still open (named
-  hunters on their sheet, unnamed in setup).
+  dependencies. Save format: hunters now carry `powers` (up to 3
+  name/effect pairs), `photo` (data URL), `xMove` (a move from another
+  playbook) and `xMoveExtra`; gear is carried text, not indices. Old
+  saves migrate in place: gear indices become the same gear text,
+  powers/photo/xMove default empty, improvements keep their indices
+  (their point costs are computed from the same list), and a save with
+  more than 3 chosen moves shows a warning and blocks Build until it
+  is trimmed to 3.
 - `style.css` — dark nautical styling, mobile-friendly, with a parchment
   character sheet and a print stylesheet (Print Sheet prints only the
   finished sheet, light background, no wasted ink).

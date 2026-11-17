@@ -65,7 +65,21 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 #saveStatus{font-size:.9rem;color:var(--teal);margin-left:auto}
 .pickgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:.5rem;margin:.5rem 0 1rem}
 .pickbtn{font-family:inherit;text-align:left;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.6rem .8rem;cursor:pointer;font-size:1rem}
-.pickbtn span{display:block;font-size:.8rem;color:var(--muted)}
+.pickbtn .pick-name{display:block;font-size:1rem;color:var(--ink);font-weight:bold}
+.pickbtn .pick-quote{display:block;font-size:.82rem;line-height:1.45;color:var(--muted);font-style:italic;margin-top:.25rem}
+.warn{color:#f0b35c;font-weight:bold}
+.imp-cost{color:var(--teal);font-weight:bold;white-space:nowrap}
+.xmove-box{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;padding:.8rem 1rem;margin:.7rem 0}
+.xmove-box h4{margin:.2rem 0 .5rem}
+.xmove-box select{font-family:inherit;font-size:1rem;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;width:100%;margin-top:.3rem}
+.chart{font-size:.95rem}
+.chart td button{font-family:inherit;font-size:.9rem;padding:.35rem .7rem;border-radius:6px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);cursor:pointer}
+.carried li button{float:right;font-family:inherit;font-size:.9rem;padding:.15rem .55rem;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.photo-preview-wrap{margin:.7rem 0}
+.photo-preview{max-width:180px;max-height:180px;border:2px solid var(--gold-dim);border-radius:8px}
+.sheet-photo-wrap{text-align:center;margin:.5rem 0}
+.sheet-photo{max-width:200px;max-height:200px;border:2px solid #a8822e;border-radius:8px}
+.move-card.xmove{border-left-color:var(--teal)}
 .pickbtn:hover{border-color:var(--gold)}
 .pickbtn.on{border-color:var(--gold);background:var(--panel2);box-shadow:0 0 0 1px var(--gold)}
 .sheet{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1.2rem 1.4rem;margin:1rem 0}
@@ -99,7 +113,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .dice-log{list-style:none;padding-left:0}
 .dice-log li{margin:.3rem 0;padding:.35rem .6rem;background:var(--bg2);border-radius:6px;font-size:.95rem}
 
-@media(max-width:640px){.fieldrow{grid-template-columns:1fr}.pickgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.fieldrow{grid-template-columns:1fr}.pickgrid{grid-template-columns:1fr}}
 @media print{
   body{background:#fff;color:#111;font-size:11pt}
   .no-print,header.hero,nav.sticky,.toolbar,#picker,footer{display:none !important}
@@ -183,4 +197,6 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   .character-sheet .muted,.character-sheet .sheet-sub,.character-sheet .sheet-quote{color:#333}
   .character-sheet .stat-name{color:#333}
   .character-sheet .box{color:#111}
+  .sheet-photo{max-width:140px;max-height:140px;border:1px solid #666}
+  .character-sheet .move-card.xmove{border-left-color:#666}
 }
