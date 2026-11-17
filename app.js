@@ -5,9 +5,15 @@
 // the view is stored on the hunter object, so switching never loses anything.
 // Old saves (without a `view` field) open on their finished sheet, unnamed
 // ones open in setup — nothing is lost in the migration.
-// Improvements are point-based: 15 points to spend, +1 to a rating costs
-// 1 point and can be bought more than once (up to the listed max).
-// D&D weapons convert on the chart in setup. Hunters start with full luck.
+// Improvements are point-based: 15 points to spend. Every improvement is
+// a stepper: +1 to a rating costs 1 point (up to the listed max), +1 max
+// luck costs 1 point (up to 7), any other improvement 2, an advanced
+// improvement 3, a move from another playbook 3 per level, with no cap —
+// the budget is the only limit. Moves are unlimited: tick as many of
+// your own playbook's moves as you like, and take as many moves from
+// other playbooks as you can afford. D&D weapons convert on the chart
+// in setup. Hunters start with no luck — luck is bought with
+// improvement points.
 (function () {
   'use strict';
   var STORE = 'hsc-hunters-v1';
@@ -31,9 +37,9 @@
     pb.moves.forEach(function (m, i) { if (m.fixed) moves.push(i); });
     return {
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '', photo: '',
-      ratingIdx: 0, harm: 0, luckUsed: 0, xp: 0, unstable: false,
+      ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 0, xp: 0, unstable: false,
       gear: [], moves: moves, notes: '', improvements: [], impRatings: {},
-      xMove: null, xMoveExtra: false, ownMoveExtra: false,
+      xMoveLevels: 0, xMoves: [],
       trackers: {}, view: 'setup'
     };
   }
@@ -56,10 +62,12 @@
   // playbook's improvements list were removed, and +1 rating picks are
   // now repeatable counts — so old improvement indices are translated
   // too: indices pointing at removed items are dropped, and surviving
-  // +1 rating picks become counts in h.impRatings. Old scar / deed /
-  // debt / treasure / powers fields may linger in stored JSON; they are
-  // never rendered any more. A cross-playbook move only stays if the
-  // improvement that bought it still does.
+  // +1 rating picks become counts in h.impRatings. Moves are unlimited
+  // now, so old own-move improvement picks are simply dropped (the
+  // hunter keeps every move they picked — nothing is lost). Old scar /
+  // deed / debt / treasure / powers fields may linger in stored JSON;
+  // they are never rendered any more. A cross-playbook move only stays
+  // if the improvement that bought it still does.
   function migrateHunter(h) {
     if (!h.view) h.view = h.name ? 'sheet' : 'setup';
     if (typeof h.luckUsed !== 'number') h.luckUsed = 0;
@@ -68,9 +76,9 @@
     if (!h.impRatings || typeof h.impRatings !== 'object') h.impRatings = {};
     if (!Array.isArray(h.improvements)) h.improvements = [];
     if (typeof h.photo !== 'string') h.photo = '';
-    if (!h.xMove || typeof h.xMove !== 'object') h.xMove = null;
-    if (typeof h.xMoveExtra !== 'boolean') h.xMoveExtra = false;
-    if (typeof h.ownMoveExtra !== 'boolean') h.ownMoveExtra = false;
+    if (!Array.isArray(h.xMoves)) h.xMoves = [];
+    if (typeof h.xMoveLevels !== 'number') h.xMoveLevels = 0;
+    delete h.ownMoveLevels; // paid extra move slots no longer exist — moves are free ticks now
     if (!h.trackers) h.trackers = {};
     if (h.gear.some(function (g) { return typeof g === 'number'; })) {
       var gi = splitList(playbook(h.playbook).gear);
@@ -79,6 +87,12 @@
     }
     var pb = playbook(h.playbook);
     var items = impItems(pb);
+    // Old improvement picks become stepper levels: +1 rating picks are
+    // counts in h.impRatings, cross-playbook picks become xMoveLevels;
+    // one-off improvements stay as indices in h.improvements. Own-move
+    // picks are dropped — moves are unlimited and free now, so the
+    // extra slot they bought means nothing any more. Indices pointing
+    // at removed list items are dropped.
     var kept = [];
     h.improvements.forEach(function (i) {
       var it = items[i];
@@ -86,12 +100,29 @@
       var info = impInfo(it);
       if (info.type === 'rating') {
         h.impRatings[info.rating] = (h.impRatings[info.rating] || 0) + 1;
+      } else if (info.type === 'ownmove') {
+        // dropped — own moves are free ticks now
+      } else if (info.type === 'xmove') {
+        h.xMoveLevels++;
       } else {
         kept.push(i);
       }
     });
     h.improvements = kept;
-    if (h.xMove && !xMoveActive(h, pb)) h.xMove = null;
+    // Legacy boolean flags become levels too (own-move flag just goes —
+    // moves are free now).
+    if (h.xMoveExtra) h.xMoveLevels++;
+    if (h.xMove && typeof h.xMove === 'object') h.xMoves.push(h.xMove);
+    delete h.xMove; delete h.xMoveExtra; delete h.ownMoveExtra;
+    // Every cross-playbook level needs a pick — fill in defaults.
+    while (h.xMoves.length < h.xMoveLevels) h.xMoves.push(defaultXPick(pb));
+    if (h.xMoves.length > h.xMoveLevels) h.xMoves.length = h.xMoveLevels;
+    // Luck: old saves had a fixed 7 luck — they keep it, and it counts
+    // toward the 15-point budget. New hunters start at 0.
+    if (typeof h.luckMax !== 'number') h.luckMax = 7;
+    if (h.luckMax > 7) h.luckMax = 7;
+    if (h.luckMax < 0) h.luckMax = 0;
+    if (h.luckUsed > h.luckMax) h.luckUsed = h.luckMax;
   }
   hunters.forEach(migrateHunter);
   function active() {
@@ -159,9 +190,10 @@
 
   // ---------- improvement points (15-point budget) ----------
   // Costs: +1 to a rating = 1 point, repeatable up to the listed max;
-  // another move from your own playbook = 2 (grants one extra chosen-move
-  // slot); any other improvement = 2; an advanced improvement = 3;
-  // a move from a different playbook = 3.
+  // any other improvement = 2; an advanced improvement = 3;
+  // a move from a different playbook = 3 per level, no cap. Own moves
+  // are free ticks, so the 'ownmove' type below is only used to spot
+  // (and skip) own-move grants still sitting in a playbook's list.
   // No playbook list currently names an improvement "advanced" in so many
   // words (the Witch's was among the removed last two), so the advanced
   // branch below is dormant — kept so the cost still applies if one is
@@ -185,35 +217,73 @@
     }
     return null;
   }
+  // Points spent: rating +1s (1 each), cross-playbook levels (3 each),
+  // max luck bought (1 each), and any one-off improvements still listed
+  // (2, or 3 if advanced). Own moves are free ticks now, so they cost
+  // nothing.
   function spentPoints(h, pb) {
     var items = impItems(pb), total = 0;
     Object.keys(h.impRatings || {}).forEach(function (r) { total += (h.impRatings[r] || 0) * 1; });
-    h.improvements.forEach(function (i) {
+    total += (h.xMoveLevels || 0) * 3;
+    total += (h.luckMax || 0) * 1;
+    (h.improvements || []).forEach(function (i) {
       var it = items[i];
-      // Rating picks live in h.impRatings now; a stale rating index here
-      // charges nothing and does nothing.
-      if (it && impInfo(it).type !== 'rating') total += impInfo(it).cost;
+      // Only one-off improvements live here now; a stale rating, own-move
+      // or cross-playbook index charges nothing and does nothing.
+      if (it) { var t = impInfo(it).type; if (t === 'other' || t === 'advanced') total += impInfo(it).cost; }
     });
-    if (h.ownMoveExtra) total += 2;
-    if (h.xMoveExtra) total += 3;
     return total;
   }
-  function extraMoveSlots(h, pb) {
-    var items = impItems(pb), n = 0;
-    h.improvements.forEach(function (i) { var it = items[i]; if (it && impInfo(it).type === 'ownmove') n++; });
-    if (h.ownMoveExtra) n++;
-    return n;
+  function xMoveActive(h, pb) { return (h.xMoveLevels || 0) > 0; }
+  // Default cross-playbook pick: the first other playbook's first
+  // non-fixed move. Used when a level is bought before any move is chosen.
+  function defaultXPick(pb) {
+    var other = null;
+    for (var i = 0; i < PLAYBOOKS.length; i++) if (PLAYBOOKS[i].id !== pb.id) { other = PLAYBOOKS[i]; break; }
+    var first = -1;
+    other.moves.forEach(function (m, mi) { if (!m.fixed && first === -1) first = mi; });
+    return { pb: other.id, moveIdx: first < 0 ? 0 : first };
   }
-  function xMoveActive(h, pb) {
-    if (h.xMoveExtra) return true;
-    var items = impItems(pb);
-    return h.improvements.some(function (i) { var it = items[i]; return it && impInfo(it).type === 'xmove'; });
+  // One step of a generic improvement stepper. `dir` is +1 or −1.
+  function stepChange(el, dir) {
+    var h = active(), pb = playbook(h.playbook);
+    var kind = el.getAttribute('data-step-plus') || el.getAttribute('data-step-minus');
+    var spent = spentPoints(h, pb);
+    if (kind === 'luck') {
+      var cur = h.luckMax || 0;
+      if (dir > 0) {
+        if (cur >= 7 || spent + 1 > IMP_BUDGET) return;
+        h.luckMax = cur + 1;
+      } else if (cur > 0) {
+        h.luckMax = cur - 1;
+        if (h.luckUsed > h.luckMax) h.luckUsed = h.luckMax;
+      }
+    } else if (kind === 'xmove') {
+      var curX = h.xMoveLevels || 0;
+      if (dir > 0) {
+        if (spent + 3 > IMP_BUDGET) return;
+        h.xMoveLevels = curX + 1;
+        if (!h.xMoves) h.xMoves = [];
+        h.xMoves.push(defaultXPick(pb));
+      } else if (curX > 0) {
+        h.xMoveLevels = curX - 1;
+        if (h.xMoves) h.xMoves.length = h.xMoveLevels;
+      }
+    } else if (kind === 'other') {
+      var idx = +el.getAttribute('data-idx');
+      var it = impItems(pb)[idx];
+      if (!it) return;
+      var cost = impInfo(it).cost;
+      var has = h.improvements.indexOf(idx) !== -1;
+      if (dir > 0) {
+        if (has || spent + cost > IMP_BUDGET) return;
+        h.improvements.push(idx);
+      } else if (has) {
+        h.improvements = h.improvements.filter(function (x) { return x !== idx; });
+      }
+    }
+    save(); renderAll();
   }
-  function chosenMoveCount(h, pb) {
-    return h.moves.filter(function (i) { return pb.moves[i] && !pb.moves[i].fixed; }).length;
-  }
-  function requiredMoves(h, pb) { return 3 + extraMoveSlots(h, pb); }
-
   // Ratings with any +1 improvements applied (capped at the listed max).
   function effectiveRatings(h, pb) {
     var vals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
@@ -255,11 +325,12 @@
   }
 
   // ---------- shared bits for both views ----------
-  function movesPickerHtml(h, pb, required) {
-    var picked = chosenMoveCount(h, pb);
+  // Moves are unlimited: tick as many of your own playbook's moves as
+  // you like. Fixed moves are always included and cannot be unticked.
+  function movesPickerHtml(h, pb) {
     return pb.moves.map(function (m, i) {
       var checked = h.moves.indexOf(i) !== -1;
-      var disabled = m.fixed || (!checked && picked >= required);
+      var disabled = m.fixed;
       return '<li><label class="movepick"><input type="checkbox" data-move="' + i + '"' + (checked ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
         '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></label></li>';
     }).join('');
@@ -272,14 +343,13 @@
       if (!m) return '';
       return '<article class="move-card"><h4>' + esc(m.name) + '</h4><p>' + esc(m.text) + '</p></article>';
     }).join('');
-    // A move taken from a different playbook (via improvements) is a bonus:
-    // it shows here, marked with where it came from, and never counts
-    // toward the 3 chosen moves.
-    if (h.xMove) {
-      var xpb = playbook(h.xMove.pb);
-      var xm = xpb.moves[h.xMove.moveIdx];
+    // Moves taken from other playbooks (via improvements) show here,
+    // marked with where they came from.
+    (h.xMoves || []).forEach(function (xp) {
+      var xpb = playbook(xp.pb);
+      var xm = xpb.moves[xp.moveIdx];
       if (xm) list += '<article class="move-card xmove"><h4>' + esc(xm.name) + ' <span class="muted">(from ' + esc(xpb.name) + ')</span></h4><p>' + esc(xm.text) + '</p></article>';
-    }
+    });
     return list ? '<div class="move-cards">' + list + '</div>' : '<p class="muted">No moves picked yet — go to Edit setup and tick moves, and they will appear here.</p>';
   }
   function statBoxesHtml(h, pb) {
@@ -308,9 +378,6 @@
   function renderSetup() {
     var h = active();
     var pb = playbook(h.playbook);
-    var required = requiredMoves(h, pb);
-    var picked = chosenMoveCount(h, pb);
-    var slots = extraMoveSlots(h, pb);
     var items = impItems(pb);
     var spent = spentPoints(h, pb);
 
@@ -329,63 +396,84 @@
         }).join('') + '</ul>'
       : '<p class="muted">No gear carried yet — add weapons and armour from the chart, or write your own below.</p>';
 
-    // Improvements: point-based, 15-point budget. +1 ratings are steppers
-    // (1 point each, repeatable up to the max); the rest are checkboxes.
-    // "Another move from your own playbook" and "move from a different
-    // playbook" are universal options: they are added here only when the
-    // playbook's own (trimmed) list does not already have one.
+    // Improvements: point-based, 15-point budget. EVERY improvement is a
+    // stepper showing its current level, and every stepper respects a max:
+    // +1 ratings (1 pt, up to the listed max), max luck (1 pt, up to 7),
+    // cross-playbook levels (3 pts, no cap — the budget is the limit),
+    // one-off improvements (2 pts, or 3 if advanced — level 0 or 1).
+    // Own-move grants still sitting in a playbook's list are skipped
+    // below: your own book's moves are free ticks now. The
+    // cross-playbook option is universal: it is added below only when
+    // the playbook's own (trimmed) list does not already have one.
     var baseVals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
-    var impHtml = items.map(function (g, i) {
+    function fmtVal(v) { return (v >= 0 ? '+' : '') + v; }
+    function stepperRow(label, levelText, level, max, cost, kind, idx) {
+      var afford = spent + cost <= IMP_BUDGET;
+      var minusAttrs = 'data-step-minus="' + kind + '"' + (idx != null ? ' data-idx="' + idx + '"' : '');
+      var plusAttrs = 'data-step-plus="' + kind + '"' + (idx != null ? ' data-idx="' + idx + '"' : '');
+      return '<li class="imp-stepper"><span>' + label + ' <span class="imp-cost">' + cost + (cost === 1 ? ' pt' : ' pts') + ' each</span></span> ' +
+        '<span class="stepper-btns"><button type="button" ' + minusAttrs + (level <= 0 ? ' disabled' : '') + ' aria-label="Decrease">−</button>' +
+        '<span class="step-level">' + levelText + '</span>' +
+        '<button type="button" ' + plusAttrs + (((max != null && level >= max) || !afford) ? ' disabled' : '') + ' aria-label="Increase">+</button></span></li>';
+    }
+    // Luck first: every hunter buys their own luck, 1 point per luck.
+    var luckMax = h.luckMax || 0;
+    var impHtml = stepperRow('<strong>+1 max luck</strong> — Luck ' + luckMax + ' of 7', 'Luck ' + luckMax, luckMax, 7, 1, 'luck', null);
+    impHtml += items.map(function (g, i) {
       var info = impInfo(g);
+      // Own-move grants are not improvements any more: your own book's
+      // moves are free ticks now, so these list items are not rendered.
+      if (info.type === 'ownmove') return '';
       if (info.type === 'rating') {
         var count = (h.impRatings && h.impRatings[info.rating]) || 0;
         var base = baseVals[info.rating];
-        var atMax = base == null || base + count >= info.max;
-        var afford = spent + 1 <= IMP_BUDGET;
-        return '<li class="imp-stepper"><span><strong>+1 ' + esc(info.rating) + '</strong> (max +' + info.max + ') — bought ×' + count + ' <span class="imp-cost">1 pt each</span></span> ' +
+        var cur = base == null ? null : Math.min(info.max, base + count);
+        return '<li class="imp-stepper"><span><strong>+1 ' + esc(info.rating) + '</strong> — now <strong>' + (cur == null ? '—' : fmtVal(cur)) + '</strong> (max +' + info.max + ') <span class="imp-cost">1 pt each</span></span> ' +
           '<span class="stepper-btns"><button type="button" data-imp-minus="' + esc(info.rating) + '"' + (count > 0 ? '' : ' disabled') + ' aria-label="Remove one +1 ' + esc(info.rating) + '">−</button>' +
-          '<button type="button" data-imp-plus="' + esc(info.rating) + '"' + (atMax || !afford ? ' disabled' : '') + ' aria-label="Add one +1 ' + esc(info.rating) + '">+</button></span></li>';
+          '<span class="step-level">' + (cur == null ? '—' : fmtVal(cur)) + '</span>' +
+          '<button type="button" data-imp-plus="' + esc(info.rating) + '"' + ((base == null || base + count >= info.max || spent + 1 > IMP_BUDGET) ? ' disabled' : '') + ' aria-label="Add one +1 ' + esc(info.rating) + '">+</button></span></li>';
       }
-      var checked = h.improvements.indexOf(i) !== -1;
-      var disabled = (!checked && spent + info.cost > IMP_BUDGET) ? ' disabled' : '';
-      var tag = info.type === 'ownmove' ? ' (+1 extra move slot)' : info.type === 'xmove' ? ' (pick a move from another playbook)' : info.type === 'advanced' ? ' (advanced)' : '';
-      return '<li><label><input type="checkbox" data-imp="' + i + '"' + (checked ? ' checked' : '') + disabled + '> ' + esc(g) + tag + ' <span class="imp-cost">' + info.cost + ' pts</span></label></li>';
+      if (info.type === 'xmove') {
+        var xLvl = h.xMoveLevels || 0;
+        return stepperRow('<strong>' + esc(g) + '</strong> — pick a move from another playbook per level', 'Lv ' + xLvl, xLvl, null, 3, 'xmove', null);
+      }
+      var taken = h.improvements.indexOf(i) !== -1;
+      var tag = info.type === 'advanced' ? ' (advanced)' : '';
+      return stepperRow('<strong>' + esc(g) + '</strong>' + tag, taken ? 'Lv 1' : 'Lv 0', taken ? 1 : 0, 1, info.cost, 'other', i);
     }).join('');
-    var hasOwn = items.some(function (g) { return impInfo(g).type === 'ownmove'; });
+    // The cross-playbook option is universal (3 points per level, no cap):
+    // it is added here only when the playbook's own (trimmed) list does
+    // not already have one. There is no own-move option any more — your
+    // own book's moves are free ticks now.
     var hasX = items.some(function (g) { return impInfo(g).type === 'xmove'; });
-    if (!hasOwn) {
-      var ownChecked = !!h.ownMoveExtra;
-      var ownDisabled = (!ownChecked && spent + 2 > IMP_BUDGET) ? ' disabled' : '';
-      impHtml += '<li><label><input type="checkbox" data-imp-own="1"' + (ownChecked ? ' checked' : '') + ownDisabled + '> Another move from your own playbook (+1 extra move slot) <span class="imp-cost">2 pts</span></label></li>';
-    }
     if (!hasX) {
-      var xChecked = !!h.xMoveExtra;
-      var xDisabled = (!xChecked && spent + 3 > IMP_BUDGET) ? ' disabled' : '';
-      impHtml += '<li><label><input type="checkbox" data-imp-x="1"' + (xChecked ? ' checked' : '') + xDisabled + '> Take a new move from a different playbook <span class="imp-cost">3 pts</span></label></li>';
+      var xLvl2 = h.xMoveLevels || 0;
+      impHtml += stepperRow('<strong>Take a new move from a different playbook</strong> — pick a move from another playbook per level', 'Lv ' + xLvl2, xLvl2, null, 3, 'xmove', null);
     }
     var pointsLine = spent > IMP_BUDGET
       ? '<p class="warn">You are ' + (spent - IMP_BUDGET) + ' point' + (spent - IMP_BUDGET === 1 ? '' : 's') + ' over the 15-point budget — remove improvements until you are back under budget before you can take more.</p>'
       : '<p><strong>Improvement points: ' + spent + ' spent / 15</strong> — ' + (IMP_BUDGET - spent) + ' left.</p>';
+    // One picker per cross-playbook level bought.
     var xPickerHtml = '';
     if (xMoveActive(h, pb)) {
       var otherPbs = PLAYBOOKS.filter(function (p) { return p.id !== pb.id; });
-      var selPb = (h.xMove && playbook(h.xMove.pb)) || otherPbs[0];
-      if (selPb.id === pb.id) selPb = otherPbs[0];
-      var moveOpts = selPb.moves.map(function (m, i) { return { m: m, i: i }; }).filter(function (o) { return !o.m.fixed; });
-      xPickerHtml = '<div class="xmove-box"><h4>Move from another playbook</h4>' +
-        '<p class="muted">A bonus from your improvements — it does not count toward your 3 chosen moves.</p>' +
-        '<div class="fieldrow"><label>Playbook <select id="xMovePb">' + otherPbs.map(function (p) {
-          return '<option value="' + p.id + '"' + (selPb.id === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>';
-        }).join('') + '</select></label>' +
-        '<label>Move <select id="xMoveMove">' + moveOpts.map(function (o) {
-          return '<option value="' + o.i + '"' + (h.xMove && h.xMove.pb === selPb.id && h.xMove.moveIdx === o.i ? ' selected' : '') + '>' + esc(o.m.name) + '</option>';
-        }).join('') + '</select></label></div></div>';
+      if (!h.xMoves) h.xMoves = [];
+      while (h.xMoves.length < h.xMoveLevels) h.xMoves.push(defaultXPick(pb));
+      xPickerHtml = '<p class="muted">A bonus from your improvements — moves from other playbooks, on top of as many of your own book\u2019s moves as you like.</p>';
+      for (var xi = 0; xi < h.xMoveLevels; xi++) {
+        var pick = h.xMoves[xi] || defaultXPick(pb);
+        var selPb = playbook(pick.pb);
+        if (selPb.id === pb.id) selPb = otherPbs[0];
+        var moveOpts = selPb.moves.map(function (m, i) { return { m: m, i: i }; }).filter(function (o) { return !o.m.fixed; });
+        xPickerHtml += '<div class="xmove-box"><h4>Move from another playbook — ' + (xi + 1) + ' of ' + h.xMoveLevels + '</h4>' +
+          '<div class="fieldrow"><label>Playbook <select class="xMovePb" data-level="' + xi + '">' + otherPbs.map(function (p) {
+            return '<option value="' + p.id + '"' + (selPb.id === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>';
+          }).join('') + '</select></label>' +
+          '<label>Move <select class="xMoveMove" data-level="' + xi + '">' + moveOpts.map(function (o) {
+            return '<option value="' + o.i + '"' + (pick.moveIdx === o.i ? ' selected' : '') + '>' + esc(o.m.name) + '</option>';
+          }).join('') + '</select></label></div></div>';
+      }
     }
-
-    var movesNote = '';
-    if (picked < required) movesNote = '<p class="warn">Pick ' + (required - picked) + ' more move' + (required - picked === 1 ? '' : 's') + ' to build your sheet — every hunter takes exactly ' + required + ' chosen moves' + (slots ? ' (3 + ' + slots + ' extra from improvements)' : '') + '. Fixed moves are always included on top.</p>';
-    else if (picked > required) movesNote = '<p class="warn">You have ' + picked + ' moves picked — untick down to ' + required + ' to build your sheet.</p>';
-    var ready = picked === required;
 
     $('#sheet').innerHTML =
       '<article class="sheet setup">' +
@@ -408,18 +496,16 @@
       '<h4>Your gear</h4>' + carriedHtml +
       '<div class="fieldrow"><label>Other gear <input type="text" id="otherGearInput" placeholder="e.g. spyglass, lockpicks, lucky coin"></label><span><button type="button" data-action="add-other-gear">Add gear</button></span></div>' +
       '<h4>Conversion chart</h4>' + chartHtml +
-      '<h3>Moves — picked ' + picked + ' of ' + required + '</h3>' +
-      movesNote +
-      '<p class="muted">Tick the moves you want. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
-      '<ul class="checklist moves">' + movesPickerHtml(h, pb, required) + '</ul>' +
+      '<h3>Moves — as many as you want</h3>' +
+      '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want, and from other playbooks through Improvements below. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
+      '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
       '<h3>Improvements — 15 points to spend</h3>' +
-      '<p class="muted">Costs: +1 to a rating = 1 point, as many times as you like up to the max shown · another move from your own playbook = 2 points · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points.</p>' +
+      '<p class="muted">Every improvement is a stepper — use + and − to set its level. Costs: +1 to a rating = 1 point, up to the max shown · +1 max luck = 1 point, up to 7 · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points per level, as many levels as you can afford. Your own playbook\u2019s moves are free — tick as many as you like above.</p>' +
       pointsLine +
       '<ul class="checklist">' + impHtml + '</ul>' +
       xPickerHtml +
       '<h3>Notes</h3><textarea data-field="notes" rows="5" placeholder="Allies, enemies, and anything else worth remembering…">' + esc(h.notes) + '</textarea>' +
       '<p><button type="button" class="primary big" data-action="build-sheet">Build my sheet — see my sheet</button></p>' +
-      (ready ? '' : '<p class="warn">Pick exactly ' + required + ' chosen moves above before you build your sheet.</p>') +
       '</article>';
     renderPicker();
     renderSelect();
@@ -441,8 +527,8 @@
       var it = items[i];
       if (it) pickedImp.push(it + ' (' + impInfo(it).cost + ' pts)');
     });
-    if (h.ownMoveExtra) pickedImp.push('Another move from your own playbook (2 pts)');
-    if (h.xMoveExtra) pickedImp.push('Take a new move from a different playbook (3 pts)');
+    if ((h.luckMax || 0) > 0) pickedImp.push('Luck ' + h.luckMax + ' (' + h.luckMax + ' pt' + (h.luckMax === 1 ? '' : 's') + ')');
+    if ((h.xMoveLevels || 0) > 0) pickedImp.push('Take a new move from a different playbook ×' + h.xMoveLevels + ' (' + (h.xMoveLevels * 3) + ' pts)');
     var spent = spentPoints(h, pb);
     var bonus = ratingBonusText(h, pb);
 
@@ -460,7 +546,7 @@
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<p class="tracker-row"><strong>Harm</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
       '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
-      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. You start with all 7 luck.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
+      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(blankMode ? 7 : (h.luckMax || 0), Math.min(h.luckUsed || 0, blankMode ? 7 : (h.luckMax || 0)), 'luck') + (((h.luckMax || 0) === 0 && !blankMode) ? ' <span class="muted">No luck bought yet.</span>' : '') + ' <span class="muted">Boxes marked = luck spent. Luck is bought in Improvements — 1 point per luck, up to 7.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
       '<p class="tracker-row"><strong>Experience</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
       trackerHtml(h, pb) +
       '</div>' +
@@ -491,7 +577,7 @@
   function blankHunter() {
     var h = newHunter(active().playbook);
     h.moves = [];     // newHunter pre-ticks the fixed moves; a blank sheet has none
-    h.luckUsed = 0;   // a blank sheet starts with full luck
+    h.luckUsed = 0;   // a blank sheet shows the full 7-box luck track empty, for handwriting
     h.view = 'sheet';
     return h;
   }
@@ -604,14 +690,7 @@
     var act = e.target.closest('[data-action]');
     if (act) {
       var a = act.getAttribute('data-action');
-      if (a === 'build-sheet') {
-        var hb = active(); var pb = playbook(hb.playbook);
-        if (chosenMoveCount(hb, pb) !== requiredMoves(hb, pb)) {
-          alert('Pick exactly ' + requiredMoves(hb, pb) + ' chosen moves before you build your sheet.');
-          return;
-        }
-        hb.view = 'sheet'; save(); renderAll(); return;
-      }
+      if (a === 'build-sheet') { active().view = 'sheet'; save(); renderAll(); return; }
       if (a === 'edit-setup') { active().view = 'setup'; save(); renderAll(); return; }
       if (a === 'print-sheet') { window.print(); return; }
       if (a === 'remove-photo') { active().photo = ''; photoWarnMsg = ''; save(); renderAll(); return; }
@@ -659,12 +738,18 @@
       }
       return;
     }
+    // Generic improvement steppers: own-move levels, cross-playbook
+    // levels, one-off improvements, and max luck.
+    var sp = e.target.closest('[data-step-plus]');
+    if (sp) { stepChange(sp, 1); return; }
+    var sm = e.target.closest('[data-step-minus]');
+    if (sm) { stepChange(sm, -1); return; }
     var b = e.target.closest('[data-pb]');
     if (b) {
       var npb = playbook(b.getAttribute('data-pb'));
       active().playbook = npb.id;
       active().moves = npb.moves.map(function (m, i) { return m.fixed ? i : -1; }).filter(function (i) { return i >= 0; });
-      active().gear = []; active().improvements = []; active().impRatings = {}; active().xMove = null; active().xMoveExtra = false; active().ownMoveExtra = false; active().trackers = {};
+      active().gear = []; active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().trackers = {};
       save(); renderAll(); return;
     }
     var box = e.target.closest('[data-box]');
@@ -683,34 +768,18 @@
       h.moves = t.checked ? h.moves.concat([i]).sort(function (a, b) { return a - b; }) : h.moves.filter(function (x) { return x !== i; });
       save(); renderAll(); return;
     }
-    if (t.matches('[data-imp]')) {
-      var ii = +t.getAttribute('data-imp');
-      h.improvements = t.checked ? h.improvements.concat([ii]) : h.improvements.filter(function (x) { return x !== ii; });
-      if (!t.checked) {
-        // Unpicking the cross-playbook improvement also drops the move.
-        var it = impItems(playbook(h.playbook))[ii];
-        if (it && impInfo(it).type === 'xmove') h.xMove = null;
-      }
-      save(); renderAll(); return;
-    }
-    if (t.matches('[data-imp-own]')) {
-      h.ownMoveExtra = !!t.checked;
-      save(); renderAll(); return;
-    }
-    if (t.matches('[data-imp-x]')) {
-      h.xMoveExtra = !!t.checked;
-      if (!t.checked) h.xMove = null;
-      save(); renderAll(); return;
-    }
-    if (t.id === 'xMovePb') {
+    if (t.matches('.xMovePb')) {
+      var lvl = +t.getAttribute('data-level');
       var np = playbook(t.value);
       var first = -1;
       np.moves.forEach(function (m, mi) { if (!m.fixed && first === -1) first = mi; });
-      h.xMove = { pb: np.id, moveIdx: first < 0 ? 0 : first };
+      if (!h.xMoves) h.xMoves = [];
+      h.xMoves[lvl] = { pb: np.id, moveIdx: first < 0 ? 0 : first };
       save(); renderAll(); return;
     }
-    if (t.id === 'xMoveMove') {
-      if (h.xMove) h.xMove.moveIdx = +t.value;
+    if (t.matches('.xMoveMove')) {
+      var lvl2 = +t.getAttribute('data-level');
+      if (h.xMoves && h.xMoves[lvl2]) h.xMoves[lvl2].moveIdx = +t.value;
       save(); renderAll(); return;
     }
     if (t.id === 'photoInput' && t.files && t.files[0]) { handlePhotoFile(t.files[0]); return; }

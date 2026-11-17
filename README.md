@@ -18,26 +18,38 @@ How to Play section and no Keeper content on this site.
   fill in name/pronouns, look (type it in, or upload a photo — shrunk
   client-side to ~480px and saved in the browser, printed on the
   sheet), a ratings line, gear from the D&D weapon conversion chart,
-  and the moves picker (exactly 3 chosen moves). Improvements are
-  point-based: 15 points to spend (+1 to a rating = 1 point, and a
-  rating can be raised more than once up to its listed max; another move
-  from your own playbook = 2, any other improvement = 2, an advanced
-  improvement = 3, a move from a different playbook = 3). Every
-  playbook offers both move options — its own list may already have
-  one, otherwise a universal option is shown. Press
+  and the moves picker (tick as many moves as you like — your own
+  playbook's moves are free, and moves from other playbooks come through
+  Improvements). Improvements are
+  point-based: 15 points to spend, and every improvement is a stepper
+  showing its current level — +1 to a rating = 1 point, and a rating can
+  be raised more than once up to its listed max (the stepper shows the
+  rating's current value); +1 max luck = 1 point, up to 7; a move from
+  a different playbook =
+  3 points per level, as many levels as you can afford (one picker per
+  level); any other
+  improvement = 2 points (level 0 or 1); an advanced improvement =
+  3 points. Every playbook offers the cross-playbook move option — its
+  own list may already have one, otherwise a universal option is shown.
+  Own-move grants still sitting in a playbook's list (e.g. "Another
+  Foretold move") are not shown as improvements any more, since your own
+  book's moves are free ticks now. Press
   **Build my sheet**. **Player sheet second:** a stylised parchment
   character sheet — playbook banner and quote, big hunter name, photo
   if uploaded, ratings as stat boxes (with any +1 improvements
-  applied), harm/luck/experience/unstable trackers, My Moves as
-  readable cards (including any cross-playbook move, marked with where
-  it came from), gear, improvements taken
+  applied), harm/luck/experience/unstable trackers (the luck track
+  shows as many boxes as the hunter bought), My Moves as
+  readable cards (including any cross-playbook moves, marked with where
+  they came from), gear, improvements taken
   with their point costs, and notes. There is no History section any
   more, and no Seasoned start section (no scar, famed deed, old debt,
-  signature treasure or powers carried over). Hunters start with all
-  7 luck. **Edit setup** goes back to setup keeping everything; **Print
+  signature treasure or powers carried over). Hunters start with no
+  luck — luck is bought in Improvements, 1 point per luck, up to 7.
+  **Edit setup** goes back to setup keeping everything; **Print
   Sheet** prints only the finished sheet; **Print Blank Sheet** prints
   the chosen playbook's sheet with everything empty — blank name, look,
-  gear, unticked moves and empty trackers, with ruled write-in lines —
+  gear, unticked moves and empty trackers (including the full 7-box luck
+  track, for handwriting), with ruled write-in lines —
   ready to fill in by hand, without changing the saved hunter. Setup
   and sheet are two views of the same hunter. The six magic playbooks
   (Battle-Mage, Witch, Touched, Cursed, Channeler, Fae-Blooded) also
@@ -64,16 +76,21 @@ How to Play section and no Keeper content on this site.
   data, but the setup no longer shows the look helper lists, the gear
   checkboxes or history.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
-  dependencies. Save format: hunters carry `photo` (data URL), `xMove`
-  (a move from another playbook), `xMoveExtra`, `ownMoveExtra`, and
-  `impRatings` (repeatable +1 rating counts); gear is carried text, not
-  indices. Old saves migrate in place: gear indices become the same gear
-  text, improvements pointing at removed list items are dropped,
-  surviving +1 rating picks become `impRatings` counts, a cross-playbook
-  move is dropped if the improvement that bought it is gone, and a save
-  with more than 3 chosen moves shows a warning and blocks Build until
-  it is trimmed to 3. Old scar / deed / debt / treasure / powers fields
-  may linger in stored JSON; they are never rendered.
+  dependencies. Save format: hunters carry `photo` (data URL), `luckMax`
+  (max luck bought, 0 for new hunters), `xMoveLevels` (cross-playbook
+  stepper level), `xMoves` (an array of cross-playbook picks, one per
+  level), and `impRatings` (repeatable +1 rating counts); gear is carried
+  text, not indices. Old saves migrate in place: gear indices become the
+  same gear text, improvements pointing at removed list items are dropped,
+  surviving +1 rating picks become `impRatings` counts, cross-playbook
+  picks become `xMoveLevels` (with a default pick filled in for any level
+  bought but never chosen), own-move picks are dropped (moves are
+  unlimited and free now — the hunter keeps every move they picked), old
+  hunters keep a `luckMax` of 7 — which counts toward the 15-point
+  budget, so an old save with a full set of improvements may show as
+  over budget until it sheds some. Old scar /
+  deed / debt / treasure / powers fields may linger in stored JSON; they
+  are never rendered.
 - `style.css` — dark nautical styling, mobile-friendly, with a parchment
   character sheet and a print stylesheet (Print Sheet prints only the
   finished sheet, light background, no wasted ink).
@@ -108,7 +125,13 @@ debt, signature treasure, powers carried over) and the "Your sheet keeps
 itself" section were removed 2026-11-16; improvements are now a
 15-point budget with +1 ratings at 1 point each, repeatable up to the
 listed max, and the last two improvements of every playbook's list
-were removed.
+were removed. Luck is no longer fixed: hunters start with 0 luck and
+buy it in Improvements, 1 point per luck up to 7, and every
+improvement is now a stepper showing its current level (ratings show
+their current value; cross-playbook levels are uncapped; one-off
+improvements are level 0 or 1). Moves are unlimited: as many of your
+own playbook's moves as you like, free, and as many moves from other
+playbooks as you can afford at 3 points each.
 
 To update the site later, edit the files, commit, and push to `main` — Pages
 republishes automatically.

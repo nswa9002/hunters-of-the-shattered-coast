@@ -182,6 +182,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .imp-stepper .stepper-btns{display:flex;gap:.4rem}
 .imp-stepper .stepper-btns button{font-family:inherit;font-size:1.1rem;line-height:1;min-width:2.2rem;padding:.35rem .6rem;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .imp-stepper .stepper-btns button:disabled{opacity:.4;cursor:default}
+.imp-stepper .step-level{display:inline-block;min-width:4rem;text-align:center;font-weight:bold}
 .character-sheet .sheet-list li{margin:.35rem 0}
 .character-sheet .sheet-actions{margin:.5rem 0}
 .character-sheet .sheet-actions button{font-family:inherit;font-size:.95rem;padding:.5rem .9rem;border-radius:6px;border:1px solid #a8822e;background:#fbf3dd;color:#2b2118;cursor:pointer}
