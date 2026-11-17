@@ -9,7 +9,8 @@
 // a stepper: +1 to a rating costs 1 point (up to the listed max), +1 max
 // luck costs 1 point (up to 7), any other improvement 2, an advanced
 // improvement 3, a move from another playbook 3 per level, with no cap —
-// the budget is the only limit. Moves are unlimited: tick as many of
+// the budget is the only limit. "Gain an ally" counts allies, not a
+// level: 2 points per ally, as many as you can afford. Moves are unlimited: tick as many of
 // your own playbook's moves as you like, and take as many moves from
 // other playbooks as you can afford. D&D weapons convert on the chart
 // in setup. Hunters start with no luck — luck is bought with
@@ -39,7 +40,7 @@
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '', photo: '',
       ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 0, xp: 0, unstable: false,
       gear: [], moves: moves, notes: '', improvements: [], impRatings: {},
-      xMoveLevels: 0, xMoves: [],
+      xMoveLevels: 0, xMoves: [], allyCount: 0,
       trackers: {}, view: 'setup'
     };
   }
@@ -78,6 +79,7 @@
     if (typeof h.photo !== 'string') h.photo = '';
     if (!Array.isArray(h.xMoves)) h.xMoves = [];
     if (typeof h.xMoveLevels !== 'number') h.xMoveLevels = 0;
+    if (typeof h.allyCount !== 'number') h.allyCount = 0;
     delete h.ownMoveLevels; // paid extra move slots no longer exist — moves are free ticks now
     if (!h.trackers) h.trackers = {};
     if (h.gear.some(function (g) { return typeof g === 'number'; })) {
@@ -88,7 +90,8 @@
     var pb = playbook(h.playbook);
     var items = impItems(pb);
     // Old improvement picks become stepper levels: +1 rating picks are
-    // counts in h.impRatings, cross-playbook picks become xMoveLevels;
+    // counts in h.impRatings, cross-playbook picks become xMoveLevels,
+    // a bought "Gain an ally" becomes one ally in h.allyCount;
     // one-off improvements stay as indices in h.improvements. Own-move
     // picks are dropped — moves are unlimited and free now, so the
     // extra slot they bought means nothing any more. Indices pointing
@@ -100,6 +103,8 @@
       var info = impInfo(it);
       if (info.type === 'rating') {
         h.impRatings[info.rating] = (h.impRatings[info.rating] || 0) + 1;
+      } else if (info.type === 'ally') {
+        h.allyCount = (h.allyCount || 0) + 1;
       } else if (info.type === 'ownmove') {
         // dropped — own moves are free ticks now
       } else if (info.type === 'xmove') {
@@ -205,6 +210,11 @@
     if (/move from another playbook/i.test(item)) return { cost: 3, type: 'xmove' };
     if (/another .*move/i.test(item) || /another rote/i.test(item)) return { cost: 2, type: 'ownmove' };
     if (/advanced/i.test(item)) return { cost: 3, type: 'advanced' };
+    // "Gain an ally" counts allies, not a level: 2 points per ally, no cap.
+    // The differently-worded ally items ("An ally, tied to…", "An ally —…",
+    // "An ally: one of your existing crew…") do NOT start with "Gain an
+    // ally" — they stay one-off 'other' improvements, as before.
+    if (/^Gain an ally/i.test(item)) return { cost: 2, type: 'ally' };
     return { cost: 2, type: 'other' };
   }
   function impItems(pb) { return splitList(pb.improvements); }
@@ -218,14 +228,15 @@
     return null;
   }
   // Points spent: rating +1s (1 each), cross-playbook levels (3 each),
-  // max luck bought (1 each), and any one-off improvements still listed
-  // (2, or 3 if advanced). Own moves are free ticks now, so they cost
-  // nothing.
+  // max luck bought (1 each), allies (2 each), and any one-off
+  // improvements still listed (2, or 3 if advanced). Own moves are free
+  // ticks now, so they cost nothing.
   function spentPoints(h, pb) {
     var items = impItems(pb), total = 0;
     Object.keys(h.impRatings || {}).forEach(function (r) { total += (h.impRatings[r] || 0) * 1; });
     total += (h.xMoveLevels || 0) * 3;
     total += (h.luckMax || 0) * 1;
+    total += (h.allyCount || 0) * 2;
     (h.improvements || []).forEach(function (i) {
       var it = items[i];
       // Only one-off improvements live here now; a stale rating, own-move
@@ -268,6 +279,15 @@
       } else if (curX > 0) {
         h.xMoveLevels = curX - 1;
         if (h.xMoves) h.xMoves.length = h.xMoveLevels;
+      }
+    } else if (kind === 'ally') {
+      // Allies have no cap — the budget is the only limit. 2 points each.
+      var curA = h.allyCount || 0;
+      if (dir > 0) {
+        if (spent + 2 > IMP_BUDGET) return;
+        h.allyCount = curA + 1;
+      } else if (curA > 0) {
+        h.allyCount = curA - 1;
       }
     } else if (kind === 'other') {
       var idx = +el.getAttribute('data-idx');
@@ -400,6 +420,7 @@
     // stepper showing its current level, and every stepper respects a max:
     // +1 ratings (1 pt, up to the listed max), max luck (1 pt, up to 7),
     // cross-playbook levels (3 pts, no cap — the budget is the limit),
+    // "Gain an ally" (2 pts per ally, no cap — the stepper counts allies),
     // one-off improvements (2 pts, or 3 if advanced — level 0 or 1).
     // Own-move grants still sitting in a playbook's list are skipped
     // below: your own book's moves are free ticks now. The
@@ -436,6 +457,13 @@
       if (info.type === 'xmove') {
         var xLvl = h.xMoveLevels || 0;
         return stepperRow('<strong>' + esc(g) + '</strong> — pick a move from another playbook per level', 'Lv ' + xLvl, xLvl, null, 3, 'xmove', null);
+      }
+      if (info.type === 'ally') {
+        // Allies are counted, not levelled: the stepper shows how many
+        // allies the hunter has, 2 points each, no cap but the budget.
+        var allies = h.allyCount || 0;
+        var allyText = allies === 1 ? '1 ally' : allies + ' allies';
+        return stepperRow('<strong>' + esc(g) + '</strong>', allyText, allies, null, 2, 'ally', null);
       }
       var taken = h.improvements.indexOf(i) !== -1;
       var tag = info.type === 'advanced' ? ' (advanced)' : '';
@@ -500,7 +528,7 @@
       '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want, and from other playbooks through Improvements below. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
       '<h3>Improvements — 15 points to spend</h3>' +
-      '<p class="muted">Every improvement is a stepper — use + and − to set its level. Costs: +1 to a rating = 1 point, up to the max shown · +1 max luck = 1 point, up to 7 · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points per level, as many levels as you can afford. Your own playbook\u2019s moves are free — tick as many as you like above.</p>' +
+      '<p class="muted">Every improvement is a stepper — use + and − to set its level. Costs: +1 to a rating = 1 point, up to the max shown · +1 max luck = 1 point, up to 7 · Gain an ally = 2 points per ally, as many as you can afford · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points per level, as many levels as you can afford. Your own playbook\u2019s moves are free — tick as many as you like above.</p>' +
       pointsLine +
       '<ul class="checklist">' + impHtml + '</ul>' +
       xPickerHtml +
@@ -528,6 +556,12 @@
       if (it) pickedImp.push(it + ' (' + impInfo(it).cost + ' pts)');
     });
     if ((h.luckMax || 0) > 0) pickedImp.push('Luck ' + h.luckMax + ' (' + h.luckMax + ' pt' + (h.luckMax === 1 ? '' : 's') + ')');
+    if ((h.allyCount || 0) > 0) {
+      var allyItem = null;
+      for (var ai = 0; ai < items.length; ai++) if (impInfo(items[ai]).type === 'ally') { allyItem = items[ai]; break; }
+      var allyLabel = (allyItem || 'Gain an ally') + ' ×' + h.allyCount;
+      pickedImp.push(allyLabel + ' (' + (h.allyCount * 2) + ' pts)');
+    }
     if ((h.xMoveLevels || 0) > 0) pickedImp.push('Take a new move from a different playbook ×' + h.xMoveLevels + ' (' + (h.xMoveLevels * 3) + ' pts)');
     var spent = spentPoints(h, pb);
     var bonus = ratingBonusText(h, pb);
@@ -738,8 +772,8 @@
       }
       return;
     }
-    // Generic improvement steppers: own-move levels, cross-playbook
-    // levels, one-off improvements, and max luck.
+    // Generic improvement steppers: cross-playbook levels, allies,
+    // one-off improvements, and max luck.
     var sp = e.target.closest('[data-step-plus]');
     if (sp) { stepChange(sp, 1); return; }
     var sm = e.target.closest('[data-step-minus]');
@@ -749,7 +783,7 @@
       var npb = playbook(b.getAttribute('data-pb'));
       active().playbook = npb.id;
       active().moves = npb.moves.map(function (m, i) { return m.fixed ? i : -1; }).filter(function (i) { return i >= 0; });
-      active().gear = []; active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().trackers = {};
+      active().gear = []; active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().allyCount = 0; active().trackers = {};
       save(); renderAll(); return;
     }
     var box = e.target.closest('[data-box]');

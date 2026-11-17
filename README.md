@@ -29,7 +29,9 @@ How to Play section and no Keeper content on this site.
   3 points per level, as many levels as you can afford (one picker per
   level); any other
   improvement = 2 points (level 0 or 1); an advanced improvement =
-  3 points. Every playbook offers the cross-playbook move option — its
+  3 points. "Gain an ally" is a stepper that counts allies: 2 points
+  per ally, as many as you can afford (the stepper shows "1 ally",
+  "2 allies"…). Every playbook offers the cross-playbook move option — its
   own list may already have one, otherwise a universal option is shown.
   Own-move grants still sitting in a playbook's list (e.g. "Another
   Foretold move") are not shown as improvements any more, since your own
@@ -79,10 +81,12 @@ How to Play section and no Keeper content on this site.
   dependencies. Save format: hunters carry `photo` (data URL), `luckMax`
   (max luck bought, 0 for new hunters), `xMoveLevels` (cross-playbook
   stepper level), `xMoves` (an array of cross-playbook picks, one per
-  level), and `impRatings` (repeatable +1 rating counts); gear is carried
+  level), `allyCount` (allies bought through "Gain an ally", 2 points
+  each), and `impRatings` (repeatable +1 rating counts); gear is carried
   text, not indices. Old saves migrate in place: gear indices become the
   same gear text, improvements pointing at removed list items are dropped,
-  surviving +1 rating picks become `impRatings` counts, cross-playbook
+  surviving +1 rating picks become `impRatings` counts, a bought
+  "Gain an ally" becomes `allyCount` 1, cross-playbook
   picks become `xMoveLevels` (with a default pick filled in for any level
   bought but never chosen), own-move picks are dropped (moves are
   unlimited and free now — the hunter keeps every move they picked), old
@@ -129,8 +133,11 @@ were removed. Luck is no longer fixed: hunters start with 0 luck and
 buy it in Improvements, 1 point per luck up to 7, and every
 improvement is now a stepper showing its current level (ratings show
 their current value; cross-playbook levels are uncapped; one-off
-improvements are level 0 or 1). Moves are unlimited: as many of your
-own playbook's moves as you like, free, and as many moves from other
+improvements are level 0 or 1). "Gain an ally" counts allies instead
+of a level: 2 points per ally, as many as the budget allows, on the
+Far-Traveller, Star-Crossed, Seeker and Showmaster; the differently-worded
+ally items on the Fae-Blooded, Vessel and Broadsheet stay one-off.
+Moves are unlimited: as many of your own playbook's moves as you like, free, and as many moves from other
 playbooks as you can afford at 3 points each.
 
 To update the site later, edit the files, commit, and push to `main` — Pages
