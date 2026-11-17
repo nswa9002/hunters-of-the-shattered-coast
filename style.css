@@ -112,6 +112,15 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   .box{color:#111}
 }
 
+/* --- Blank sheet (print a fresh sheet to fill in by hand) --- */
+.blank-line{display:inline-block;min-width:12rem;border-bottom:1px solid #7a5c14}
+.blank-line.name-line{min-width:20rem}
+.blank-lines span{display:block;height:1.7em;border-bottom:1px solid #999}
+@media print{
+  .blank-line{border-bottom-color:#666}
+  .blank-lines span{border-bottom-color:#999}
+}
+
 /* --- Stylised character sheet (player-facing parchment) --- */
 .character-sheet{
   background:linear-gradient(180deg,#f6ecd2,#efe2c2 60%,#e9d9b4);

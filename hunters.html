@@ -3,67 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="0; url=index.html">
 <title>Hunters — Hunters of the Shattered Coast</title>
-<meta name="description" content="Usable, saveable, printable character sheets for all 28 Hunters of the Shattered Coast playbooks.">
-<link rel="stylesheet" href="style.css">
+<link rel="canonical" href="index.html">
 </head>
 <body>
-<header class="hero no-print">
-<p class="kicker">A hunter's handbook — the Shattered Coast</p>
-<h1>Hunters of the Shattered Coast</h1>
-<p class="premise">Pull up a chair at the chart table, hunter. This is where your hunter takes shape. Pick a playbook, fill in the hunter, pick your moves, then press <strong>Build my sheet</strong> — and your finished sheet is ready for play, saving, and printing.</p>
-</header>
-<nav class="sticky no-print" aria-label="Site navigation">
-<a href="index.html">How to Play</a><a href="hunters.html">Hunters</a><a href="reference.html">Moves Reference</a><a href="playbooks.pdf">First 12 as PDF</a>
-</nav>
-<main>
-<div class="toolbar no-print" id="toolbar">
-  <label>Your hunters
-    <select id="hunterSelect" aria-label="Your hunters"></select>
-  </label>
-  <button type="button" id="btnNew">New Hunter</button>
-  <button type="button" id="btnDup">Duplicate</button>
-  <button type="button" id="btnDel">Delete</button>
-  <button type="button" id="btnExport">Export JSON</button>
-  <button type="button" id="btnImport">Import JSON</button>
-  <input type="file" id="importFile" accept=".json,application/json" hidden>
-  <button type="button" id="btnPrint" class="primary">Print Sheet</button>
-  <span id="saveStatus" role="status">Not saved yet</span>
-</div>
-
-<section id="picker" class="no-print" aria-label="Choose a playbook">
-  <h2>Choose your playbook</h2>
-  <p>Twenty-eight kinds of hunter, all in one company, all together in one list. Picking a playbook changes the sheet below — your hunter's name and notes stay with the hunter, not the playbook.</p>
-  <div id="pickerGroups"></div>
-</section>
-
-<section id="sheet" aria-label="Character sheet" aria-live="polite"></section>
-
-<section id="diceTray" class="no-print" aria-label="Dice tray">
-  <h2>Dice tray — cast the bones</h2>
-  <p>Cast the bones: every roll in this game is two six-sided dice + a rating. Tap a rating to roll with your hunter's modifier for it (from the ratings line you picked in setup). Use the situational adjuster for a +1 forward, +1 ongoing, or a −1, and <strong>Clear log</strong> to wipe the roll history. Rolls are not saved — the log lives only while this page is open.</p>
-  <div class="dice-row" id="diceRatingBtns"></div>
-  <div class="dice-row">
-    <button type="button" id="diceFlat">Flat 2d6 (+0)</button>
-    <span class="dice-mod">Situational: <button type="button" id="diceModDown" aria-label="Decrease situational modifier">−</button> <strong id="diceModVal">+0</strong> <button type="button" id="diceModUp" aria-label="Increase situational modifier">+</button></span>
-    <button type="button" id="diceClear">Clear log</button>
-  </div>
-  <p id="diceResult" class="dice-result" role="status">No roll yet — tap a rating above.</p>
-  <ul id="diceLog" class="dice-log"></ul>
-</section>
-
-<section class="no-print">
-  <h2>Your sheet keeps itself</h2>
-  <p>Every change is written into this browser's logbook as you go, under your hunter's name — so you can keep several hunters and come back to them. It does <strong>not</strong> travel to other devices or browsers. Use <strong>Export JSON</strong> to carry a hunter to another device, and <strong>Import JSON</strong> to bring them back. <strong>Print Sheet</strong> prints only the finished sheet, with your picked moves, trackers, and notes. <strong>Edit setup</strong> takes you back to setup with everything kept — setup and sheet are two views of the same hunter, not two hunters.</p>
-  <p>Every hunter begins seasoned: +1 to two ratings, two extra moves, three improvements (one may be advanced), luck starts at 6 of 7, plus a scar, a famed deed, and an old debt. Those fields are on every sheet.</p>
-  <p><a class="btn ghost" href="playbooks.pdf">Download the first 12 playbooks as a PDF</a></p>
-</section>
-</main>
-<footer class="no-print">
-<p>An unofficial fan-made game for private table use. Hunters of the Shattered Coast — sail on, hunter.</p>
-<p>Hunters of the Shattered Coast</p>
-</footer>
-<script src="data.js"></script>
-<script src="app.js"></script>
+<p>The Hunters page has moved to the home page: <a href="index.html">Hunters of the Shattered Coast</a>.</p>
 </body>
 </html>

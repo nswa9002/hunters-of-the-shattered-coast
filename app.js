@@ -110,6 +110,8 @@
     }).join('');
   }
   function myMovesHtml(h, pb) {
+    // A blank sheet has no moves picked: ruled lines to write them in by hand.
+    if (blankMode) return '<div class="blank-lines" aria-label="Write your moves here"><span></span><span></span><span></span><span></span><span></span></div>';
     var list = h.moves.map(function (i) {
       var m = pb.moves[i];
       if (!m) return '';
@@ -193,20 +195,24 @@
   }
 
   // ---------- stage 2: PLAYER SHEET ----------
-  function renderSheetView() {
-    var h = active();
+  // Takes an optional hunter (the blank-sheet flow renders a blank hunter
+  // without ever swapping the real one in); defaults to the active hunter.
+  function renderSheetView(h) {
+    h = h || active();
     var pb = playbook(h.playbook);
     var gearItems = splitList(pb.gear);
     var impItems = splitList(pb.improvements);
     var pickedGear = h.gear.map(function (i) { return gearItems[i]; }).filter(function (g) { return g; });
     var pickedImp = h.improvements.map(function (i) { return impItems[i]; }).filter(function (g) { return g; });
+    // On a blank sheet the legend fields are empty write-in lines.
+    function legendVal(v) { return blankMode ? '<span class="blank-line">&nbsp;</span>' : esc(v || '—'); }
 
     $('#sheet').innerHTML =
       '<article class="sheet character-sheet">' +
       '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button></p>' +
       '<div class="sheet-banner"><p class="sheet-playbook">' + esc(pb.name) + '</p>' +
       '<p class="sheet-quote">\u201c' + esc(pb.quote) + '\u201d</p></div>' +
-      '<h2 class="sheet-name">' + esc(h.name || 'Unnamed hunter') + '</h2>' +
+      '<h2 class="sheet-name">' + (blankMode ? '<span class="blank-line name-line">&nbsp;</span>' : esc(h.name || 'Unnamed hunter')) + '</h2>' +
       (h.pronouns ? '<p class="sheet-sub">' + esc(h.pronouns) + '</p>' : '') +
       (h.look ? '<p class="sheet-look"><strong>Look:</strong> ' + esc(h.look) + '</p>' : '') +
       '<h3 class="sheet-h">Ratings</h3><div class="stat-row">' + statBoxesHtml(h, pb) + '</div>' +
@@ -220,12 +226,12 @@
       '</div>' +
       featHtml(pb) +
       '<h3 class="sheet-h">My Moves</h3>' + myMovesHtml(h, pb) +
-      '<h3 class="sheet-h">Gear</h3>' + (pickedGear.length ? '<ul class="sheet-list"><li>' + pickedGear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear picked — go to Edit setup to pick gear.</p>') +
+      '<h3 class="sheet-h">Gear</h3>' + (blankMode ? '<div class="blank-lines" aria-label="Write your gear here"><span></span><span></span><span></span></div>' : (pickedGear.length ? '<ul class="sheet-list"><li>' + pickedGear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear picked — go to Edit setup to pick gear.</p>')) +
       '<h3 class="sheet-h">Your Legend</h3><div class="legend-grid">' +
-      '<div class="legend-item"><span class="legend-label">Scar</span><span>' + esc(h.scar || '—') + '</span></div>' +
-      '<div class="legend-item"><span class="legend-label">Famed deed</span><span>' + esc(h.deed || '—') + '</span></div>' +
-      '<div class="legend-item"><span class="legend-label">Old debt</span><span>' + esc(h.debt || '—') + '</span></div>' +
-      '<div class="legend-item"><span class="legend-label">Signature treasure</span><span>' + esc(h.treasure || '—') + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Scar</span><span>' + legendVal(h.scar) + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Famed deed</span><span>' + legendVal(h.deed) + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Old debt</span><span>' + legendVal(h.debt) + '</span></div>' +
+      '<div class="legend-item"><span class="legend-label">Signature treasure</span><span>' + legendVal(h.treasure) + '</span></div>' +
       '</div>' +
       '<h3 class="sheet-h">History</h3><p>' + esc(pb.history) + '</p>' +
       (pickedImp.length ? '<h3 class="sheet-h">Improvements taken</h3><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
@@ -241,6 +247,39 @@
     if (picker) picker.style.display = h.view === 'sheet' ? 'none' : '';
     if (h.view === 'sheet') renderSheetView(); else renderSetup();
     renderDiceTray();
+  }
+
+  // ---------- print a blank sheet ----------
+  // A blank sheet is the current playbook with everything empty: no name,
+  // no look, no gear, no moves ticked, empty trackers. It is rendered
+  // into the page only — the real hunter object and localStorage are never
+  // touched — then the real sheet is put back straight after printing.
+  var blankMode = false;
+  function blankHunter() {
+    var h = newHunter(active().playbook);
+    h.moves = [];     // newHunter pre-ticks the fixed moves; a blank sheet has none
+    h.luckUsed = 0;   // seasoned start spends 1 luck; a blank sheet starts full
+    h.view = 'sheet';
+    return h;
+  }
+  function printBlankSheet() {
+    blankMode = true;
+    renderSheetView(blankHunter());
+    var picker = $('#picker');
+    if (picker) picker.style.display = 'none';
+    var restored = false;
+    function restore() {
+      if (restored) return;
+      restored = true;
+      blankMode = false;
+      renderAll();
+    }
+    // afterprint is the belt-and-braces restore for browsers where
+    // window.print() returns before the print dialog closes.
+    window.addEventListener('afterprint', restore);
+    window.print();
+    restore();
+    window.removeEventListener('afterprint', restore);
   }
 
   // ---------- dice tray (2d6 + rating) ----------
@@ -380,6 +419,7 @@
     if (active().view !== 'sheet') { active().view = 'sheet'; save(); renderAll(); }
     window.print();
   });
+  $('#btnPrintBlank').addEventListener('click', printBlankSheet);
 
   // Dice tray events (delegated on the tray; it is static HTML, so the
   // listeners survive every sheet re-render).
