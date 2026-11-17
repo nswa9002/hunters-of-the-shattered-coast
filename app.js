@@ -5,8 +5,9 @@
 // the view is stored on the hunter object, so switching never loses anything.
 // Old saves (without a `view` field) open on their finished sheet, unnamed
 // ones open in setup — nothing is lost in the migration.
-// Seasoned start (D&D transfers): 10 improvement points to spend, up to 3
-// powers carried over, D&D weapons converted on the chart, luck 6 of 7.
+// Improvements are point-based: 15 points to spend, +1 to a rating costs
+// 1 point and can be bought more than once (up to the listed max).
+// D&D weapons convert on the chart in setup. Hunters start with full luck.
 (function () {
   'use strict';
   var STORE = 'hsc-hunters-v1';
@@ -30,9 +31,9 @@
     pb.moves.forEach(function (m, i) { if (m.fixed) moves.push(i); });
     return {
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '', photo: '',
-      ratingIdx: 0, harm: 0, luckUsed: 1, xp: 0, unstable: false,
-      gear: [], moves: moves, scar: '', deed: '', debt: '', treasure: '',
-      powers: [], notes: '', improvements: [], xMove: null, xMoveExtra: false,
+      ratingIdx: 0, harm: 0, luckUsed: 0, xp: 0, unstable: false,
+      gear: [], moves: moves, notes: '', improvements: [], impRatings: {},
+      xMove: null, xMoveExtra: false, ownMoveExtra: false,
       trackers: {}, view: 'setup'
     };
   }
@@ -49,26 +50,50 @@
   }
   // Migrate old saves: no `view` field yet — named hunters open on their
   // finished sheet, unnamed ones open in setup. Nothing else changes.
-  // Later migrations: powers/photo/xMove default empty; gear was stored as
-  // indices into the playbook gear list — now gear is carried text, so old
-  // indices are translated into the same gear strings (nothing is lost).
-  hunters.forEach(function (h) {
+  // Later migrations: gear was stored as indices into the playbook gear
+  // list — now gear is carried text, so old indices are translated into
+  // the same gear strings (nothing is lost). The last two items of every
+  // playbook's improvements list were removed, and +1 rating picks are
+  // now repeatable counts — so old improvement indices are translated
+  // too: indices pointing at removed items are dropped, and surviving
+  // +1 rating picks become counts in h.impRatings. Old scar / deed /
+  // debt / treasure / powers fields may linger in stored JSON; they are
+  // never rendered any more. A cross-playbook move only stays if the
+  // improvement that bought it still does.
+  function migrateHunter(h) {
     if (!h.view) h.view = h.name ? 'sheet' : 'setup';
-    if (typeof h.luckUsed !== 'number') h.luckUsed = 1;
+    if (typeof h.luckUsed !== 'number') h.luckUsed = 0;
     if (!Array.isArray(h.moves)) h.moves = [];
     if (!Array.isArray(h.gear)) h.gear = [];
+    if (!h.impRatings || typeof h.impRatings !== 'object') h.impRatings = {};
     if (!Array.isArray(h.improvements)) h.improvements = [];
-    if (!Array.isArray(h.powers)) h.powers = [];
     if (typeof h.photo !== 'string') h.photo = '';
     if (!h.xMove || typeof h.xMove !== 'object') h.xMove = null;
     if (typeof h.xMoveExtra !== 'boolean') h.xMoveExtra = false;
+    if (typeof h.ownMoveExtra !== 'boolean') h.ownMoveExtra = false;
     if (!h.trackers) h.trackers = {};
     if (h.gear.some(function (g) { return typeof g === 'number'; })) {
       var gi = splitList(playbook(h.playbook).gear);
       h.gear = h.gear.map(function (g) { return typeof g === 'number' ? gi[g] : g; })
         .filter(function (g) { return typeof g === 'string' && g; });
     }
-  });
+    var pb = playbook(h.playbook);
+    var items = impItems(pb);
+    var kept = [];
+    h.improvements.forEach(function (i) {
+      var it = items[i];
+      if (!it) return; // pointed at a removed list item — dropped
+      var info = impInfo(it);
+      if (info.type === 'rating') {
+        h.impRatings[info.rating] = (h.impRatings[info.rating] || 0) + 1;
+      } else {
+        kept.push(i);
+      }
+    });
+    h.improvements = kept;
+    if (h.xMove && !xMoveActive(h, pb)) h.xMove = null;
+  }
+  hunters.forEach(migrateHunter);
   function active() {
     for (var i = 0; i < hunters.length; i++) if (hunters[i].id === activeId) return hunters[i];
     activeId = hunters[0].id;
@@ -132,31 +157,51 @@
     { dnd: 'Plate armour', conv: 'Plate armour (2-armour)' }
   ];
 
-  // ---------- improvement points (seasoned start: 10 points) ----------
-  // Costs: +1 to a rating = 2; another move from your own playbook = 2
-  // (grants one extra chosen-move slot); any other improvement = 2;
-  // an advanced improvement = 3; a move from a different playbook = 3.
-  // The data marks only one improvement as advanced in so many words
-  // (the Witch's "Advanced (after five level-ups)" item); everything
-  // else in a playbook's list costs 2 unless it is a cross-playbook move.
+  // ---------- improvement points (15-point budget) ----------
+  // Costs: +1 to a rating = 1 point, repeatable up to the listed max;
+  // another move from your own playbook = 2 (grants one extra chosen-move
+  // slot); any other improvement = 2; an advanced improvement = 3;
+  // a move from a different playbook = 3.
+  // No playbook list currently names an improvement "advanced" in so many
+  // words (the Witch's was among the removed last two), so the advanced
+  // branch below is dormant — kept so the cost still applies if one is
+  // ever added back.
+  var IMP_BUDGET = 15;
   function impInfo(item) {
     var m = /^\+1 (Charm|Cool|Sharp|Tough|Weird) \(max \+(\d)\)/.exec(item || '');
-    if (m) return { cost: 2, type: 'rating', rating: m[1], max: +m[2] };
+    if (m) return { cost: 1, type: 'rating', rating: m[1], max: +m[2] };
     if (/move from another playbook/i.test(item)) return { cost: 3, type: 'xmove' };
     if (/another .*move/i.test(item) || /another rote/i.test(item)) return { cost: 2, type: 'ownmove' };
     if (/advanced/i.test(item)) return { cost: 3, type: 'advanced' };
     return { cost: 2, type: 'other' };
   }
   function impItems(pb) { return splitList(pb.improvements); }
+  // The listed max for a rating, from the playbook's improvements list.
+  function ratingMax(pb, rating) {
+    var items = impItems(pb);
+    for (var i = 0; i < items.length; i++) {
+      var info = impInfo(items[i]);
+      if (info.type === 'rating' && info.rating === rating) return info.max;
+    }
+    return null;
+  }
   function spentPoints(h, pb) {
     var items = impItems(pb), total = 0;
-    h.improvements.forEach(function (i) { var it = items[i]; if (it) total += impInfo(it).cost; });
+    Object.keys(h.impRatings || {}).forEach(function (r) { total += (h.impRatings[r] || 0) * 1; });
+    h.improvements.forEach(function (i) {
+      var it = items[i];
+      // Rating picks live in h.impRatings now; a stale rating index here
+      // charges nothing and does nothing.
+      if (it && impInfo(it).type !== 'rating') total += impInfo(it).cost;
+    });
+    if (h.ownMoveExtra) total += 2;
     if (h.xMoveExtra) total += 3;
     return total;
   }
   function extraMoveSlots(h, pb) {
     var items = impItems(pb), n = 0;
     h.improvements.forEach(function (i) { var it = items[i]; if (it && impInfo(it).type === 'ownmove') n++; });
+    if (h.ownMoveExtra) n++;
     return n;
   }
   function xMoveActive(h, pb) {
@@ -170,23 +215,22 @@
   function requiredMoves(h, pb) { return 3 + extraMoveSlots(h, pb); }
 
   // Ratings with any +1 improvements applied (capped at the listed max).
-  function effectiveRatings(h, pb, excludeIdx) {
+  function effectiveRatings(h, pb) {
     var vals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
-    var items = impItems(pb);
-    h.improvements.forEach(function (i) {
-      if (i === excludeIdx) return;
-      var info = impInfo(items[i] || '');
-      if (info.type === 'rating' && vals[info.rating] != null) {
-        vals[info.rating] = Math.min(info.max, vals[info.rating] + 1);
-      }
+    var counts = h.impRatings || {};
+    Object.keys(counts).forEach(function (r) {
+      if (vals[r] == null) return;
+      var max = ratingMax(pb, r);
+      var v = vals[r] + (counts[r] || 0);
+      vals[r] = max == null ? v : Math.min(max, v);
     });
     return vals;
   }
   function ratingBonusText(h, pb) {
-    var items = impItems(pb), parts = [];
-    h.improvements.forEach(function (i) {
-      var info = impInfo(items[i] || '');
-      if (info.type === 'rating') parts.push('+1 ' + info.rating);
+    var parts = [];
+    Object.keys(h.impRatings || {}).forEach(function (r) {
+      var n = h.impRatings[r] || 0;
+      if (n > 0) parts.push('+1 ' + r + (n > 1 ? ' ×' + n : ''));
     });
     return parts.join(', ');
   }
@@ -259,15 +303,6 @@
       return '<h3>' + esc(f.title) + '</h3><p>' + esc(f.text) + '</p>';
     }).join('');
   }
-  function powersHtml(h) {
-    var powers = (h.powers || []).filter(function (p) { return p && (p.name || p.effect); });
-    if (blankMode) return '<div class="blank-lines" aria-label="Write your carried-over powers here"><span></span><span></span><span></span></div>';
-    if (!powers.length) return '<p class="muted">No powers carried over — add up to three in Edit setup.</p>';
-    return '<ul class="sheet-list">' + powers.map(function (p) {
-      return '<li><strong>' + esc(p.name || 'Unnamed power') + '</strong>' + (p.effect ? ' — ' + esc(p.effect) : '') + '</li>';
-    }).join('') + '</ul>';
-  }
-
   // ---------- stage 1: SETUP ----------
   var photoWarnMsg = '';
   function renderSetup() {
@@ -278,19 +313,10 @@
     var slots = extraMoveSlots(h, pb);
     var items = impItems(pb);
     var spent = spentPoints(h, pb);
-    var left = 10 - spent;
 
     var ratingHtml = pb.ratings.map(function (r, i) {
       return '<li><label><input type="radio" name="rating" value="' + i + '"' + (h.ratingIdx === i ? ' checked' : '') + '> ' + esc(r) + '</label></li>';
     }).join('');
-
-    // Powers carried over from a D&D life: 3 slots, name + what it does.
-    var powersHtmlSetup = '';
-    for (var pi = 0; pi < 3; pi++) {
-      var pw = (h.powers && h.powers[pi]) || { name: '', effect: '' };
-      powersHtmlSetup += '<div class="fieldrow power-row"><label>Power ' + (pi + 1) + ' <input type="text" data-power-name="' + pi + '" value="' + esc(pw.name) + '" placeholder="e.g. Fireball"></label>' +
-        '<label>What it does <input type="text" data-power-effect="' + pi + '" value="' + esc(pw.effect) + '" placeholder="e.g. once per voyage, 3-harm far fire, costs 1 luck"></label></div>';
-    }
 
     // Gear: the D&D weapon conversion chart, plus what you actually carry.
     var chartHtml = '<table class="chart"><tr><th>D&amp;D weapon or armour</th><th>Converted to</th><th></th></tr>' +
@@ -303,32 +329,43 @@
         }).join('') + '</ul>'
       : '<p class="muted">No gear carried yet — add weapons and armour from the chart, or write your own below.</p>';
 
-    // Improvements: point-based, 10-point budget at the seasoned start.
+    // Improvements: point-based, 15-point budget. +1 ratings are steppers
+    // (1 point each, repeatable up to the max); the rest are checkboxes.
+    // "Another move from your own playbook" and "move from a different
+    // playbook" are universal options: they are added here only when the
+    // playbook's own (trimmed) list does not already have one.
+    var baseVals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
     var impHtml = items.map(function (g, i) {
       var info = impInfo(g);
-      var checked = h.improvements.indexOf(i) !== -1;
-      var disabled = '';
-      var note = '';
       if (info.type === 'rating') {
-        // Disable if the rating is already at its max without this one.
-        var vals = effectiveRatings(h, pb, i);
-        if (vals[info.rating] >= info.max) { disabled = ' disabled'; note = ' (already at max)'; }
+        var count = (h.impRatings && h.impRatings[info.rating]) || 0;
+        var base = baseVals[info.rating];
+        var atMax = base == null || base + count >= info.max;
+        var afford = spent + 1 <= IMP_BUDGET;
+        return '<li class="imp-stepper"><span><strong>+1 ' + esc(info.rating) + '</strong> (max +' + info.max + ') — bought ×' + count + ' <span class="imp-cost">1 pt each</span></span> ' +
+          '<span class="stepper-btns"><button type="button" data-imp-minus="' + esc(info.rating) + '"' + (count > 0 ? '' : ' disabled') + ' aria-label="Remove one +1 ' + esc(info.rating) + '">−</button>' +
+          '<button type="button" data-imp-plus="' + esc(info.rating) + '"' + (atMax || !afford ? ' disabled' : '') + ' aria-label="Add one +1 ' + esc(info.rating) + '">+</button></span></li>';
       }
-      if (!checked && spent + info.cost > 10) disabled = ' disabled';
-      var tag = info.type === 'rating' ? ' (+1 rating)' : info.type === 'ownmove' ? ' (+1 extra move slot)' : info.type === 'xmove' ? ' (pick a move from another playbook)' : info.type === 'advanced' ? ' (advanced)' : '';
-      return '<li><label><input type="checkbox" data-imp="' + i + '"' + (checked ? ' checked' : '') + disabled + '> ' + esc(g) + tag + ' <span class="imp-cost">' + info.cost + ' pts</span>' + note + '</label></li>';
+      var checked = h.improvements.indexOf(i) !== -1;
+      var disabled = (!checked && spent + info.cost > IMP_BUDGET) ? ' disabled' : '';
+      var tag = info.type === 'ownmove' ? ' (+1 extra move slot)' : info.type === 'xmove' ? ' (pick a move from another playbook)' : info.type === 'advanced' ? ' (advanced)' : '';
+      return '<li><label><input type="checkbox" data-imp="' + i + '"' + (checked ? ' checked' : '') + disabled + '> ' + esc(g) + tag + ' <span class="imp-cost">' + info.cost + ' pts</span></label></li>';
     }).join('');
-    // Playbooks whose own list has no cross-playbook move still get the
-    // universal option: take a new move from a different playbook, 3 pts.
+    var hasOwn = items.some(function (g) { return impInfo(g).type === 'ownmove'; });
     var hasX = items.some(function (g) { return impInfo(g).type === 'xmove'; });
+    if (!hasOwn) {
+      var ownChecked = !!h.ownMoveExtra;
+      var ownDisabled = (!ownChecked && spent + 2 > IMP_BUDGET) ? ' disabled' : '';
+      impHtml += '<li><label><input type="checkbox" data-imp-own="1"' + (ownChecked ? ' checked' : '') + ownDisabled + '> Another move from your own playbook (+1 extra move slot) <span class="imp-cost">2 pts</span></label></li>';
+    }
     if (!hasX) {
       var xChecked = !!h.xMoveExtra;
-      var xDisabled = (!xChecked && spent + 3 > 10) ? ' disabled' : '';
+      var xDisabled = (!xChecked && spent + 3 > IMP_BUDGET) ? ' disabled' : '';
       impHtml += '<li><label><input type="checkbox" data-imp-x="1"' + (xChecked ? ' checked' : '') + xDisabled + '> Take a new move from a different playbook <span class="imp-cost">3 pts</span></label></li>';
     }
-    var pointsLine = spent > 10
-      ? '<p class="warn">You are ' + (spent - 10) + ' point' + (spent - 10 === 1 ? '' : 's') + ' over the 10-point budget — remove improvements until you are back under budget before you can take more.</p>'
-      : '<p><strong>Improvement points: ' + spent + ' spent / 10</strong> — ' + left + ' left.</p>';
+    var pointsLine = spent > IMP_BUDGET
+      ? '<p class="warn">You are ' + (spent - IMP_BUDGET) + ' point' + (spent - IMP_BUDGET === 1 ? '' : 's') + ' over the 15-point budget — remove improvements until you are back under budget before you can take more.</p>'
+      : '<p><strong>Improvement points: ' + spent + ' spent / 15</strong> — ' + (IMP_BUDGET - spent) + ' left.</p>';
     var xPickerHtml = '';
     if (xMoveActive(h, pb)) {
       var otherPbs = PLAYBOOKS.filter(function (p) { return p.id !== pb.id; });
@@ -365,15 +402,7 @@
       (photoWarnMsg ? '<p class="warn">' + esc(photoWarnMsg) + '</p>' : '') +
       (h.photo ? '<div class="photo-preview-wrap"><img class="photo-preview" src="' + esc(h.photo) + '" alt="Hunter portrait preview"><br><button type="button" data-action="remove-photo">Remove photo</button></div>' : '') +
       '<h3>Ratings — pick one line</h3><ul class="checklist">' + ratingHtml + '</ul>' +
-      '<p class="muted">Improvements below can raise a rating by +1 (2 points each, up to the max shown).</p>' +
-      '<h3>Seasoned start</h3>' +
-      '<div class="fieldrow"><label>Scar <input type="text" data-field="scar" value="' + esc(h.scar) + '" placeholder="A limp, a hand that shakes near bells…"></label>' +
-      '<label>Famed deed <input type="text" data-field="deed" value="' + esc(h.deed) + '" placeholder="The deed the ports still sing about"></label></div>' +
-      '<div class="fieldrow"><label>Old debt <input type="text" data-field="debt" value="' + esc(h.debt) + '" placeholder="A debt someone can collect"></label>' +
-      '<label>Signature treasure <input type="text" data-field="treasure" value="' + esc(h.treasure) + '" placeholder="Your best magic item, translated into tags"></label></div>' +
-      '<h3>Powers carried over</h3>' +
-      '<p class="muted">Bring up to three powers from your old life. Agree what each power costs with the Chronicler — rare, costly, story-shaped. If a power could fly, teleport or raise the dead every morning, it does not work like that any more.</p>' +
-      powersHtmlSetup +
+      '<p class="muted">Improvements below can raise a rating by +1 (1 point each, as many times as you like up to the max shown).</p>' +
       '<h3>Gear — convert your D&amp;D weapons</h3>' +
       '<p class="muted">Find your old weapons on the chart and add them — they arrive converted into this game\u2019s harm and tags. Armour converts too.</p>' +
       '<h4>Your gear</h4>' + carriedHtml +
@@ -383,8 +412,8 @@
       movesNote +
       '<p class="muted">Tick the moves you want. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb, required) + '</ul>' +
-      '<h3>Improvements — 10 points to spend</h3>' +
-      '<p class="muted">Costs: +1 to a rating = 2 points · another move from your own playbook = 2 points · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points.</p>' +
+      '<h3>Improvements — 15 points to spend</h3>' +
+      '<p class="muted">Costs: +1 to a rating = 1 point, as many times as you like up to the max shown · another move from your own playbook = 2 points · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points.</p>' +
       pointsLine +
       '<ul class="checklist">' + impHtml + '</ul>' +
       xPickerHtml +
@@ -403,15 +432,19 @@
     h = h || active();
     var pb = playbook(h.playbook);
     var items = impItems(pb);
-    var pickedImp = h.improvements.map(function (i) {
+    var pickedImp = [];
+    Object.keys(h.impRatings || {}).forEach(function (r) {
+      var n = h.impRatings[r] || 0;
+      if (n > 0) pickedImp.push('+1 ' + r + (n > 1 ? ' ×' + n : '') + ' (' + n + ' pt' + (n === 1 ? '' : 's') + ')');
+    });
+    h.improvements.forEach(function (i) {
       var it = items[i];
-      return it ? it + ' (' + impInfo(it).cost + ' pts)' : null;
-    }).filter(function (g) { return g; });
+      if (it) pickedImp.push(it + ' (' + impInfo(it).cost + ' pts)');
+    });
+    if (h.ownMoveExtra) pickedImp.push('Another move from your own playbook (2 pts)');
     if (h.xMoveExtra) pickedImp.push('Take a new move from a different playbook (3 pts)');
     var spent = spentPoints(h, pb);
     var bonus = ratingBonusText(h, pb);
-    // On a blank sheet the legend fields are empty write-in lines.
-    function legendVal(v) { return blankMode ? '<span class="blank-line">&nbsp;</span>' : esc(v || '—'); }
 
     $('#sheet').innerHTML =
       '<article class="sheet character-sheet">' +
@@ -427,21 +460,14 @@
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<p class="tracker-row"><strong>Harm</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
       '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
-      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. Seasoned start: 1 spent, 6 left.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
+      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(7, h.luckUsed, 'luck') + ' <span class="muted">Boxes marked = luck spent. You start with all 7 luck.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
       '<p class="tracker-row"><strong>Experience</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
       trackerHtml(h, pb) +
       '</div>' +
       featHtml(pb) +
       '<h3 class="sheet-h">My Moves</h3>' + myMovesHtml(h, pb) +
       '<h3 class="sheet-h">Gear</h3>' + (blankMode ? '<div class="blank-lines" aria-label="Write your gear here"><span></span><span></span><span></span></div>' : ((h.gear && h.gear.length) ? '<ul class="sheet-list"><li>' + h.gear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear carried — go to Edit setup to add gear from the weapon chart.</p>')) +
-      '<h3 class="sheet-h">Your Legend</h3><div class="legend-grid">' +
-      '<div class="legend-item"><span class="legend-label">Scar</span><span>' + legendVal(h.scar) + '</span></div>' +
-      '<div class="legend-item"><span class="legend-label">Famed deed</span><span>' + legendVal(h.deed) + '</span></div>' +
-      '<div class="legend-item"><span class="legend-label">Old debt</span><span>' + legendVal(h.debt) + '</span></div>' +
-      '<div class="legend-item"><span class="legend-label">Signature treasure</span><span>' + legendVal(h.treasure) + '</span></div>' +
-      '</div>' +
-      '<h3 class="sheet-h">Powers carried over</h3>' + powersHtml(h) +
-      (pickedImp.length ? '<h3 class="sheet-h">Improvements taken (' + spent + ' / 10 points)</h3><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
+      (pickedImp.length ? '<h3 class="sheet-h">Improvements taken (' + spent + ' / 15 points)</h3><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
       (h.notes ? '<h3 class="sheet-h">Notes</h3><p>' + esc(h.notes).replace(/\n/g, '<br>') + '</p>' : '') +
       '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
       '</article>';
@@ -465,7 +491,7 @@
   function blankHunter() {
     var h = newHunter(active().playbook);
     h.moves = [];     // newHunter pre-ticks the fixed moves; a blank sheet has none
-    h.luckUsed = 0;   // seasoned start spends 1 luck; a blank sheet starts full
+    h.luckUsed = 0;   // a blank sheet starts with full luck
     h.view = 'sheet';
     return h;
   }
@@ -607,12 +633,38 @@
       active().gear.splice(+gr.getAttribute('data-gear-remove'), 1);
       save(); renderAll(); return;
     }
+    var ip = e.target.closest('[data-imp-plus]');
+    if (ip) {
+      var r = ip.getAttribute('data-imp-plus');
+      var hp = active(); var pbp = playbook(hp.playbook);
+      var base = parseRatings(pbp.ratings[hp.ratingIdx] || pbp.ratings[0])[r];
+      var max = ratingMax(pbp, r);
+      var cur = (hp.impRatings && hp.impRatings[r]) || 0;
+      if (base != null && (max == null || base + cur < max) && spentPoints(hp, pbp) + 1 <= IMP_BUDGET) {
+        if (!hp.impRatings) hp.impRatings = {};
+        hp.impRatings[r] = cur + 1;
+        save(); renderAll();
+      }
+      return;
+    }
+    var im = e.target.closest('[data-imp-minus]');
+    if (im) {
+      var rm = im.getAttribute('data-imp-minus');
+      var hm = active();
+      var curm = (hm.impRatings && hm.impRatings[rm]) || 0;
+      if (curm > 0) {
+        hm.impRatings[rm] = curm - 1;
+        if (hm.impRatings[rm] === 0) delete hm.impRatings[rm];
+        save(); renderAll();
+      }
+      return;
+    }
     var b = e.target.closest('[data-pb]');
     if (b) {
       var npb = playbook(b.getAttribute('data-pb'));
       active().playbook = npb.id;
       active().moves = npb.moves.map(function (m, i) { return m.fixed ? i : -1; }).filter(function (i) { return i >= 0; });
-      active().gear = []; active().improvements = []; active().xMove = null; active().xMoveExtra = false; active().trackers = {};
+      active().gear = []; active().improvements = []; active().impRatings = {}; active().xMove = null; active().xMoveExtra = false; active().ownMoveExtra = false; active().trackers = {};
       save(); renderAll(); return;
     }
     var box = e.target.closest('[data-box]');
@@ -641,6 +693,10 @@
       }
       save(); renderAll(); return;
     }
+    if (t.matches('[data-imp-own]')) {
+      h.ownMoveExtra = !!t.checked;
+      save(); renderAll(); return;
+    }
     if (t.matches('[data-imp-x]')) {
       h.xMoveExtra = !!t.checked;
       if (!t.checked) h.xMove = null;
@@ -664,18 +720,6 @@
   });
   document.addEventListener('input', function (e) {
     var t = e.target;
-    if (t.matches('[data-power-name]')) {
-      var pi = +t.getAttribute('data-power-name');
-      var h = active();
-      if (!h.powers[pi]) h.powers[pi] = { name: '', effect: '' };
-      h.powers[pi].name = t.value; save(); return;
-    }
-    if (t.matches('[data-power-effect]')) {
-      var pj = +t.getAttribute('data-power-effect');
-      var hj = active();
-      if (!hj.powers[pj]) hj.powers[pj] = { name: '', effect: '' };
-      hj.powers[pj].effect = t.value; save(); return;
-    }
     if (t.matches('[data-field]')) {
       var f = t.getAttribute('data-field');
       if (f && f !== 'unstable') { active()[f] = t.value; save(); if (f === 'name') renderSelect(); }
@@ -711,7 +755,7 @@
       try {
         var h = JSON.parse(r.result);
         if (!h || !h.playbook || !playbook(h.playbook)) throw new Error('not a hunter file');
-        h.id = uid(); if (!h.view) h.view = h.name ? 'sheet' : 'setup';
+        h.id = uid(); migrateHunter(h);
         hunters.push(h); activeId = h.id; save(); renderAll();
       } catch (err) { alert('That file did not look like an exported hunter.'); }
     };

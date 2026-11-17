@@ -178,21 +178,20 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 }
 .character-sheet .move-card h4{margin:.1em 0 .3em;font-size:1.05rem;color:#3a2a12}
 .character-sheet .move-card p{margin:.2rem 0}
-.character-sheet .legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin:.7rem 0}
-.character-sheet .legend-item{
-  background:#fbf3dd;border:1px solid #c9a94f;border-radius:8px;padding:.6rem .8rem;
-}
-.character-sheet .legend-label{display:block;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:#7a5c14;font-weight:bold}
+.imp-stepper{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap}
+.imp-stepper .stepper-btns{display:flex;gap:.4rem}
+.imp-stepper .stepper-btns button{font-family:inherit;font-size:1.1rem;line-height:1;min-width:2.2rem;padding:.35rem .6rem;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.imp-stepper .stepper-btns button:disabled{opacity:.4;cursor:default}
 .character-sheet .sheet-list li{margin:.35rem 0}
 .character-sheet .sheet-actions{margin:.5rem 0}
 .character-sheet .sheet-actions button{font-family:inherit;font-size:.95rem;padding:.5rem .9rem;border-radius:6px;border:1px solid #a8822e;background:#fbf3dd;color:#2b2118;cursor:pointer}
 .character-sheet .sheet-actions button.primary{background:var(--gold);color:#1a1206;font-weight:bold}
-@media(max-width:640px){.character-sheet{padding:1.1rem}.character-sheet .legend-grid{grid-template-columns:1fr}.character-sheet .sheet-name{font-size:1.8rem}}
+@media(max-width:640px){.character-sheet{padding:1.1rem}.character-sheet .sheet-name{font-size:1.8rem}}
 @media print{
   .character-sheet{background:#fff !important;color:#111;border:1px solid #666;box-shadow:none;border-radius:0;padding:0}
   .character-sheet h2,.character-sheet h3,.character-sheet h4,.character-sheet .sheet-playbook{color:#111}
   .character-sheet .sheet-banner{border-bottom:2px solid #666}
-  .character-sheet .stat-box,.character-sheet .move-card,.character-sheet .legend-item{background:#fff;border:1px solid #999;break-inside:avoid}
+  .character-sheet .stat-box,.character-sheet .move-card{background:#fff;border:1px solid #999;break-inside:avoid}
   .character-sheet .move-card{border-left:3px solid #666}
   .character-sheet .muted,.character-sheet .sheet-sub,.character-sheet .sheet-quote{color:#333}
   .character-sheet .stat-name{color:#333}

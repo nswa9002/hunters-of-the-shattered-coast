@@ -1,7 +1,7 @@
 # Hunters of the Shattered Coast — GitHub Pages site
 
 A player-facing static site for the *Hunters of the Shattered Coast*
-playbooks: a fantasy game in which seasoned hunters hunt the
+playbooks: a fantasy game in which hunters hunt the
 Twelve Pirate Lords across the Shattered Coast — a different lord each
 voyage, and that week's lord is the voyage's monster. **28 playbooks**
 in one grouped list — the original 12, plus 16 more from the
@@ -17,22 +17,24 @@ How to Play section and no Keeper content on this site.
   (each button shows the playbook's name and its quote as the blurb),
   fill in name/pronouns, look (type it in, or upload a photo — shrunk
   client-side to ~480px and saved in the browser, printed on the
-  sheet), a ratings line, seasoned-start fields (scar, famed deed, old
-  debt, signature treasure, plus up to 3 powers carried over from a
-  D&D life), gear from the D&D weapon conversion chart, and the moves
-  picker (exactly 3 chosen moves). Improvements are point-based: 10
-  points to spend at the seasoned start (+1 rating = 2, another move
+  sheet), a ratings line, gear from the D&D weapon conversion chart,
+  and the moves picker (exactly 3 chosen moves). Improvements are
+  point-based: 15 points to spend (+1 to a rating = 1 point, and a
+  rating can be raised more than once up to its listed max; another move
   from your own playbook = 2, any other improvement = 2, an advanced
-  improvement = 3, a move from a different playbook = 3). Press
+  improvement = 3, a move from a different playbook = 3). Every
+  playbook offers both move options — its own list may already have
+  one, otherwise a universal option is shown. Press
   **Build my sheet**. **Player sheet second:** a stylised parchment
   character sheet — playbook banner and quote, big hunter name, photo
   if uploaded, ratings as stat boxes (with any +1 improvements
   applied), harm/luck/experience/unstable trackers, My Moves as
   readable cards (including any cross-playbook move, marked with where
-  it came from), gear, a "Your Legend" section (scar, famed deed, old
-  debt, signature treasure), powers carried over, improvements taken
+  it came from), gear, improvements taken
   with their point costs, and notes. There is no History section any
-  more. **Edit setup** goes back to setup keeping everything; **Print
+  more, and no Seasoned start section (no scar, famed deed, old debt,
+  signature treasure or powers carried over). Hunters start with all
+  7 luck. **Edit setup** goes back to setup keeping everything; **Print
   Sheet** prints only the finished sheet; **Print Blank Sheet** prints
   the chosen playbook's sheet with everything empty — blank name, look,
   gear, unticked moves and empty trackers, with ruled write-in lines —
@@ -57,18 +59,21 @@ How to Play section and no Keeper content on this site.
 - `data.js` — all 28 playbooks' data (quotes, looks, ratings, moves, gear,
   history, improvements), shared by the Hunters page. 236 moves total:
   188 playbook moves + 48 Alternative Weird moves (8 each on the 6 magic
-  playbooks). Unchanged by the seasoned-start rework — the look lists,
-  gear lists and history text are still in the data, but the setup no
-  longer shows the look helper lists, the gear checkboxes or history.
+  playbooks). The last two improvements of every playbook's list were
+  removed — the look lists, gear lists and history text are still in the
+  data, but the setup no longer shows the look helper lists, the gear
+  checkboxes or history.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
-  dependencies. Save format: hunters now carry `powers` (up to 3
-  name/effect pairs), `photo` (data URL), `xMove` (a move from another
-  playbook) and `xMoveExtra`; gear is carried text, not indices. Old
-  saves migrate in place: gear indices become the same gear text,
-  powers/photo/xMove default empty, improvements keep their indices
-  (their point costs are computed from the same list), and a save with
-  more than 3 chosen moves shows a warning and blocks Build until it
-  is trimmed to 3.
+  dependencies. Save format: hunters carry `photo` (data URL), `xMove`
+  (a move from another playbook), `xMoveExtra`, `ownMoveExtra`, and
+  `impRatings` (repeatable +1 rating counts); gear is carried text, not
+  indices. Old saves migrate in place: gear indices become the same gear
+  text, improvements pointing at removed list items are dropped,
+  surviving +1 rating picks become `impRatings` counts, a cross-playbook
+  move is dropped if the improvement that bought it is gone, and a save
+  with more than 3 chosen moves shows a warning and blocks Build until
+  it is trimmed to 3. Old scar / deed / debt / treasure / powers fields
+  may linger in stored JSON; they are never rendered.
 - `style.css` — dark nautical styling, mobile-friendly, with a parchment
   character sheet and a print stylesheet (Print Sheet prints only the
   finished sheet, light background, no wasted ink).
@@ -98,7 +103,12 @@ GitHub repo (commit 6515afb), so the old Keeper's Korner page is gone.
 The How to Play page was removed 2026-11-16 (the beginner guide, voyage
 flow, Twelve Lords section, ship section and seasoned-hero appendix are
 gone); the Hunters page moved to `index.html` and `hunters.html` is now
-a redirect to it.
+a redirect to it. The Seasoned start section (scar, famed deed, old
+debt, signature treasure, powers carried over) and the "Your sheet keeps
+itself" section were removed 2026-11-16; improvements are now a
+15-point budget with +1 ratings at 1 point each, repeatable up to the
+listed max, and the last two improvements of every playbook's list
+were removed.
 
 To update the site later, edit the files, commit, and push to `main` — Pages
 republishes automatically.
