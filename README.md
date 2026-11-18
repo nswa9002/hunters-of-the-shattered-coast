@@ -19,35 +19,26 @@ How to Play section and no Keeper content on this site.
   client-side to ~480px and saved in the browser, printed on the
   sheet), a ratings line, gear from the D&D weapon conversion chart,
   and the moves picker (tick as many moves as you like — your own
-  playbook's moves are free, and moves from other playbooks come through
-  Improvements). Improvements are
-  point-based: 15 points to spend, and every improvement is a stepper
-  showing its current level — +1 to a rating = 1 point, and a rating can
-  be raised more than once up to its listed max (the stepper shows the
-  rating's current value); +1 max luck = 1 point, up to 7 (the first 3
-  luck are free); a move from
-  a different playbook =
-  3 points per level, as many levels as you can afford (one picker per
-  level); any other
-  improvement = 2 points (level 0 or 1); an advanced improvement =
-  3 points. "Gain an ally" is a stepper that counts allies: 2 points
-  per ally, as many as you can afford (the stepper shows "1 ally",
-  "2 allies"…). Every playbook offers the cross-playbook move option — its
-  own list may already have one, otherwise a universal option is shown.
-  Own-move grants still sitting in a playbook's list (e.g. "Another
-  Foretold move") are not shown as improvements any more, since your own
-  book's moves are free ticks now. Press
+  playbook's moves are free). There are no improvements in setup any
+  more: improvements come from levelling up, one per level, as per the
+  rulebook (see the sheet below). Press
   **Build my sheet**. **Player sheet second:** a wanted-poster
   character sheet — a big WANTED masthead, big hunter name, playbook
   banner and quote, photo if uploaded, ratings as stat boxes (with any +1 improvements
-  applied), harm/luck/experience/unstable trackers (the luck track
-  always shows 7 boxes, with luck not bought marked as used), My Moves as
+  applied), a clearer Standing section — harm, luck and experience each
+  as its own labelled poster row with larger boxes, and the Unstable line
+  prominent under Harm (at 4+ harm you are unstable) — the luck track
+  always shows 7 boxes, with boxes marked used meaning luck already spent
+  in past adventures, a Level Up button next to Experience (enabled at 5
+  experience — it walks you through picking one improvement, step by
+  step), your level, My Moves as
   readable cards (including any cross-playbook moves, marked with where
-  they came from), gear, improvements taken
-  with their point costs, and notes. There is no History section any
+  they came from), gear, improvements taken,
+  and notes. The Far-Traveller's Expatriation feature is a typeable box
+  with a Hint button showing the options from the playbook. There is no History section any
   more, and no Seasoned start section (no scar, famed deed, old debt,
   signature treasure or powers carried over). Every hunter starts with
-  3 luck free; buy more in Improvements, 1 point per luck, up to 7.
+  3 luck free and earns more by levelling up, up to 7.
   **Edit setup** goes back to setup keeping everything; **Print
   Sheet** prints only the finished sheet; **Print Blank Sheet** prints
   the chosen playbook's sheet with everything empty — blank name, look,
@@ -56,12 +47,7 @@ How to Play section and no Keeper content on this site.
   ready to fill in by hand, without changing the saved hunter. Setup
   and sheet are two views of the same hunter. The six magic playbooks
   (Battle-Mage, Witch, Touched, Cursed, Channeler, Fae-Blooded) also
-  offer the 8 Alternative Weird moves as pickable moves. A **Dice
-  tray** sits below the sheet: tap a rating to roll 2d6 + that rating
-  (taken from the hunter's chosen ratings line, with +1 improvements
-  applied), with a situational +1/−1 adjuster for forward/ongoing, the
-  12+/10+/7–9/miss bands, and a short roll log. Rolls are not saved;
-  the tray never prints.
+  offer the 8 Alternative Weird moves as pickable moves.
 - `hunters.html` — a redirect to `index.html`, kept so old links to
   the Hunters page do not 404. (The Hunters page used to live here;
   it is now the home page.)
@@ -79,21 +65,22 @@ How to Play section and no Keeper content on this site.
   data, but the setup no longer shows the look helper lists, the gear
   checkboxes or history.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
-  dependencies. Save format: hunters carry `photo` (data URL), `luckMax`
-  (max luck, 3 for new hunters — the first 3 are free), `xMoveLevels` (cross-playbook
-  stepper level), `xMoves` (an array of cross-playbook picks, one per
-  level), `allyCount` (allies bought through "Gain an ally", 2 points
-  each), and `impRatings` (repeatable +1 rating counts); gear is carried
-  text, not indices. Old saves migrate in place: gear indices become the
-  same gear text, improvements pointing at removed list items are dropped,
-  surviving +1 rating picks become `impRatings` counts, a bought
-  "Gain an ally" becomes `allyCount` 1, cross-playbook
+  dependencies. Save format: hunters carry `photo` (data URL), `level` (1 for new
+  hunters), `luckMax` (max luck, 3 for new hunters — the first 3 are
+  free), `xMoveLevels` (cross-playbook moves taken through level-ups),
+  `xMoves` (an array of cross-playbook picks, one per level), `allyCount`
+  (allies gained through "Gain an ally"), `impRatings` (repeatable +1
+  rating counts), and `expatriation` (the Far-Traveller's typed answer);
+  gear is carried text, not indices. There is no points budget any more
+  — improvements are earned one per level-up. Old saves migrate in place:
+  gear indices become the same gear text, improvements pointing at removed
+  list items are dropped, surviving +1 rating picks become `impRatings`
+  counts, a bought "Gain an ally" becomes `allyCount` 1, cross-playbook
   picks become `xMoveLevels` (with a default pick filled in for any level
   bought but never chosen), own-move picks are dropped (moves are
   unlimited and free now — the hunter keeps every move they picked), old
-  hunters keep a `luckMax` of 7 — only the 4 points above the free 3
-  count toward the 15-point budget, so an old save with a full set of
-  improvements may show as over budget until it sheds some. Old scar /
+  hunters keep their `luckMax` and whatever improvements they already
+  bought, and `level` defaults to 1. Old scar /
   deed / debt / treasure / powers fields may linger in stored JSON; they
   are never rendered.
 - `style.css` — dark nautical styling, mobile-friendly, with a wanted-poster
@@ -127,21 +114,19 @@ flow, Twelve Lords section, ship section and seasoned-hero appendix are
 gone); the Hunters page moved to `index.html` and `hunters.html` is now
 a redirect to it. The Seasoned start section (scar, famed deed, old
 debt, signature treasure, powers carried over) and the "Your sheet keeps
-itself" section were removed 2026-11-16; improvements are now a
-15-point budget with +1 ratings at 1 point each, repeatable up to the
-listed max, and the last two improvements of every playbook's list
-were removed. Luck: every hunter starts with 3 luck free and the
-track always shows 7 boxes (luck not bought is marked as used and
-cannot be spent); buy more in Improvements, 1 point per luck up to 7,
-and every
-improvement is now a stepper showing its current level (ratings show
-their current value; cross-playbook levels are uncapped; one-off
-improvements are level 0 or 1). "Gain an ally" counts allies instead
-of a level: 2 points per ally, as many as the budget allows, on the
-Far-Traveller, Star-Crossed, Seeker and Showmaster; the differently-worded
-ally items on the Fae-Blooded, Vessel and Broadsheet stay one-off.
-Moves are unlimited: as many of your own playbook's moves as you like, free, and as many moves from other
-playbooks as you can afford at 3 points each.
+itself" section were removed 2026-11-16; the last two improvements of every playbook's
+list were removed. Improvements are now earned by levelling up
+(2026-11-17): fill 5 experience, tap Level Up on the sheet, pick one
+improvement from your playbook's list — one per level, as per the
+rulebook, no points budget. Ratings are repeatable up to the listed max;
+"Gain an ally" adds one ally each time (Far-Traveller, Star-Crossed,
+Seeker and Showmaster); the differently-worded ally items on the
+Fae-Blooded, Vessel and Broadsheet stay one-off. Luck: every hunter
+starts with 3 luck free and the track always shows 7 boxes (boxes marked
+used are luck already spent in past adventures); earn more by levelling
+up, up to 7.
+Moves are unlimited: as many of your own playbook's moves as you like, free, and moves from other
+playbooks come through level-ups. The dice tray was removed 2026-11-17.
 
 To update the site later, edit the files, commit, and push to `main` — Pages
 republishes automatically.
