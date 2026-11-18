@@ -18,8 +18,9 @@ How to Play section and no Keeper content on this site.
   fill in name/pronouns, look (type it in, or upload a photo — shrunk
   client-side to ~480px and saved in the browser, printed on the
   sheet), a ratings line, gear from the D&D weapon conversion chart,
-  and the moves picker (tick as many moves as you like — your own
-  playbook's moves are free). There are no improvements in setup any
+  and the moves picker (stamp as many moves as you like with a star
+  stamp — your own playbook's moves are free; there are no native
+  checkboxes anywhere on the site). There are no improvements in setup any
   more: improvements come from levelling up, one per level, as per the
   rulebook (see the sheet below). Press
   **Build my sheet**. **Player sheet second:** a wanted-poster
@@ -27,9 +28,11 @@ How to Play section and no Keeper content on this site.
   banner and quote, photo if uploaded, ratings as stat boxes (with any +1 improvements
   applied), a clearer Standing section — harm, luck and experience each
   as its own labelled poster row with larger boxes, marked with
-  rubber-stamp glyphs (a skull for harm, a star for experience and luck),
-  and the Unstable line
-  prominent under Harm (at 4+ harm you are unstable) — the luck track
+  real SVG stamp images, never characters or checkboxes: a filled mark
+  is an icon in a double-rule stamp ring (a skull for harm, a star for
+  experience and luck), an empty slot is a stamp frame holding only a
+  faint ghost of its icon, and the Unstable line
+  is a stamp button under Harm (at 4+ harm you are unstable) — the luck track
   always shows 7 boxes: you have 5 luck, and two boxes are already marked,
   spent in past adventures, a Level Up button next to Experience (enabled at 5
   experience — it walks you through picking one improvement, step by

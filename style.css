@@ -93,16 +93,25 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .checklist li{margin:.5rem 0;padding:.4rem .6rem;background:var(--bg2);border-radius:6px}
 .checklist input{margin-right:.5rem;transform:scale(1.2)}
 .movepick{display:flex;gap:.5rem;align-items:flex-start}
-.movepick input{margin-top:.35rem;flex:none}
+.move-stamp{background:none;border:none;padding:0;margin-top:.15rem;flex:none;font-size:1.25rem;color:var(--gold);line-height:1;cursor:pointer}
+.move-stamp:disabled{cursor:default}
 .box{background:none;border:none;color:var(--gold);font-size:1.3rem;cursor:pointer;padding:0 .15rem;line-height:1}
 .box:hover{color:#f0c65c}
-/* Tracker marks are rubber stamps: a skull for harm, a star for
-   experience, playbook trackers and luck spent in play. The stamp is
-   bold, ink-coloured and slightly rotated, like a rubber stamp. */
-.box .stamp{display:inline-block;font-style:normal;transform:rotate(-5deg)}
-.box .stamp-harm{color:#c65b4a}
-.box .stamp-xp,.box .stamp-luck{color:var(--gold)}
-.box .stamp-past{color:#8a7f66;opacity:.55}
+/* Tracker marks are real SVG stamp images, never characters and never
+   checkboxes: a skull for harm, a star for experience, playbook
+   trackers, luck spent in play and the moves picker. A filled stamp is
+   an icon inside a double-rule ring (a solid border plus an outer
+   outline), bold, ink-coloured and slightly rotated, like a rubber
+   stamp. An empty slot is a double-rule frame holding only a faint
+   ghost of its icon, so it reads as "not yet stamped" instead of a
+   checkbox. */
+.mark-icon{width:1em;height:1em;flex:none}
+.stamp{display:inline-flex;align-items:center;justify-content:center;font-style:normal;transform:rotate(-5deg);border:2px solid currentColor;border-radius:50%;outline:1px solid currentColor;outline-offset:2px;padding:.06em;line-height:1}
+.stamp-slot{display:inline-flex;align-items:center;justify-content:center;transform:rotate(-5deg);border:2px solid currentColor;border-radius:8px;padding:.06em;line-height:1}
+.stamp-slot .stamp-ghost{display:inline-flex;align-items:center;justify-content:center;border:1px solid currentColor;border-radius:5px;padding:.04em;opacity:.22;line-height:1}
+.stamp-harm{color:#c65b4a}
+.stamp-xp,.stamp-luck,.stamp-move{color:var(--gold)}
+.stamp-past{color:#8a7f66;opacity:.55}
 .trackers p{margin:.6rem 0}
 .muted{color:var(--muted);font-size:.92rem}
 .mymoves li{margin:.4rem 0}
@@ -172,7 +181,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .tracker-row{margin:.7rem 0}
 .character-sheet .box{color:#7a5c14}
 .character-sheet .box:hover{color:#a8822e}
-.character-sheet .box .stamp-harm{color:#a33c2e}
+.character-sheet .box .stamp-harm,.character-sheet .unstable-line .stamp-harm{color:#a33c2e}
 .character-sheet .box .stamp-xp,.character-sheet .box .stamp-luck{color:#7a5c14}
 .character-sheet .box.luck-unbought{color:#b09b6d;opacity:.6;cursor:default}
 .character-sheet .box.luck-unbought .stamp-past{color:#a08c5f;opacity:.6}
@@ -206,6 +215,9 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   .character-sheet .box{color:#111}
   .character-sheet .box .stamp{color:#111}
   .character-sheet .box.luck-unbought .stamp-past{color:#777}
+  .character-sheet .stamp-slot{border-color:#777}
+  .character-sheet .stamp-slot .stamp-ghost{border-color:#777}
+  .character-sheet .unstable-line .stamp,.character-sheet .unstable-line .stamp-slot{color:#111}
   .sheet-photo{max-width:140px;max-height:140px;border:1px solid #666}
   .character-sheet .move-card.xmove{border-left-color:#666}
 }
@@ -217,8 +229,8 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .tracker-note{font-size:.92rem;color:#6b5636}
 .character-sheet .tracker-boxes{margin:.5rem 0 .2rem}
 .character-sheet .tracker-boxes .box{font-size:1.6rem;padding:0 .25rem}
-.character-sheet .unstable-line{display:block;margin-top:.6rem;padding:.55rem .7rem;border:2px solid #a33c2e;border-radius:6px;background:#f9e2cf;font-size:1.05rem;cursor:pointer}
-.character-sheet .unstable-line input{transform:scale(1.5);margin-right:.5rem}
+.character-sheet .unstable-line{display:block;width:100%;margin-top:.6rem;padding:.55rem .7rem;border:2px solid #a33c2e;border-radius:6px;background:#f9e2cf;font:inherit;font-size:1.05rem;color:inherit;text-align:left;cursor:pointer}
+.character-sheet .unstable-line .stamp,.character-sheet .unstable-line .stamp-slot{font-size:1.25rem;margin-right:.5rem;vertical-align:middle}
 .character-sheet .sheet-level{text-align:center;font-size:1.15rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase;color:#7a5c14;margin:.3rem 0 0}
 .character-sheet .levelup-row{margin:.6rem 0 0}
 .character-sheet .level-up-btn{font-size:1.15rem;padding:.6rem 1.4rem}

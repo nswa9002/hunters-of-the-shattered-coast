@@ -15,8 +15,8 @@
 // chart in setup. Every hunter has 5 luck. The luck track always shows
 // 7 boxes; two boxes are already marked used — luck spent in past
 // adventures — and luck can no longer be earned. Tracker boxes are
-// marked with rubber-stamp glyphs: a skull for harm, a star for
-// experience and luck.
+// marked with rubber-stamp SVG images: a skull for harm, a star for
+// experience and luck. No Unicode glyphs are used as marks anywhere.
 (function () {
   'use strict';
   var STORE = 'hsc-hunters-v1';
@@ -160,33 +160,40 @@
     if (parts.length < 2) parts = text.split(';').map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 1; });
     return parts;
   }
-  // Tracker boxes are rubber-stamp marks, not plain checkboxes: a skull
-  // stamps harm, a star stamps experience (and playbook trackers) and
-  // luck spent in play. Unmarked boxes stay empty squares. The `mark`
-  // glyph is only the picture — the button, data attributes and click
-  // handler are unchanged.
-  function boxes(n, filled, label, mark) {
-    mark = mark || '★';
+  // Tracker boxes are rubber-stamp images, never characters and never
+  // checkboxes: a skull stamps harm, a star stamps experience (and
+  // playbook trackers) and luck spent in play. The icons are <symbol>
+  // definitions in index.html; each mark is an <svg><use> reference, so
+  // it renders identically on every device. A filled slot is a framed
+  // stamp; an empty slot is a stamp frame holding only a faint ghost of
+  // its icon, so it reads as "not yet stamped". The button, data
+  // attributes and click handler are unchanged.
+  function stampIcon(icon) {
+    return '<svg class="mark-icon" aria-hidden="true"><use href="#icon-' + icon + '"/></svg>';
+  }
+  function boxes(n, filled, label, icon) {
+    icon = icon || 'star';
     var kind = label === 'harm' ? 'harm' : label === 'xp' ? 'xp' : 'tracker';
     var out = '';
-    for (var i = 0; i < n; i++) out += '<button type="button" class="box box-' + kind + '" data-box="' + label + '" data-i="' + i + '" aria-label="' + esc(label) + ' ' + (i + 1) + '">' + (i < filled ? '<span class="stamp stamp-' + kind + '">' + mark + '</span>' : '☐') + '</button>';
+    for (var i = 0; i < n; i++) out += '<button type="button" class="box box-' + kind + '" data-box="' + label + '" data-i="' + i + '" aria-label="' + esc(label) + ' ' + (i + 1) + '">' + (i < filled ? '<span class="stamp stamp-' + kind + '">' + stampIcon(icon) + '</span>' : '<span class="stamp-slot stamp-slot-' + kind + '" aria-hidden="true"><span class="stamp-ghost">' + stampIcon(icon) + '</span></span>') + '</button>';
     return out;
   }
   // The luck track always shows 7 boxes. Every hunter has 5 luck, so
   // the first 2 boxes are always marked used — luck spent in past
-  // adventures — rendered as faded, unclickable ✕ stamps. The 5
-  // spendable boxes show empty (luck still available) or a star stamp
-  // (luck spent in play). The spendable boxes carry data-i as their
-  // spent-index, so the click handler toggles luckUsed exactly as before.
-  // In blank mode the full track is empty, for handwriting.
+  // adventures — rendered as faded, unclickable star stamps (no X ever).
+  // The 5 spendable boxes show a faint star ghost (luck still available)
+  // or a star stamp (luck spent in play). The spendable boxes carry
+  // data-i as their spent-index, so the click handler toggles luckUsed
+  // exactly as before. In blank mode the full track is empty, for
+  // handwriting.
   function luckBoxes(h) {
     if (blankMode) return boxes(7, 0, 'luck');
     var max = h.luckMax || 0;
     var out = '';
     var i, j;
-    for (i = 0; i < 7 - max; i++) out += '<span class="box luck-unbought" aria-hidden="true"><span class="stamp stamp-past">✕</span></span>';
+    for (i = 0; i < 7 - max; i++) out += '<span class="box luck-unbought" aria-hidden="true"><span class="stamp stamp-past">' + stampIcon('star') + '</span></span>';
     for (j = 0; j < max; j++) {
-      out += '<button type="button" class="box box-luck" data-box="luck" data-i="' + j + '" aria-label="Luck ' + (j + 1) + '">' + (j < (h.luckUsed || 0) ? '<span class="stamp stamp-luck">★</span>' : '☐') + '</button>';
+      out += '<button type="button" class="box box-luck" data-box="luck" data-i="' + j + '" aria-label="Luck ' + (j + 1) + '">' + (j < (h.luckUsed || 0) ? '<span class="stamp stamp-luck">' + stampIcon('star') + '</span>' : '<span class="stamp-slot stamp-slot-luck" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('star') + '</span></span>') + '</button>';
     }
     return out;
   }
@@ -313,8 +320,8 @@
     return pb.moves.map(function (m, i) {
       var checked = h.moves.indexOf(i) !== -1;
       var disabled = m.fixed;
-      return '<li><label class="movepick"><input type="checkbox" data-move="' + i + '"' + (checked ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
-        '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></label></li>';
+      return '<li><div class="movepick"><button type="button" class="move-stamp" data-move="' + i + '"' + (disabled ? ' disabled' : '') + ' aria-pressed="' + (checked ? 'true' : 'false') + '" aria-label="' + esc(m.name) + '">' + (checked ? '<span class="stamp stamp-move">' + stampIcon('star') + '</span>' : '<span class="stamp-slot stamp-slot-move" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('star') + '</span></span>') + '</button>' +
+        '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></div></li>';
     }).join('');
   }
   function myMovesHtml(h, pb) {
@@ -387,7 +394,7 @@
       }).join('') + '</table>';
     var carriedHtml = h.gear.length
       ? '<ul class="checklist carried">' + h.gear.map(function (g, i) {
-          return '<li>' + esc(g) + ' <button type="button" data-gear-remove="' + i + '" aria-label="Remove ' + esc(g) + '">✕</button></li>';
+          return '<li>' + esc(g) + ' <button type="button" data-gear-remove="' + i + '" aria-label="Remove ' + esc(g) + '">Remove</button></li>';
         }).join('') + '</ul>'
       : '<p class="muted">No gear carried yet — add weapons and armour from the chart, or write your own below.</p>';
 
@@ -462,8 +469,8 @@
       '<p class="sheet-ratings-line muted">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + (bonus && !blankMode ? ' · Improvements: ' + esc(bonus) : '') + '</p>' +
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<div class="tracker-row harm-row"><div class="tracker-head"><strong>Harm</strong><span class="tracker-note">At 4+ harm you are unstable — mark the Unstable line below.</span></div>' +
-      '<div class="tracker-boxes">' + boxes(7, h.harm, 'harm', '☠') + '</div>' +
-      '<label class="unstable-line"><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> <strong>Unstable</strong> — at 4+ harm you are unstable; your wounds will get worse unless treated.</label></div>' +
+      '<div class="tracker-boxes">' + boxes(7, h.harm, 'harm', 'skull') + '</div>' +
+      '<button type="button" class="unstable-line" data-action="toggle-unstable" aria-pressed="' + (h.unstable ? 'true' : 'false') + '">' + (h.unstable ? '<span class="stamp stamp-harm">' + stampIcon('skull') + '</span>' : '<span class="stamp-slot stamp-slot-harm" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('skull') + '</span></span>') + ' <strong>Unstable</strong> — at 4+ harm you are unstable; your wounds will get worse unless treated.</button></div>' +
       '<div class="tracker-row luck-row"><div class="tracker-head"><strong>Luck</strong><span class="tracker-note">You have 5 luck. Two boxes are already marked — luck spent in past adventures — and you cannot earn more luck.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></div>' +
       '<div class="tracker-boxes">' + luckBoxes(h) + '</div></div>' +
       '<div class="tracker-row xp-row"><div class="tracker-head"><strong>Experience</strong><span class="tracker-note">' + (blankMode ? 'Fill 5 to level up.' : ((h.xp || 0) >= 5 ? 'All 5 boxes are filled — tap Level Up to choose one improvement.' : 'Fill all 5 boxes to level up — mark one whenever a roll totals 6 or less, or a move tells you to.')) + '</span></div>' +
@@ -734,6 +741,7 @@
       var a = act.getAttribute('data-action');
       if (a === 'level-up') { openLevelUp(); return; }
       if (a === 'toggle-expat-hint') { expatHintOpen = !expatHintOpen; renderAll(); return; }
+      if (a === 'toggle-unstable') { var hu = active(); hu.unstable = !hu.unstable; save(); renderAll(); return; }
       if (a === 'lu-cancel') { levelUp = null; renderWizard(); return; }
       if (a === 'lu-back') { if (levelUp) { levelUp.step = 1; levelUp.opt = null; renderWizard(); } return; }
       if (a === 'lu-pick') { levelUpPick(+act.getAttribute('data-opt')); return; }
@@ -778,14 +786,16 @@
       if (key === 'harm') h.harm = next; else if (key === 'luck') h.luckUsed = next; else if (key === 'xp') h.xp = next; else h.trackers[key.slice(3)] = next;
       save(); renderAll();
     }
+    var ms = e.target.closest('.move-stamp');
+    if (ms && !ms.disabled) {
+      var mi = +ms.getAttribute('data-move');
+      var hm = active();
+      hm.moves = hm.moves.indexOf(mi) !== -1 ? hm.moves.filter(function (x) { return x !== mi; }) : hm.moves.concat([mi]).sort(function (a, b) { return a - b; });
+      save(); renderAll(); return;
+    }
   });
   document.addEventListener('change', function (e) {
     var t = e.target; var h = active();
-    if (t.matches('[data-move]')) {
-      var i = +t.getAttribute('data-move');
-      h.moves = t.checked ? h.moves.concat([i]).sort(function (a, b) { return a - b; }) : h.moves.filter(function (x) { return x !== i; });
-      save(); renderAll(); return;
-    }
     if (t.matches('.lu-xpb')) {
       if (levelUp) {
         var npb = playbook(t.value);
@@ -803,7 +813,6 @@
     }
     if (t.id === 'photoInput' && t.files && t.files[0]) { handlePhotoFile(t.files[0]); return; }
     if (t.matches('input[name="rating"]')) { h.ratingIdx = +t.value; save(); return; }
-    if (t.matches('[data-field="unstable"]')) { h.unstable = t.checked; save(); return; }
     if (t.id === 'hunterSelect') { activeId = t.value; save(); renderAll(); return; }
   });
   document.addEventListener('input', function (e) {
