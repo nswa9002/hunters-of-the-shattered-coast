@@ -72,9 +72,6 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .xmove-box{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;padding:.8rem 1rem;margin:.7rem 0}
 .xmove-box h4{margin:.2rem 0 .5rem}
 .xmove-box select{font-family:inherit;font-size:1rem;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:.4rem .6rem;width:100%;margin-top:.3rem}
-.chart{font-size:.95rem}
-.chart td button{font-family:inherit;font-size:.9rem;padding:.35rem .7rem;border-radius:6px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);cursor:pointer}
-.carried li button{float:right;font-family:inherit;font-size:.9rem;padding:.15rem .55rem;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .photo-preview-wrap{margin:.7rem 0}
 .photo-preview{max-width:180px;max-height:180px;border:2px solid var(--gold-dim);border-radius:8px}
 .sheet-photo-wrap{text-align:center;margin:.5rem 0}
@@ -235,10 +232,8 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .levelup-row{margin:.6rem 0 0}
 .character-sheet .level-up-btn{font-size:1.15rem;padding:.6rem 1.4rem}
 .character-sheet .level-up-btn:disabled{opacity:.45;cursor:default}
-.expat-text{min-height:7rem}
-.expat-hint{background:#fbf3dd;border:1px solid #c9a94f;border-radius:8px;padding:.8rem 1rem;margin:.6rem 0}
 @media print{
-  .levelup-overlay,.expat-hint{display:none !important}
+  .levelup-overlay{display:none !important}
   .character-sheet .unstable-line{border:1px solid #333;background:#fff}
 }
 

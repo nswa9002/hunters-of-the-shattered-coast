@@ -17,8 +17,7 @@ How to Play section and no Keeper content on this site.
   (each button shows the playbook's name and its quote as the blurb),
   fill in name/pronouns, look (type it in, or upload a photo — shrunk
   client-side to ~480px and saved in the browser, printed on the
-  sheet), a ratings line, gear from the D&D weapon conversion chart,
-  and the moves picker (stamp as many moves as you like with a star
+  sheet), a ratings line, and the moves picker (stamp as many moves as you like with a star
   stamp — your own playbook's moves are free; there are no native
   checkboxes anywhere on the site). There are no improvements in setup any
   more: improvements come from levelling up, one per level, as per the
@@ -38,17 +37,19 @@ How to Play section and no Keeper content on this site.
   experience — it walks you through picking one improvement, step by
   step), your level, My Moves as
   readable cards (including any cross-playbook moves, marked with where
-  they came from), gear and improvements taken.
-  The Far-Traveller's Expatriation feature is a typeable box
-  with a Hint button showing the options from the playbook. There is no History section any
-  more, no Notes section, and no Seasoned start section (no scar, famed deed, old debt,
-  signature treasure or powers carried over). Every hunter has 5 luck —
+  they came from), and improvements taken.
+  There is no History section any more, no Notes section, and no Seasoned start section (no scar, famed deed, old debt,
+  signature treasure or powers carried over). There is no gear section
+  and no playbook background/features section either — hunters arrive
+  fully developed from D&D, with their background and their D&D items
+  already, so the sheet carries neither. The Far-Traveller's
+  Expatriation typeable box went with the background sections. Every hunter has 5 luck —
   two boxes already marked, spent in past adventures — and luck cannot
   be earned any more.
   **Edit setup** goes back to setup keeping everything; **Print
   Sheet** prints only the finished sheet; **Print Blank Sheet** prints
   the chosen playbook's sheet with everything empty — blank name, look,
-  gear, unticked moves and empty trackers (including the full 7-box luck
+  unticked moves and empty trackers (including the full 7-box luck
   track, for handwriting), with ruled write-in lines —
   ready to fill in by hand, without changing the saved hunter. Setup
   and sheet are two views of the same hunter. The six magic playbooks
@@ -68,8 +69,8 @@ How to Play section and no Keeper content on this site.
   188 playbook moves + 48 Alternative Weird moves (8 each on the 6 magic
   playbooks). The last two improvements of every playbook's list were
   removed — the look lists, gear lists and history text are still in the
-  data, but the setup no longer shows the look helper lists, the gear
-  checkboxes or history.
+  data, but the setup no longer shows the look helper lists, and the
+  sheet shows no gear and no playbook background features.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
   dependencies. Save format: hunters carry `photo` (data URL), `level` (1 for new
   hunters), `luckMax` (fixed at 5 for every hunter — the track shows 7
@@ -77,8 +78,11 @@ How to Play section and no Keeper content on this site.
   (cross-playbook moves taken through level-ups),
   `xMoves` (an array of cross-playbook picks, one per level), `allyCount`
   (allies gained through "Gain an ally"), `impRatings` (repeatable +1
-  rating counts), and `expatriation` (the Far-Traveller's typed answer);
-  gear is carried text, not indices. There is no points budget any more
+  rating counts). Old `gear` and `expatriation` values may linger in
+  stored JSON; they are never rendered — the gear section and the
+  playbook background/features sections (including the Far-Traveller's
+  Expatriation box) were removed 2026-11-17, because hunters arrive
+  with their D&D background and items. There is no points budget any more
   — improvements are earned one per level-up. Old saves migrate in place:
   gear indices become the same gear text, improvements pointing at removed
   list items are dropped, surviving +1 rating picks become `impRatings`
@@ -133,6 +137,12 @@ has 5 luck and the track always shows 7 boxes (two boxes already
 marked, spent in past adventures); luck cannot be earned any more.
 The Notes section was removed 2026-11-17 — hunters arrive fully
 developed from D&D, so there is no background-info writing space.
+The same day, the playbook background/features sections (including
+the Far-Traveller's Expatriation typeable box and Hint button) and the
+whole gear system (the setup's D&D weapon conversion chart, carried
+gear and "Other gear", and the Gear section on the sheet) were
+removed — the characters already have their background and their D&D
+items.
 Moves are unlimited: as many of your own playbook's moves as you like, free, and moves from other
 playbooks come through level-ups. The dice tray was removed 2026-11-17.
 

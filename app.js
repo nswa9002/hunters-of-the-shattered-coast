@@ -198,36 +198,6 @@
     return out;
   }
 
-  // ---------- D&D weapon conversion chart ----------
-  // Common D&D 5e weapons and armour, converted into this game's terms
-  // (harm + tags). No new mechanics — the same language the playbooks use.
-  var WEAPON_CHART = [
-    { dnd: 'Dagger', conv: 'Dagger (1-harm hand quiet)' },
-    { dnd: 'Shortsword', conv: 'Shortsword (2-harm hand)' },
-    { dnd: 'Scimitar', conv: 'Scimitar (2-harm hand messy)' },
-    { dnd: 'Rapier', conv: 'Rapier (2-harm hand precise)' },
-    { dnd: 'Longsword', conv: 'Longsword (2-harm hand, 3-harm when wielded two-handed)' },
-    { dnd: 'Battleaxe', conv: 'Battleaxe (2-harm hand heavy, 3-harm when wielded two-handed)' },
-    { dnd: 'Warhammer', conv: 'Warhammer (2-harm hand heavy)' },
-    { dnd: 'Mace', conv: 'Mace (2-harm hand)' },
-    { dnd: 'Spear', conv: 'Spear (2-harm hand close)' },
-    { dnd: 'Greatsword', conv: 'Greatsword (3-harm heavy two-handed)' },
-    { dnd: 'Greataxe', conv: 'Greataxe (3-harm heavy two-handed messy)' },
-    { dnd: 'Maul', conv: 'Maul (3-harm heavy two-handed)' },
-    { dnd: 'Handaxe', conv: 'Handaxe (1-harm hand, 2-harm close when thrown)' },
-    { dnd: 'Club', conv: 'Club (1-harm hand)' },
-    { dnd: 'Quarterstaff', conv: 'Quarterstaff (1-harm hand, 2-harm when wielded two-handed)' },
-    { dnd: 'Shortbow', conv: 'Shortbow (2-harm far)' },
-    { dnd: 'Longbow', conv: 'Longbow (2-harm far)' },
-    { dnd: 'Light crossbow', conv: 'Light crossbow (2-harm far reload)' },
-    { dnd: 'Heavy crossbow', conv: 'Heavy crossbow (3-harm far reload)' },
-    { dnd: 'Hand crossbow', conv: 'Hand crossbow (1-harm close reload quiet)' },
-    { dnd: 'Javelin', conv: 'Javelin (2-harm close)' },
-    { dnd: 'Leather armour', conv: 'Leather armour (1-armour)' },
-    { dnd: 'Chain mail', conv: 'Chain mail (2-armour)' },
-    { dnd: 'Plate armour', conv: 'Plate armour (2-armour)' }
-  ];
-
   // ---------- improvements (earned by levelling up) ----------
   // One improvement per level, as per the rulebook — no points, no
   // budget. impInfo only classifies a list item now: +1 to a rating
@@ -357,26 +327,6 @@
     }).join('');
     return out;
   }
-  // Playbook features on the sheet. Only the Far-Traveller has one:
-  // "Expatriation — what was your home like?" It renders as a typeable
-  // box (saved on the hunter as h.expatriation — the generic
-  // data-field input handler saves it) with a Hint button that toggles
-  // the options text from data.js, shown verbatim. The hint is hidden
-  // by default and never prints; a blank sheet shows the title with
-  // empty ruled lines for handwriting.
-  var expatHintOpen = false;
-  function featHtml(h, pb) {
-    return (pb.features || []).map(function (f) {
-      if (/^Expatriation/i.test(f.title || '')) {
-        if (blankMode) return '<h3 class="sheet-h">' + esc(f.title) + '</h3><div class="blank-lines" aria-label="Write your answer here"><span></span><span></span><span></span><span></span></div>';
-        return '<h3 class="sheet-h">' + esc(f.title) + '</h3>' +
-          '<textarea class="expat-text" data-field="expatriation" rows="5" placeholder="Write what your home was like, why you left, why you stayed, and what pulls you back…">' + esc(h.expatriation || '') + '</textarea>' +
-          '<p class="no-print"><button type="button" data-action="toggle-expat-hint">' + (expatHintOpen ? 'Hide the options' : 'Hint — see the options') + '</button></p>' +
-          (expatHintOpen ? '<div class="expat-hint"><p>' + esc(f.text) + '</p></div>' : '');
-      }
-      return '<h3>' + esc(f.title) + '</h3><p>' + esc(f.text) + '</p>';
-    }).join('');
-  }
   // ---------- stage 1: SETUP ----------
   var photoWarnMsg = '';
   function renderSetup() {
@@ -386,17 +336,6 @@
     var ratingHtml = pb.ratings.map(function (r, i) {
       return '<li><label><input type="radio" name="rating" value="' + i + '"' + (h.ratingIdx === i ? ' checked' : '') + '> ' + esc(r) + '</label></li>';
     }).join('');
-
-    // Gear: the D&D weapon conversion chart, plus what you actually carry.
-    var chartHtml = '<table class="chart"><tr><th>D&amp;D weapon or armour</th><th>Converted to</th><th></th></tr>' +
-      WEAPON_CHART.map(function (w, i) {
-        return '<tr><td>' + esc(w.dnd) + '</td><td>' + esc(w.conv) + '</td><td><button type="button" data-chart-add="' + i + '">Add</button></td></tr>';
-      }).join('') + '</table>';
-    var carriedHtml = h.gear.length
-      ? '<ul class="checklist carried">' + h.gear.map(function (g, i) {
-          return '<li>' + esc(g) + ' <button type="button" data-gear-remove="' + i + '" aria-label="Remove ' + esc(g) + '">Remove</button></li>';
-        }).join('') + '</ul>'
-      : '<p class="muted">No gear carried yet — add weapons and armour from the chart, or write your own below.</p>';
 
     $('#sheet').innerHTML =
       '<article class="sheet setup">' +
@@ -414,11 +353,6 @@
       (h.photo ? '<div class="photo-preview-wrap"><img class="photo-preview" src="' + esc(h.photo) + '" alt="Hunter portrait preview"><br><button type="button" data-action="remove-photo">Remove photo</button></div>' : '') +
       '<h3>Ratings — pick one line</h3><ul class="checklist">' + ratingHtml + '</ul>' +
       '<p class="muted">Ratings improve when you level up — fill all 5 experience boxes on your sheet, then tap Level Up and pick +1 to a rating (up to the max shown).</p>' +
-      '<h3>Gear — convert your D&amp;D weapons</h3>' +
-      '<p class="muted">Find your old weapons on the chart and add them — they arrive converted into this game\u2019s harm and tags. Armour converts too.</p>' +
-      '<h4>Your gear</h4>' + carriedHtml +
-      '<div class="fieldrow"><label>Other gear <input type="text" id="otherGearInput" placeholder="e.g. spyglass, lockpicks, lucky coin"></label><span><button type="button" data-action="add-other-gear">Add gear</button></span></div>' +
-      '<h4>Conversion chart</h4>' + chartHtml +
       '<h3>Moves — as many as you want</h3>' +
       '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want. Moves from other playbooks come when you level up. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
@@ -478,9 +412,7 @@
       (blankMode ? '' : '<p class="levelup-row"><button type="button" class="primary level-up-btn no-print" data-action="level-up"' + ((h.xp || 0) >= 5 ? '' : ' disabled') + '>Level Up</button></p>') + '</div>' +
       trackerHtml(h, pb) +
       '</div>' +
-      featHtml(h, pb) +
       '<h3 class="sheet-h">My Moves</h3>' + myMovesHtml(h, pb) +
-      '<h3 class="sheet-h">Gear</h3>' + (blankMode ? '<div class="blank-lines" aria-label="Write your gear here"><span></span><span></span><span></span></div>' : ((h.gear && h.gear.length) ? '<ul class="sheet-list"><li>' + h.gear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear carried — go to Edit setup to add gear from the weapon chart.</p>')) +
       (pickedImp.length ? '<h3 class="sheet-h">Improvements taken</h3><p class="muted">Earned by levelling up — one improvement per level.</p><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
       '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
       '</article>';
@@ -497,7 +429,7 @@
 
   // ---------- print a blank sheet ----------
   // A blank sheet is the current playbook with everything empty: no name,
-  // no look, no photo, no gear, no moves ticked, empty trackers. It is
+  // no look, no photo, no moves ticked, empty trackers. It is
   // rendered into the page only — the real hunter object and localStorage
   // are never touched — then the real sheet is put back straight after.
   var blankMode = false;
@@ -740,7 +672,6 @@
     if (act) {
       var a = act.getAttribute('data-action');
       if (a === 'level-up') { openLevelUp(); return; }
-      if (a === 'toggle-expat-hint') { expatHintOpen = !expatHintOpen; renderAll(); return; }
       if (a === 'toggle-unstable') { var hu = active(); hu.unstable = !hu.unstable; save(); renderAll(); return; }
       if (a === 'lu-cancel') { levelUp = null; renderWizard(); return; }
       if (a === 'lu-back') { if (levelUp) { levelUp.step = 1; levelUp.opt = null; renderWizard(); } return; }
@@ -752,30 +683,13 @@
       if (a === 'edit-setup') { active().view = 'setup'; save(); renderAll(); return; }
       if (a === 'print-sheet') { window.print(); return; }
       if (a === 'remove-photo') { active().photo = ''; photoWarnMsg = ''; save(); renderAll(); return; }
-      if (a === 'add-other-gear') {
-        var inp = $('#otherGearInput');
-        var v = inp ? inp.value.trim() : '';
-        if (v) { active().gear.push(v); save(); renderAll(); }
-        return;
-      }
-    }
-    var ca = e.target.closest('[data-chart-add]');
-    if (ca) {
-      var ci = +ca.getAttribute('data-chart-add');
-      if (WEAPON_CHART[ci]) { active().gear.push(WEAPON_CHART[ci].conv); save(); renderAll(); }
-      return;
-    }
-    var gr = e.target.closest('[data-gear-remove]');
-    if (gr) {
-      active().gear.splice(+gr.getAttribute('data-gear-remove'), 1);
-      save(); renderAll(); return;
     }
     var b = e.target.closest('[data-pb]');
     if (b) {
       var npb = playbook(b.getAttribute('data-pb'));
       active().playbook = npb.id;
       active().moves = npb.moves.map(function (m, i) { return m.fixed ? i : -1; }).filter(function (i) { return i >= 0; });
-      active().gear = []; active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().allyCount = 0; active().trackers = {}; active().level = 1; active().expatriation = '';
+      active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().allyCount = 0; active().trackers = {}; active().level = 1;
       save(); renderAll(); return;
     }
     var box = e.target.closest('[data-box]');
