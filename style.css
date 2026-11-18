@@ -78,7 +78,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .photo-preview-wrap{margin:.7rem 0}
 .photo-preview{max-width:180px;max-height:180px;border:2px solid var(--gold-dim);border-radius:8px}
 .sheet-photo-wrap{text-align:center;margin:.5rem 0}
-.sheet-photo{max-width:200px;max-height:200px;border:2px solid #a8822e;border-radius:8px}
+.sheet-photo{max-width:200px;max-height:200px;border:4px solid #3a2a12;border-radius:2px;padding:4px;background:#fbf3dd;box-shadow:0 2px 10px rgba(0,0,0,.35)}
 .move-card.xmove{border-left-color:var(--teal)}
 .pickbtn:hover{border-color:var(--gold)}
 .pickbtn.on{border-color:var(--gold);background:var(--panel2);box-shadow:0 0 0 1px var(--gold)}
@@ -138,8 +138,14 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 /* --- Stylised character sheet (player-facing parchment) --- */
 .character-sheet{
   background:linear-gradient(180deg,#f6ecd2,#efe2c2 60%,#e9d9b4);
-  color:#2b2118;border:2px solid var(--gold-dim);border-radius:14px;
-  box-shadow:0 8px 30px rgba(0,0,0,.45);padding:1.6rem 1.8rem;
+  color:#2b2118;border:4px solid #3a2a12;border-radius:6px;
+  box-shadow:0 8px 30px rgba(0,0,0,.45), inset 0 0 0 2px #f6ecd2, inset 0 0 0 4px #a8822e;
+  padding:1.6rem 1.8rem;
+}
+.character-sheet .wanted-masthead{
+  text-align:center;font-size:3rem;font-weight:bold;letter-spacing:.35em;
+  text-indent:.35em;color:#3a2a12;margin:.1em 0 .05em;line-height:1.1;
+  border-bottom:3px solid #3a2a12;padding-bottom:.15em;
 }
 .character-sheet h2,.character-sheet h3,.character-sheet h4{color:#3a2a12}
 .character-sheet .sheet-banner{
@@ -159,11 +165,13 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   border-bottom:2px solid #a8822e;padding-bottom:.25em;margin-top:1.8em;
   letter-spacing:.08em;text-transform:uppercase;font-size:1.05rem;
 }
+.character-sheet .sheet-h::before{content:"✦ "}
+.character-sheet .sheet-h::after{content:" ✦"}
 .character-sheet .muted{color:#6b5636}
 .character-sheet .stat-row{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:.8rem 0}
 .character-sheet .stat-box{
-  flex:1 1 5.2rem;max-width:7rem;text-align:center;background:#fbf3dd;
-  border:2px solid #a8822e;border-radius:10px;padding:.55rem .3rem;
+  flex:1 1 5.2rem;max-width:7rem;text-align:center;background:#f8e6a8;
+  border:3px double #7a5c14;border-radius:8px;padding:.55rem .3rem;
 }
 .character-sheet .stat-name{display:block;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:#7a5c14}
 .character-sheet .stat-val{display:block;font-size:1.7rem;font-weight:bold;color:#2b2118;line-height:1.2}
@@ -171,6 +179,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .tracker-row{margin:.7rem 0}
 .character-sheet .box{color:#7a5c14}
 .character-sheet .box:hover{color:#a8822e}
+.character-sheet .box.luck-unbought{color:#b09b6d;opacity:.6;text-decoration:line-through;cursor:default}
 .character-sheet .move-cards{display:grid;gap:.7rem;margin:.7rem 0}
 .character-sheet .move-card{
   background:#fbf3dd;border:1px solid #c9a94f;border-left:5px solid #a8822e;
@@ -187,9 +196,11 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .sheet-actions{margin:.5rem 0}
 .character-sheet .sheet-actions button{font-family:inherit;font-size:.95rem;padding:.5rem .9rem;border-radius:6px;border:1px solid #a8822e;background:#fbf3dd;color:#2b2118;cursor:pointer}
 .character-sheet .sheet-actions button.primary{background:var(--gold);color:#1a1206;font-weight:bold}
-@media(max-width:640px){.character-sheet{padding:1.1rem}.character-sheet .sheet-name{font-size:1.8rem}}
+@media(max-width:640px){.character-sheet{padding:1.1rem}.character-sheet .sheet-name{font-size:1.8rem}.character-sheet .wanted-masthead{font-size:2.2rem;letter-spacing:.25em;text-indent:.25em}}
 @media print{
-  .character-sheet{background:#fff !important;color:#111;border:1px solid #666;box-shadow:none;border-radius:0;padding:0}
+  .character-sheet{background:#fff !important;color:#111;border:3px double #333;box-shadow:none;border-radius:0;padding:.6rem .8rem}
+  .character-sheet .wanted-masthead{color:#111;border-bottom-color:#333}
+  .character-sheet .box.luck-unbought{color:#999}
   .character-sheet h2,.character-sheet h3,.character-sheet h4,.character-sheet .sheet-playbook{color:#111}
   .character-sheet .sheet-banner{border-bottom:2px solid #666}
   .character-sheet .stat-box,.character-sheet .move-card{background:#fff;border:1px solid #999;break-inside:avoid}

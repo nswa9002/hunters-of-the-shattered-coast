@@ -24,7 +24,8 @@ How to Play section and no Keeper content on this site.
   point-based: 15 points to spend, and every improvement is a stepper
   showing its current level — +1 to a rating = 1 point, and a rating can
   be raised more than once up to its listed max (the stepper shows the
-  rating's current value); +1 max luck = 1 point, up to 7; a move from
+  rating's current value); +1 max luck = 1 point, up to 7 (the first 3
+  luck are free); a move from
   a different playbook =
   3 points per level, as many levels as you can afford (one picker per
   level); any other
@@ -36,17 +37,17 @@ How to Play section and no Keeper content on this site.
   Own-move grants still sitting in a playbook's list (e.g. "Another
   Foretold move") are not shown as improvements any more, since your own
   book's moves are free ticks now. Press
-  **Build my sheet**. **Player sheet second:** a stylised parchment
-  character sheet — playbook banner and quote, big hunter name, photo
-  if uploaded, ratings as stat boxes (with any +1 improvements
+  **Build my sheet**. **Player sheet second:** a wanted-poster
+  character sheet — a big WANTED masthead, big hunter name, playbook
+  banner and quote, photo if uploaded, ratings as stat boxes (with any +1 improvements
   applied), harm/luck/experience/unstable trackers (the luck track
-  shows as many boxes as the hunter bought), My Moves as
+  always shows 7 boxes, with luck not bought marked as used), My Moves as
   readable cards (including any cross-playbook moves, marked with where
   they came from), gear, improvements taken
   with their point costs, and notes. There is no History section any
   more, and no Seasoned start section (no scar, famed deed, old debt,
-  signature treasure or powers carried over). Hunters start with no
-  luck — luck is bought in Improvements, 1 point per luck, up to 7.
+  signature treasure or powers carried over). Every hunter starts with
+  3 luck free; buy more in Improvements, 1 point per luck, up to 7.
   **Edit setup** goes back to setup keeping everything; **Print
   Sheet** prints only the finished sheet; **Print Blank Sheet** prints
   the chosen playbook's sheet with everything empty — blank name, look,
@@ -79,7 +80,7 @@ How to Play section and no Keeper content on this site.
   checkboxes or history.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
   dependencies. Save format: hunters carry `photo` (data URL), `luckMax`
-  (max luck bought, 0 for new hunters), `xMoveLevels` (cross-playbook
+  (max luck, 3 for new hunters — the first 3 are free), `xMoveLevels` (cross-playbook
   stepper level), `xMoves` (an array of cross-playbook picks, one per
   level), `allyCount` (allies bought through "Gain an ally", 2 points
   each), and `impRatings` (repeatable +1 rating counts); gear is carried
@@ -90,12 +91,12 @@ How to Play section and no Keeper content on this site.
   picks become `xMoveLevels` (with a default pick filled in for any level
   bought but never chosen), own-move picks are dropped (moves are
   unlimited and free now — the hunter keeps every move they picked), old
-  hunters keep a `luckMax` of 7 — which counts toward the 15-point
-  budget, so an old save with a full set of improvements may show as
-  over budget until it sheds some. Old scar /
+  hunters keep a `luckMax` of 7 — only the 4 points above the free 3
+  count toward the 15-point budget, so an old save with a full set of
+  improvements may show as over budget until it sheds some. Old scar /
   deed / debt / treasure / powers fields may linger in stored JSON; they
   are never rendered.
-- `style.css` — dark nautical styling, mobile-friendly, with a parchment
+- `style.css` — dark nautical styling, mobile-friendly, with a wanted-poster
   character sheet and a print stylesheet (Print Sheet prints only the
   finished sheet, light background, no wasted ink).
 - `playbooks.pdf` — the full 18-page playbook PDF for **the first 12
@@ -129,8 +130,10 @@ debt, signature treasure, powers carried over) and the "Your sheet keeps
 itself" section were removed 2026-11-16; improvements are now a
 15-point budget with +1 ratings at 1 point each, repeatable up to the
 listed max, and the last two improvements of every playbook's list
-were removed. Luck is no longer fixed: hunters start with 0 luck and
-buy it in Improvements, 1 point per luck up to 7, and every
+were removed. Luck: every hunter starts with 3 luck free and the
+track always shows 7 boxes (luck not bought is marked as used and
+cannot be spent); buy more in Improvements, 1 point per luck up to 7,
+and every
 improvement is now a stepper showing its current level (ratings show
 their current value; cross-playbook levels are uncapped; one-off
 improvements are level 0 or 1). "Gain an ally" counts allies instead

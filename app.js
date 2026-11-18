@@ -13,8 +13,9 @@
 // level: 2 points per ally, as many as you can afford. Moves are unlimited: tick as many of
 // your own playbook's moves as you like, and take as many moves from
 // other playbooks as you can afford. D&D weapons convert on the chart
-// in setup. Hunters start with no luck — luck is bought with
-// improvement points.
+// in setup. Every hunter starts with 3 luck free — buy more with
+// improvement points, up to 7. The luck track always shows 7 boxes;
+// luck not bought is marked as used and cannot be spent.
 (function () {
   'use strict';
   var STORE = 'hsc-hunters-v1';
@@ -38,7 +39,7 @@
     pb.moves.forEach(function (m, i) { if (m.fixed) moves.push(i); });
     return {
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '', photo: '',
-      ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 0, xp: 0, unstable: false,
+      ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 3, xp: 0, unstable: false,
       gear: [], moves: moves, notes: '', improvements: [], impRatings: {},
       xMoveLevels: 0, xMoves: [], allyCount: 0,
       trackers: {}, view: 'setup'
@@ -122,11 +123,13 @@
     // Every cross-playbook level needs a pick — fill in defaults.
     while (h.xMoves.length < h.xMoveLevels) h.xMoves.push(defaultXPick(pb));
     if (h.xMoves.length > h.xMoveLevels) h.xMoves.length = h.xMoveLevels;
-    // Luck: old saves had a fixed 7 luck — they keep it, and it counts
-    // toward the 15-point budget. New hunters start at 0.
+    // Luck: the track always shows 7 boxes. Every hunter starts with 3
+    // luck free; extra luck is bought (1 point per luck, up to 7) and
+    // only the bought part counts toward the 15-point budget. Old saves
+    // keep the luck they had, bumped up to 3 if they somehow had less.
     if (typeof h.luckMax !== 'number') h.luckMax = 7;
     if (h.luckMax > 7) h.luckMax = 7;
-    if (h.luckMax < 0) h.luckMax = 0;
+    if (h.luckMax < 3) h.luckMax = 3;
     if (h.luckUsed > h.luckMax) h.luckUsed = h.luckMax;
   }
   hunters.forEach(migrateHunter);
@@ -160,6 +163,23 @@
   function boxes(n, filled, label) {
     var out = '';
     for (var i = 0; i < n; i++) out += '<button type="button" class="box" data-box="' + label + '" data-i="' + i + '" aria-label="' + esc(label) + ' ' + (i + 1) + '">' + (i < filled ? '☒' : '☐') + '</button>';
+    return out;
+  }
+  // The luck track always shows 7 boxes. Luck not bought (7 − luckMax)
+  // renders marked and unclickable; the luckMax spendable boxes show
+  // empty (luck still available) or marked (luck spent in play). The
+  // spendable boxes carry data-i as their spent-index, so the click
+  // handler toggles luckUsed exactly as before. In blank mode the full
+  // track is empty, for handwriting.
+  function luckBoxes(h) {
+    if (blankMode) return boxes(7, 0, 'luck');
+    var max = h.luckMax || 0;
+    var out = '';
+    var i, j;
+    for (i = 0; i < 7 - max; i++) out += '<span class="box luck-unbought" aria-hidden="true">☒</span>';
+    for (j = 0; j < max; j++) {
+      out += '<button type="button" class="box" data-box="luck" data-i="' + j + '" aria-label="Luck ' + (j + 1) + '">' + (j < (h.luckUsed || 0) ? '☒' : '☐') + '</button>';
+    }
     return out;
   }
 
@@ -228,14 +248,14 @@
     return null;
   }
   // Points spent: rating +1s (1 each), cross-playbook levels (3 each),
-  // max luck bought (1 each), allies (2 each), and any one-off
+  // max luck above the free 3 (1 each), allies (2 each), and any one-off
   // improvements still listed (2, or 3 if advanced). Own moves are free
   // ticks now, so they cost nothing.
   function spentPoints(h, pb) {
     var items = impItems(pb), total = 0;
     Object.keys(h.impRatings || {}).forEach(function (r) { total += (h.impRatings[r] || 0) * 1; });
     total += (h.xMoveLevels || 0) * 3;
-    total += (h.luckMax || 0) * 1;
+    total += Math.max(0, (h.luckMax || 0) - 3) * 1;
     total += (h.allyCount || 0) * 2;
     (h.improvements || []).forEach(function (i) {
       var it = items[i];
@@ -261,11 +281,14 @@
     var kind = el.getAttribute('data-step-plus') || el.getAttribute('data-step-minus');
     var spent = spentPoints(h, pb);
     if (kind === 'luck') {
+      // Luck floor is 3 (the free starting luck) and ceiling is 7.
+      // Only luck above 3 costs points, so the spent check in the
+      // buy branch charges exactly 1 point per extra luck.
       var cur = h.luckMax || 0;
       if (dir > 0) {
         if (cur >= 7 || spent + 1 > IMP_BUDGET) return;
         h.luckMax = cur + 1;
-      } else if (cur > 0) {
+      } else if (cur > 3) {
         h.luckMax = cur - 1;
         if (h.luckUsed > h.luckMax) h.luckUsed = h.luckMax;
       }
@@ -418,7 +441,8 @@
 
     // Improvements: point-based, 15-point budget. EVERY improvement is a
     // stepper showing its current level, and every stepper respects a max:
-    // +1 ratings (1 pt, up to the listed max), max luck (1 pt, up to 7),
+    // +1 ratings (1 pt, up to the listed max), max luck (1 pt, up to 7;
+    // the first 3 are free),
     // cross-playbook levels (3 pts, no cap — the budget is the limit),
     // "Gain an ally" (2 pts per ally, no cap — the stepper counts allies),
     // one-off improvements (2 pts, or 3 if advanced — level 0 or 1).
@@ -428,18 +452,19 @@
     // the playbook's own (trimmed) list does not already have one.
     var baseVals = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0]);
     function fmtVal(v) { return (v >= 0 ? '+' : '') + v; }
-    function stepperRow(label, levelText, level, max, cost, kind, idx) {
+    function stepperRow(label, levelText, level, max, cost, kind, idx, min) {
       var afford = spent + cost <= IMP_BUDGET;
       var minusAttrs = 'data-step-minus="' + kind + '"' + (idx != null ? ' data-idx="' + idx + '"' : '');
       var plusAttrs = 'data-step-plus="' + kind + '"' + (idx != null ? ' data-idx="' + idx + '"' : '');
       return '<li class="imp-stepper"><span>' + label + ' <span class="imp-cost">' + cost + (cost === 1 ? ' pt' : ' pts') + ' each</span></span> ' +
-        '<span class="stepper-btns"><button type="button" ' + minusAttrs + (level <= 0 ? ' disabled' : '') + ' aria-label="Decrease">−</button>' +
+        '<span class="stepper-btns"><button type="button" ' + minusAttrs + (level <= (min || 0) ? ' disabled' : '') + ' aria-label="Decrease">−</button>' +
         '<span class="step-level">' + levelText + '</span>' +
         '<button type="button" ' + plusAttrs + (((max != null && level >= max) || !afford) ? ' disabled' : '') + ' aria-label="Increase">+</button></span></li>';
     }
-    // Luck first: every hunter buys their own luck, 1 point per luck.
+    // Luck first: every hunter starts with 3 luck free; extra luck is
+    // 1 point per luck, up to 7 — the stepper cannot go below 3.
     var luckMax = h.luckMax || 0;
-    var impHtml = stepperRow('<strong>+1 max luck</strong> — Luck ' + luckMax + ' of 7', 'Luck ' + luckMax, luckMax, 7, 1, 'luck', null);
+    var impHtml = stepperRow('<strong>+1 max luck</strong> — Luck ' + luckMax + ' of 7 (first 3 free)', 'Luck ' + luckMax, luckMax, 7, 1, 'luck', null, 3);
     impHtml += items.map(function (g, i) {
       var info = impInfo(g);
       // Own-move grants are not improvements any more: your own book's
@@ -528,7 +553,7 @@
       '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want, and from other playbooks through Improvements below. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
       '<h3>Improvements — 15 points to spend</h3>' +
-      '<p class="muted">Every improvement is a stepper — use + and − to set its level. Costs: +1 to a rating = 1 point, up to the max shown · +1 max luck = 1 point, up to 7 · Gain an ally = 2 points per ally, as many as you can afford · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points per level, as many levels as you can afford. Your own playbook\u2019s moves are free — tick as many as you like above.</p>' +
+      '<p class="muted">Every improvement is a stepper — use + and − to set its level. Costs: +1 to a rating = 1 point, up to the max shown · Luck: every hunter starts with 3 free; +1 max luck = 1 point, up to 7 · Gain an ally = 2 points per ally, as many as you can afford · any other improvement = 2 points · an advanced improvement = 3 points · a move from a different playbook = 3 points per level, as many levels as you can afford. Your own playbook\u2019s moves are free — tick as many as you like above.</p>' +
       pointsLine +
       '<ul class="checklist">' + impHtml + '</ul>' +
       xPickerHtml +
@@ -555,7 +580,8 @@
       var it = items[i];
       if (it) pickedImp.push(it + ' (' + impInfo(it).cost + ' pts)');
     });
-    if ((h.luckMax || 0) > 0) pickedImp.push('Luck ' + h.luckMax + ' (' + h.luckMax + ' pt' + (h.luckMax === 1 ? '' : 's') + ')');
+    // Only luck above the free 3 costs points, so only that part is listed.
+    if ((h.luckMax || 0) > 3) pickedImp.push('Luck ' + h.luckMax + ' (' + (h.luckMax - 3) + ' pt' + ((h.luckMax - 3) === 1 ? '' : 's') + ')');
     if ((h.allyCount || 0) > 0) {
       var allyItem = null;
       for (var ai = 0; ai < items.length; ai++) if (impInfo(items[ai]).type === 'ally') { allyItem = items[ai]; break; }
@@ -569,10 +595,11 @@
     $('#sheet').innerHTML =
       '<article class="sheet character-sheet">' +
       '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button></p>' +
-      '<div class="sheet-banner"><p class="sheet-playbook">' + esc(pb.name) + '</p>' +
-      '<p class="sheet-quote">\u201c' + esc(pb.quote) + '\u201d</p></div>' +
+      '<p class="wanted-masthead">WANTED</p>' +
       '<h2 class="sheet-name">' + (blankMode ? '<span class="blank-line name-line">&nbsp;</span>' : esc(h.name || 'Unnamed hunter')) + '</h2>' +
       (h.pronouns ? '<p class="sheet-sub">' + esc(h.pronouns) + '</p>' : '') +
+      '<div class="sheet-banner"><p class="sheet-playbook">' + esc(pb.name) + '</p>' +
+      '<p class="sheet-quote">\u201c' + esc(pb.quote) + '\u201d</p></div>' +
       (h.photo && !blankMode ? '<p class="sheet-photo-wrap"><img class="sheet-photo" src="' + esc(h.photo) + '" alt="Hunter portrait"></p>' : '') +
       (blankMode ? '<p class="sheet-look"><strong>Look:</strong> <span class="blank-line">&nbsp;</span></p>' : (h.look ? '<p class="sheet-look"><strong>Look:</strong> ' + esc(h.look) + '</p>' : '')) +
       '<h3 class="sheet-h">Ratings</h3><div class="stat-row">' + statBoxesHtml(h, pb) + '</div>' +
@@ -580,7 +607,7 @@
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<p class="tracker-row"><strong>Harm</strong> ' + boxes(7, h.harm, 'harm') + ' <span class="muted">At 4+, unstable. ' +
       '<label><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> Unstable</label></span></p>' +
-      '<p class="tracker-row"><strong>Luck</strong> ' + boxes(blankMode ? 7 : (h.luckMax || 0), Math.min(h.luckUsed || 0, blankMode ? 7 : (h.luckMax || 0)), 'luck') + (((h.luckMax || 0) === 0 && !blankMode) ? ' <span class="muted">No luck bought yet.</span>' : '') + ' <span class="muted">Boxes marked = luck spent. Luck is bought in Improvements — 1 point per luck, up to 7.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
+      '<p class="tracker-row"><strong>Luck</strong> ' + luckBoxes(h) + ' <span class="muted">Boxes marked = luck spent. Everyone starts with 3 luck; luck not bought is marked and cannot be spent. Buy more in Improvements — 1 point per luck, up to 7.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></p>' +
       '<p class="tracker-row"><strong>Experience</strong> ' + boxes(5, h.xp, 'xp') + ' <span class="muted">Fill 5 to level up.</span></p>' +
       trackerHtml(h, pb) +
       '</div>' +
