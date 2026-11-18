@@ -26,19 +26,22 @@ How to Play section and no Keeper content on this site.
   character sheet — a big WANTED masthead, big hunter name, playbook
   banner and quote, photo if uploaded, ratings as stat boxes (with any +1 improvements
   applied), a clearer Standing section — harm, luck and experience each
-  as its own labelled poster row with larger boxes, and the Unstable line
+  as its own labelled poster row with larger boxes, marked with
+  rubber-stamp glyphs (a skull for harm, a star for experience and luck),
+  and the Unstable line
   prominent under Harm (at 4+ harm you are unstable) — the luck track
-  always shows 7 boxes, with boxes marked used meaning luck already spent
-  in past adventures, a Level Up button next to Experience (enabled at 5
+  always shows 7 boxes: you have 5 luck, and two boxes are already marked,
+  spent in past adventures, a Level Up button next to Experience (enabled at 5
   experience — it walks you through picking one improvement, step by
   step), your level, My Moves as
   readable cards (including any cross-playbook moves, marked with where
-  they came from), gear, improvements taken,
-  and notes. The Far-Traveller's Expatriation feature is a typeable box
+  they came from), gear and improvements taken.
+  The Far-Traveller's Expatriation feature is a typeable box
   with a Hint button showing the options from the playbook. There is no History section any
-  more, and no Seasoned start section (no scar, famed deed, old debt,
-  signature treasure or powers carried over). Every hunter starts with
-  3 luck free and earns more by levelling up, up to 7.
+  more, no Notes section, and no Seasoned start section (no scar, famed deed, old debt,
+  signature treasure or powers carried over). Every hunter has 5 luck —
+  two boxes already marked, spent in past adventures — and luck cannot
+  be earned any more.
   **Edit setup** goes back to setup keeping everything; **Print
   Sheet** prints only the finished sheet; **Print Blank Sheet** prints
   the chosen playbook's sheet with everything empty — blank name, look,
@@ -66,8 +69,9 @@ How to Play section and no Keeper content on this site.
   checkboxes or history.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
   dependencies. Save format: hunters carry `photo` (data URL), `level` (1 for new
-  hunters), `luckMax` (max luck, 3 for new hunters — the first 3 are
-  free), `xMoveLevels` (cross-playbook moves taken through level-ups),
+  hunters), `luckMax` (fixed at 5 for every hunter — the track shows 7
+  boxes, two marked used from past adventures), `xMoveLevels`
+  (cross-playbook moves taken through level-ups),
   `xMoves` (an array of cross-playbook picks, one per level), `allyCount`
   (allies gained through "Gain an ally"), `impRatings` (repeatable +1
   rating counts), and `expatriation` (the Far-Traveller's typed answer);
@@ -79,8 +83,8 @@ How to Play section and no Keeper content on this site.
   picks become `xMoveLevels` (with a default pick filled in for any level
   bought but never chosen), own-move picks are dropped (moves are
   unlimited and free now — the hunter keeps every move they picked), old
-  hunters keep their `luckMax` and whatever improvements they already
-  bought, and `level` defaults to 1. Old scar /
+  hunters are set to 5 luck (`luckUsed` clamped to 5) and keep whatever
+  improvements they already bought, and `level` defaults to 1. Old scar /
   deed / debt / treasure / powers fields may linger in stored JSON; they
   are never rendered.
 - `style.css` — dark nautical styling, mobile-friendly, with a wanted-poster
@@ -122,9 +126,10 @@ rulebook, no points budget. Ratings are repeatable up to the listed max;
 "Gain an ally" adds one ally each time (Far-Traveller, Star-Crossed,
 Seeker and Showmaster); the differently-worded ally items on the
 Fae-Blooded, Vessel and Broadsheet stay one-off. Luck: every hunter
-starts with 3 luck free and the track always shows 7 boxes (boxes marked
-used are luck already spent in past adventures); earn more by levelling
-up, up to 7.
+has 5 luck and the track always shows 7 boxes (two boxes already
+marked, spent in past adventures); luck cannot be earned any more.
+The Notes section was removed 2026-11-17 — hunters arrive fully
+developed from D&D, so there is no background-info writing space.
 Moves are unlimited: as many of your own playbook's moves as you like, free, and moves from other
 playbooks come through level-ups. The dice tray was removed 2026-11-17.
 

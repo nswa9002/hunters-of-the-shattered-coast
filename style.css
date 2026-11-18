@@ -96,6 +96,13 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .movepick input{margin-top:.35rem;flex:none}
 .box{background:none;border:none;color:var(--gold);font-size:1.3rem;cursor:pointer;padding:0 .15rem;line-height:1}
 .box:hover{color:#f0c65c}
+/* Tracker marks are rubber stamps: a skull for harm, a star for
+   experience, playbook trackers and luck spent in play. The stamp is
+   bold, ink-coloured and slightly rotated, like a rubber stamp. */
+.box .stamp{display:inline-block;font-style:normal;transform:rotate(-5deg)}
+.box .stamp-harm{color:#c65b4a}
+.box .stamp-xp,.box .stamp-luck{color:var(--gold)}
+.box .stamp-past{color:#8a7f66;opacity:.55}
 .trackers p{margin:.6rem 0}
 .muted{color:var(--muted);font-size:.92rem}
 .mymoves li{margin:.4rem 0}
@@ -165,7 +172,10 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .tracker-row{margin:.7rem 0}
 .character-sheet .box{color:#7a5c14}
 .character-sheet .box:hover{color:#a8822e}
-.character-sheet .box.luck-unbought{color:#b09b6d;opacity:.6;text-decoration:line-through;cursor:default}
+.character-sheet .box .stamp-harm{color:#a33c2e}
+.character-sheet .box .stamp-xp,.character-sheet .box .stamp-luck{color:#7a5c14}
+.character-sheet .box.luck-unbought{color:#b09b6d;opacity:.6;cursor:default}
+.character-sheet .box.luck-unbought .stamp-past{color:#a08c5f;opacity:.6}
 .character-sheet .move-cards{display:grid;gap:.7rem;margin:.7rem 0}
 .character-sheet .move-card{
   background:#fbf3dd;border:1px solid #c9a94f;border-left:5px solid #a8822e;
@@ -194,6 +204,8 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   .character-sheet .muted,.character-sheet .sheet-sub,.character-sheet .sheet-quote{color:#333}
   .character-sheet .stat-name{color:#333}
   .character-sheet .box{color:#111}
+  .character-sheet .box .stamp{color:#111}
+  .character-sheet .box.luck-unbought .stamp-past{color:#777}
   .sheet-photo{max-width:140px;max-height:140px;border:1px solid #666}
   .character-sheet .move-card.xmove{border-left-color:#666}
 }

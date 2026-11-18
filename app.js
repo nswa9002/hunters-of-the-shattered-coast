@@ -7,15 +7,16 @@
 // ones open in setup — nothing is lost in the migration.
 // Improvements come from levelling up, as per the rulebook: fill all 5
 // experience boxes, tap Level Up on your sheet, and pick ONE improvement
-// from your playbook's list (plus +1 Luck, up to 7). One improvement per
-// level — no points, no budget. Ratings can be raised more than once, up
-// to their listed max; "Gain an ally" adds one ally each time; a move
-// from another playbook can be taken again at a later level. Moves are
-// unlimited: tick as many of your own playbook's moves as you like.
-// D&D weapons convert on the chart in setup. Every hunter starts with
-// 3 luck free. The luck track always shows 7 boxes; boxes marked used
-// are luck already spent in past adventures — luck you never earned, or
-// luck you have spent.
+// from your playbook's list. One improvement per level — no points, no
+// budget. Ratings can be raised more than once, up to their listed max;
+// "Gain an ally" adds one ally each time; a move from another playbook
+// can be taken again at a later level. Moves are unlimited: tick as many
+// of your own playbook's moves as you like. D&D weapons convert on the
+// chart in setup. Every hunter has 5 luck. The luck track always shows
+// 7 boxes; two boxes are already marked used — luck spent in past
+// adventures — and luck can no longer be earned. Tracker boxes are
+// marked with rubber-stamp glyphs: a skull for harm, a star for
+// experience and luck.
 (function () {
   'use strict';
   var STORE = 'hsc-hunters-v1';
@@ -39,8 +40,8 @@
     pb.moves.forEach(function (m, i) { if (m.fixed) moves.push(i); });
     return {
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '', photo: '',
-      ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 3, xp: 0, level: 1, unstable: false,
-      gear: [], moves: moves, notes: '', improvements: [], impRatings: {},
+      ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 5, xp: 0, level: 1, unstable: false,
+      gear: [], moves: moves, improvements: [], impRatings: {},
       xMoveLevels: 0, xMoves: [], allyCount: 0,
       trackers: {}, expatriation: '', view: 'setup'
     };
@@ -125,13 +126,11 @@
     // Every cross-playbook level needs a pick — fill in defaults.
     while (h.xMoves.length < h.xMoveLevels) h.xMoves.push(defaultXPick(pb));
     if (h.xMoves.length > h.xMoveLevels) h.xMoves.length = h.xMoveLevels;
-    // Luck: the track always shows 7 boxes. Every hunter starts with 3
-    // luck free; extra luck is earned by levelling up, up to 7. Old saves
-    // keep the luck they had, bumped up to 3 if they somehow had less.
-    if (typeof h.luckMax !== 'number') h.luckMax = 7;
-    if (h.luckMax > 7) h.luckMax = 7;
-    if (h.luckMax < 3) h.luckMax = 3;
-    if (h.luckUsed > h.luckMax) h.luckUsed = h.luckMax;
+    // Luck: the track always shows 7 boxes. Every hunter has 5 luck;
+    // 2 boxes are always marked used — luck spent in past adventures.
+    // Luck can no longer be earned, so old saves are set to 5 either way.
+    h.luckMax = 5;
+    if (h.luckUsed > 5) h.luckUsed = 5;
   }
   hunters.forEach(migrateHunter);
   function active() {
@@ -161,25 +160,33 @@
     if (parts.length < 2) parts = text.split(';').map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 1; });
     return parts;
   }
-  function boxes(n, filled, label) {
+  // Tracker boxes are rubber-stamp marks, not plain checkboxes: a skull
+  // stamps harm, a star stamps experience (and playbook trackers) and
+  // luck spent in play. Unmarked boxes stay empty squares. The `mark`
+  // glyph is only the picture — the button, data attributes and click
+  // handler are unchanged.
+  function boxes(n, filled, label, mark) {
+    mark = mark || '★';
+    var kind = label === 'harm' ? 'harm' : label === 'xp' ? 'xp' : 'tracker';
     var out = '';
-    for (var i = 0; i < n; i++) out += '<button type="button" class="box" data-box="' + label + '" data-i="' + i + '" aria-label="' + esc(label) + ' ' + (i + 1) + '">' + (i < filled ? '☒' : '☐') + '</button>';
+    for (var i = 0; i < n; i++) out += '<button type="button" class="box box-' + kind + '" data-box="' + label + '" data-i="' + i + '" aria-label="' + esc(label) + ' ' + (i + 1) + '">' + (i < filled ? '<span class="stamp stamp-' + kind + '">' + mark + '</span>' : '☐') + '</button>';
     return out;
   }
-  // The luck track always shows 7 boxes. Luck not bought (7 − luckMax)
-  // renders marked and unclickable; the luckMax spendable boxes show
-  // empty (luck still available) or marked (luck spent in play). The
-  // spendable boxes carry data-i as their spent-index, so the click
-  // handler toggles luckUsed exactly as before. In blank mode the full
-  // track is empty, for handwriting.
+  // The luck track always shows 7 boxes. Every hunter has 5 luck, so
+  // the first 2 boxes are always marked used — luck spent in past
+  // adventures — rendered as faded, unclickable ✕ stamps. The 5
+  // spendable boxes show empty (luck still available) or a star stamp
+  // (luck spent in play). The spendable boxes carry data-i as their
+  // spent-index, so the click handler toggles luckUsed exactly as before.
+  // In blank mode the full track is empty, for handwriting.
   function luckBoxes(h) {
     if (blankMode) return boxes(7, 0, 'luck');
     var max = h.luckMax || 0;
     var out = '';
     var i, j;
-    for (i = 0; i < 7 - max; i++) out += '<span class="box luck-unbought" aria-hidden="true">☒</span>';
+    for (i = 0; i < 7 - max; i++) out += '<span class="box luck-unbought" aria-hidden="true"><span class="stamp stamp-past">✕</span></span>';
     for (j = 0; j < max; j++) {
-      out += '<button type="button" class="box" data-box="luck" data-i="' + j + '" aria-label="Luck ' + (j + 1) + '">' + (j < (h.luckUsed || 0) ? '☒' : '☐') + '</button>';
+      out += '<button type="button" class="box box-luck" data-box="luck" data-i="' + j + '" aria-label="Luck ' + (j + 1) + '">' + (j < (h.luckUsed || 0) ? '<span class="stamp stamp-luck">★</span>' : '☐') + '</button>';
     }
     return out;
   }
@@ -408,7 +415,6 @@
       '<h3>Moves — as many as you want</h3>' +
       '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want. Moves from other playbooks come when you level up. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
-      '<h3>Notes</h3><textarea data-field="notes" rows="5" placeholder="Allies, enemies, and anything else worth remembering…">' + esc(h.notes) + '</textarea>' +
       '<p><button type="button" class="primary big" data-action="build-sheet">Build my sheet — see my sheet</button></p>' +
       '</article>';
     renderPicker();
@@ -433,7 +439,6 @@
       var it = items[i];
       if (it) pickedImp.push(it);
     });
-    if ((h.luckMax || 0) > 3) pickedImp.push('Luck ' + h.luckMax);
     if ((h.allyCount || 0) > 0) {
       var allyItem = null;
       for (var ai = 0; ai < items.length; ai++) if (impInfo(items[ai]).type === 'ally') { allyItem = items[ai]; break; }
@@ -457,9 +462,9 @@
       '<p class="sheet-ratings-line muted">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + (bonus && !blankMode ? ' · Improvements: ' + esc(bonus) : '') + '</p>' +
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<div class="tracker-row harm-row"><div class="tracker-head"><strong>Harm</strong><span class="tracker-note">At 4+ harm you are unstable — mark the Unstable line below.</span></div>' +
-      '<div class="tracker-boxes">' + boxes(7, h.harm, 'harm') + '</div>' +
+      '<div class="tracker-boxes">' + boxes(7, h.harm, 'harm', '☠') + '</div>' +
       '<label class="unstable-line"><input type="checkbox" data-field="unstable"' + (h.unstable ? ' checked' : '') + '> <strong>Unstable</strong> — at 4+ harm you are unstable; your wounds will get worse unless treated.</label></div>' +
-      '<div class="tracker-row luck-row"><div class="tracker-head"><strong>Luck</strong><span class="tracker-note">Boxes marked used are luck already spent in past adventures — luck you never earned, or luck you have spent. You start with 3 luck and earn more when you level up.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></div>' +
+      '<div class="tracker-row luck-row"><div class="tracker-head"><strong>Luck</strong><span class="tracker-note">You have 5 luck. Two boxes are already marked — luck spent in past adventures — and you cannot earn more luck.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></div>' +
       '<div class="tracker-boxes">' + luckBoxes(h) + '</div></div>' +
       '<div class="tracker-row xp-row"><div class="tracker-head"><strong>Experience</strong><span class="tracker-note">' + (blankMode ? 'Fill 5 to level up.' : ((h.xp || 0) >= 5 ? 'All 5 boxes are filled — tap Level Up to choose one improvement.' : 'Fill all 5 boxes to level up — mark one whenever a roll totals 6 or less, or a move tells you to.')) + '</span></div>' +
       '<div class="tracker-boxes">' + boxes(5, h.xp, 'xp') + '</div>' +
@@ -470,7 +475,6 @@
       '<h3 class="sheet-h">My Moves</h3>' + myMovesHtml(h, pb) +
       '<h3 class="sheet-h">Gear</h3>' + (blankMode ? '<div class="blank-lines" aria-label="Write your gear here"><span></span><span></span><span></span></div>' : ((h.gear && h.gear.length) ? '<ul class="sheet-list"><li>' + h.gear.map(esc).join('</li><li>') + '</li></ul>' : '<p class="muted">No gear carried — go to Edit setup to add gear from the weapon chart.</p>')) +
       (pickedImp.length ? '<h3 class="sheet-h">Improvements taken</h3><p class="muted">Earned by levelling up — one improvement per level.</p><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
-      (h.notes ? '<h3 class="sheet-h">Notes</h3><p>' + esc(h.notes).replace(/\n/g, '<br>') + '</p>' : '') +
       '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
       '</article>';
     renderSelect();
@@ -535,8 +539,6 @@
   var levelUp = null;
   function levelUpOptions(h, pb) {
     var opts = [];
-    var luckMax = h.luckMax || 0;
-    opts.push({ type: 'luck', label: '+1 Luck', note: 'Luck ' + luckMax + ' of 7 — earn luck you have not got yet', disabled: luckMax >= 7, why: 'Already at 7 luck' });
     var items = impItems(pb);
     var hasX = false;
     items.forEach(function (g, i) {
@@ -564,7 +566,6 @@
   function levelUpSummary(h, pb) {
     var o = levelUp;
     if (!o) return '';
-    if (o.type === 'luck') return 'You will gain +1 Luck — your luck becomes ' + Math.min(7, (h.luckMax || 0) + 1) + ' of 7.';
     if (o.type === 'rating') {
       var base = parseRatings(pb.ratings[h.ratingIdx] || pb.ratings[0])[o.rating];
       var cur = (base == null ? 0 : base) + ((h.impRatings && h.impRatings[o.rating]) || 0) + 1;
@@ -624,10 +625,7 @@
     var h = active(), pb = playbook(h.playbook);
     var o = levelUp;
     if (!o) return;
-    if (o.type === 'luck') {
-      h.luckMax = Math.min(7, (h.luckMax || 0) + 1);
-      if (h.luckUsed > h.luckMax) h.luckUsed = h.luckMax;
-    } else if (o.type === 'rating') {
+    if (o.type === 'rating') {
       if (!h.impRatings) h.impRatings = {};
       h.impRatings[o.rating] = (h.impRatings[o.rating] || 0) + 1;
     } else if (o.type === 'ownmove') {
