@@ -382,7 +382,7 @@
       '<h3>Ratings — pick one line</h3><ul class="checklist">' + ratingHtml + '</ul>' +
       '<p class="muted">Ratings improve when you level up — fill all 5 experience boxes on your sheet, then tap Level Up and pick +1 to a rating (up to the max shown).</p>' +
       '<h3>Moves — as many as you want</h3>' +
-      '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want. Moves from other playbooks come when you level up. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Work Sorcery.</p>' +
+      '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want. Moves from other playbooks come when you level up. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Do Magic.</p>' +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
       '<p><button type="button" class="primary big" data-action="build-sheet">Build my sheet — see my sheet</button></p>' +
       '</article>';

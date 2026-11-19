@@ -76,10 +76,10 @@ How to Play section and no Keeper content on this site.
   it is now the home page.)
 - `reference.html` — **Moves Reference**: the player-facing condensed
   reference sheets — Hunter Agenda, all 8 basic moves in full (10+ /
-  7-9 / 12+ and the Work Sorcery glitch list) and the Alternative Weird moves,
+  7-9 / 12+ and the Do Magic glitch list),
   laid out as easy-to-read tables — one compact table per move, with a
-  row for each result band (10+ / 7–9 / Miss / 12+), plus the Work
-  Sorcery effects and glitches as tables — and harm / armour / luck /
+  row for each result band (10+ / 7–9 / Miss / 12+), plus the Do Magic
+  effects and glitches as tables — and harm / armour / luck /
   recovery / levelling / end of session (player side only).
 - `data.js` — all 28 playbooks' data (quotes, looks, ratings, moves, gear,
   history, improvements), shared by the Hunters page. 236 moves total:
@@ -137,6 +137,17 @@ How to Play section and no Keeper content on this site.
 - `playbooks.pdf` — the full 18-page playbook PDF for **the first 12
   playbooks only**. The site now covers 28 playbooks; the PDF is kept as
   the printable version of the original 12.
+
+  **2026-11-19 changes:** the four basic moves were renamed to **Act
+  Under Pressure**, **Investigate**, **Read a Bad Situation** and **Do
+  Magic** — renamed everywhere (reference tables, move texts, setup
+  note). The Alternative Weird section was removed
+  from the Moves Reference page; the 8 Alternative Weird moves still
+  live in their home playbooks (the 6 magic playbooks) and in the setup
+  moves picker. A full PDF of all 28 playbooks, **The Playbook**
+  (`the-playbook.pdf`, original 12 first then the 16 new), was built
+  2026-11-19 from the current data; it is not linked from the site and
+  does not replace `playbooks.pdf`.
 
 ## Saving (Hunters page)
 

@@ -88,7 +88,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Found Property",
-    "text": "You “found” a magical trinket and kept it (pick one): a warding amulet (1-armour, magic, recharges at dawn), a lucky charm (spend it as one luck point, once), a stolen spellbook (+1 forward to work sorcery when studied), a skeleton key (opens any lock, even sealed by sorcery), a whispering imp-stone (answers one yes/no question a day, lies when bored).",
+    "text": "You “found” a magical trinket and kept it (pick one): a warding amulet (1-armour, magic, recharges at dawn), a lucky charm (spend it as one luck point, once), a stolen spellbook (+1 forward to do magic when studied), a skeleton key (opens any lock, even sealed by sorcery), a whispering imp-stone (answers one yes/no question a day, lies when bored).",
     "fixed": false
    },
    {
@@ -150,7 +150,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Voice from Above",
-    "text": "At the start of each voyage, roll +Weird. On 10+ your patrons set you a simple task and you may ask one Search for Clues question freely. On 7–9 the task is hard. On a miss, the task is terrible. Refuse or fail it, and this move sleeps until you atone.",
+    "text": "At the start of each voyage, roll +Weird. On 10+ your patrons set you a simple task and you may ask one Investigate question freely. On 7–9 the task is hard. On a miss, the task is terrible. Refuse or fail it, and this move sleeps until you atone.",
     "fixed": false
    },
    {
@@ -202,7 +202,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Your haven — pick three",
-    "text": "Chart room: +1 forward to search for clues about voyages and places. · Forbidden library: +1 forward to work sorcery prepared from its tomes. · Workshop: tools to mend, forge and tinker. · Healing ward: beds and herbs; the wounded recover here. · Hidden cove: your ship berths unseen. · Watchful servants / old crew. · Warded vault for cursed things."
+    "text": "Chart room: +1 forward to investigate voyages and places. · Forbidden library: +1 forward to do magic prepared from its tomes. · Workshop: tools to mend, forge and tinker. · Healing ward: beds and herbs; the wounded recover here. · Hidden cove: your ship berths unseen. · Watchful servants / old crew. · Warded vault for cursed things."
    },
    {
     "title": "Gear — pick three hunter's tools",
@@ -212,7 +212,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Read About This",
-    "text": "Roll +Sharp instead of +Cool to keep your nerve when the danger is something you have studied — which is most dangers.",
+    "text": "Roll +Sharp instead of +Cool to act under pressure when the danger is something you have studied — which is most dangers.",
     "fixed": false
    },
    {
@@ -222,7 +222,7 @@ const PLAYBOOKS = [
    },
 {
     "name": "Prepared Mind",
-    "text": "When you search for clues, on a miss you may instead recall one relevant fact from your studies — true, but incomplete.",
+    "text": "When you investigate, on a miss you may instead recall one relevant fact from your studies — true, but incomplete.",
     "fixed": false
    },
    {
@@ -280,7 +280,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "The Missing Piece",
-    "text": "When you search for clues and get to ask a question, you may also ask: What here does not belong? The answer is always worth the asking.",
+    "text": "When you investigate and get to ask a question, you may also ask: What here does not belong? The answer is always worth the asking.",
     "fixed": false
    },
    {
@@ -409,7 +409,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Unholy Speed",
-    "text": "You move like the tide coming in: cross any deck, cliff or rigging in a breath, and take +1 when you keep your nerve to escape.",
+    "text": "You move like the tide coming in: cross any deck, cliff or rigging in a breath, and take +1 when you act under pressure to escape.",
     "fixed": false
    },
    {
@@ -424,42 +424,42 @@ const PLAYBOOKS = [
    },
    {
     "name": "Illuminated \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Past Lives \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
+    "text": "Alternative Weird: take this instead of Do Magic. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
     "fixed": false
    },
    {
     "name": "Sensitive \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Empath \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to keep your nerve first.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to act under pressure first.",
     "fixed": false
    },
    {
     "name": "No Limits \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
     "fixed": false
    },
    {
     "name": "Telekinesis \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
+    "text": "Alternative Weird: take this instead of Do Magic. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
     "fixed": false
    },
    {
     "name": "Trust Your Gut \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
+    "text": "Alternative Weird: take this instead of Do Magic. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
     "fixed": false
    },
    {
     "name": "Strange Craft \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
+    "text": "Alternative Weird: take this instead of Do Magic (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
     "fixed": false
    }
   ],
@@ -569,7 +569,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Unfazeable",
-    "text": "Take +1 to keep your nerve, always. Boarding actions, burning ships and angry admirals are, professionally, Tuesdays.",
+    "text": "Take +1 to act under pressure, always. Boarding actions, burning ships and angry admirals are, professionally, Tuesdays.",
     "fixed": false
    },
    {
@@ -606,7 +606,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Combat magic",
-    "text": "Your war-spells are weapons: combine a base with an effect. Bases: blast (2-harm close magic), bolt (2-harm far magic), ball (2-harm close area magic), wall of force or flame (1-harm close area warding). Effects: fire, lightning, frost, wind, entangle. When you fight with them, roll +Weird instead of +Tough; the Chronicler may make you keep your nerve first when casting under fire."
+    "text": "Your war-spells are weapons: combine a base with an effect. Bases: blast (2-harm close magic), bolt (2-harm far magic), ball (2-harm close area magic), wall of force or flame (1-harm close area warding). Effects: fire, lightning, frost, wind, entangle. When you fight with them, roll +Weird instead of +Tough; the Chronicler may make you act under pressure first when casting under fire."
    },
    {
     "title": "Tools and techniques your magic needs (pick three)",
@@ -620,7 +620,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Trained for War",
-    "text": "Your war-magic needs three tools — picked from precise gestures, words of power, a focus, powders and sea-charms, stillness, or blood. With two of your three tools ready, you may ignore the third when you work sorcery.",
+    "text": "Your war-magic needs three tools — picked from precise gestures, words of power, a focus, powders and sea-charms, stillness, or blood. With two of your three tools ready, you may ignore the third when you do magic.",
     "fixed": false
    },
    {
@@ -645,42 +645,42 @@ const PLAYBOOKS = [
    },
    {
     "name": "Illuminated \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Past Lives \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
+    "text": "Alternative Weird: take this instead of Do Magic. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
     "fixed": false
    },
    {
     "name": "Sensitive \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Empath \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to keep your nerve first.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to act under pressure first.",
     "fixed": false
    },
    {
     "name": "No Limits \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
     "fixed": false
    },
    {
     "name": "Telekinesis \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
+    "text": "Alternative Weird: take this instead of Do Magic. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
     "fixed": false
    },
    {
     "name": "Trust Your Gut \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
+    "text": "Alternative Weird: take this instead of Do Magic. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
     "fixed": false
    },
    {
     "name": "Strange Craft \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
+    "text": "Alternative Weird: take this instead of Do Magic (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
     "fixed": false
    }
   ],
@@ -717,7 +717,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Mind to Mind",
-    "text": "Read another's thoughts and place words in their mind. You may search for clues, read a room or persuade without speaking a word — though folk notice the wrongness of it afterwards.",
+    "text": "Read another's thoughts and place words in their mind. You may investigate, read a bad situation or persuade without speaking a word — though folk notice the wrongness of it afterwards.",
     "fixed": false
    },
    {
@@ -727,7 +727,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Hex",
-    "text": "When you work sorcery on a foe, you may also lay one hex: they stumble at the worst moment, their weapon fails once, or ill luck dogs their next roll (−1 forward).",
+    "text": "When you do magic on a foe, you may also lay one hex: they stumble at the worst moment, their weapon fails once, or ill luck dogs their next roll (−1 forward).",
     "fixed": false
    },
    {
@@ -747,42 +747,42 @@ const PLAYBOOKS = [
    },
    {
     "name": "Illuminated \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Past Lives \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
+    "text": "Alternative Weird: take this instead of Do Magic. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
     "fixed": false
    },
    {
     "name": "Sensitive \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Empath \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to keep your nerve first.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to act under pressure first.",
     "fixed": false
    },
    {
     "name": "No Limits \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
     "fixed": false
    },
    {
     "name": "Telekinesis \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
+    "text": "Alternative Weird: take this instead of Do Magic. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
     "fixed": false
    },
    {
     "name": "Trust Your Gut \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
+    "text": "Alternative Weird: take this instead of Do Magic. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
     "fixed": false
    },
    {
     "name": "Strange Craft \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
+    "text": "Alternative Weird: take this instead of Do Magic (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
     "fixed": false
    }
   ],
@@ -840,7 +840,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Fury Sworn",
-    "text": "Name the oath you swore over the graves. While you keep it, take +1 to keep your nerve against fear and sorcery. Break it, and lose 1 luck to the sea.",
+    "text": "Name the oath you swore over the graves. While you keep it, take +1 to act under pressure against fear and sorcery. Break it, and lose 1 luck to the sea.",
     "fixed": false
    }
   ],
@@ -867,7 +867,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Area of Study — pick one focus",
-    "text": "Physics & the Heavens: you sense when something bends the laws of the world. When you search for clues, you may also ask: Which way is the source? Is it still or changing? What instrument would tell me more? · Beasts & Alchemy: when you examine a strange substance, ask the Chronicler its source — living or not, and whether it is mundane, cursed, from beyond the seas, or from another world. · Minds & Motives: when talking to someone and weighing their motives, roll +Sharp. On 10+ the Chronicler tells you if they are truly human and whether they are ally, port folk, villain, cutthroat, or cursed. On 7-9 you sense something off, but not what. On a miss you reveal too much of yourself. · Mechanisms & Runes: when you work a sealed lock, ward, or strange device, roll +Cool. On 10+ you open or change it (within its limits). On 7-9 it takes longer or something unexpected happens. On a miss it all goes wrong in the worst way. · Violence: you may roll +Sharp instead of +Tough to fight. When you make a studied strike, deal +1 harm or take +1 forward. · Craft & Engineering: mending takes far less time than expected, and you need not have every proper tool. You may also combine any two devices into one — it has all the abilities and tags of both, the size of the larger, and you may add, delete, or change one tag. · The Stars: +1 ongoing with ships, charts, and navigation by the heavens. You have the run of an observatory and its instruments."
+    "text": "Physics & the Heavens: you sense when something bends the laws of the world. When you investigate, you may also ask: Which way is the source? Is it still or changing? What instrument would tell me more? · Beasts & Alchemy: when you examine a strange substance, ask the Chronicler its source — living or not, and whether it is mundane, cursed, from beyond the seas, or from another world. · Minds & Motives: when talking to someone and weighing their motives, roll +Sharp. On 10+ the Chronicler tells you if they are truly human and whether they are ally, port folk, villain, cutthroat, or cursed. On 7-9 you sense something off, but not what. On a miss you reveal too much of yourself. · Mechanisms & Runes: when you work a sealed lock, ward, or strange device, roll +Cool. On 10+ you open or change it (within its limits). On 7-9 it takes longer or something unexpected happens. On a miss it all goes wrong in the worst way. · Violence: you may roll +Sharp instead of +Tough to fight. When you make a studied strike, deal +1 harm or take +1 forward. · Craft & Engineering: mending takes far less time than expected, and you need not have every proper tool. You may also combine any two devices into one — it has all the abilities and tags of both, the size of the larger, and you may add, delete, or change one tag. · The Stars: +1 ongoing with ships, charts, and navigation by the heavens. You have the run of an observatory and its instruments."
    }
   ],
   "moves": [
@@ -883,12 +883,12 @@ const PLAYBOOKS = [
    },
    {
     "name": "Oblivious to Danger",
-    "text": "You are immune to all fear-based moves and powers, and never need to keep your nerve to resist fear from any source.",
+    "text": "You are immune to all fear-based moves and powers, and never need to act under pressure to resist fear from any source.",
     "fixed": false
    },
    {
     "name": "Doors of Perception",
-    "text": "When you open your mind with draughts, meditation, or ritual, roll +Weird. On 10+ pick two effects; on 7-9 pick one, but your mind is foggy and confused; on a miss you are lost in altered states. Effects: speak with someone or something you normally could not; see what is normally invisible — forces, ghosts, incursions, sorcery; ask one Search for Clues question; clarity: +1 Cool, Sharp, or Weird for an hour or so (max +3).",
+    "text": "When you open your mind with draughts, meditation, or ritual, roll +Weird. On 10+ pick two effects; on 7-9 pick one, but your mind is foggy and confused; on a miss you are lost in altered states. Effects: speak with someone or something you normally could not; see what is normally invisible — forces, ghosts, incursions, sorcery; ask one Investigate question; clarity: +1 Cool, Sharp, or Weird for an hour or so (max +3).",
     "fixed": false
    },
    {
@@ -988,7 +988,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Unknown Heritage — pick three",
-    "text": "Dietary restriction · A hygienic need · An unearned reputation · Erratic power · Strange thoughts · Sensory bombardment · Allergy to ______ · Repulsion from ______ · Attraction to ______ · Obsession with ______. The Chronicler may set obstacles from these tags. Push through or ignore them and things can spiral — you may need to keep your nerve. Or spend time dealing with it, putting the crisis on hold, and mark experience. You always itch to learn about your nature: when you search for clues from a source of hidden knowledge, you may ask 'What do I learn about myself?' as one of your questions. If you learn anything useful about yourself, word spreads among the hidden folk that you are asking."
+    "text": "Dietary restriction · A hygienic need · An unearned reputation · Erratic power · Strange thoughts · Sensory bombardment · Allergy to ______ · Repulsion from ______ · Attraction to ______ · Obsession with ______. The Chronicler may set obstacles from these tags. Push through or ignore them and things can spiral — you may need to act under pressure. Or spend time dealing with it, putting the crisis on hold, and mark experience. You always itch to learn about your nature: when you investigate from a source of hidden knowledge, you may ask 'What do I learn about myself?' as one of your questions. If you learn anything useful about yourself, word spreads among the hidden folk that you are asking."
    }
   ],
   "moves": [
@@ -1004,7 +1004,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "They Are My People",
-    "text": "Once per session, when you guard someone, act as if you rolled a 12. You take +1 forward when you keep your nerve to resist instincts from your heritage, dark urges, or fight-or-flight.",
+    "text": "Once per session, when you guard someone, act as if you rolled a 12. You take +1 forward when you act under pressure to resist instincts from your heritage, dark urges, or fight-or-flight.",
     "fixed": false
    },
    {
@@ -1019,7 +1019,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Faerie Gossip",
-    "text": "You can speak with local spirits and hidden creatures. When you search for clues by questioning these beings, roll +Weird instead of +Sharp, and you may also ask: Is anything affecting the hidden world here? How long has ______ been in the area? When did ______ first arrive?",
+    "text": "You can speak with local spirits and hidden creatures. When you investigate by questioning these beings, roll +Weird instead of +Sharp, and you may also ask: Is anything affecting the hidden world here? How long has ______ been in the area? When did ______ first arrive?",
     "fixed": false
    },
    {
@@ -1034,42 +1034,42 @@ const PLAYBOOKS = [
    },
    {
     "name": "Illuminated \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Past Lives \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
+    "text": "Alternative Weird: take this instead of Do Magic. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
     "fixed": false
    },
    {
     "name": "Sensitive \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Empath \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to keep your nerve first.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to act under pressure first.",
     "fixed": false
    },
    {
     "name": "No Limits \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
     "fixed": false
    },
    {
     "name": "Telekinesis \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
+    "text": "Alternative Weird: take this instead of Do Magic. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
     "fixed": false
    },
    {
     "name": "Trust Your Gut \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
+    "text": "Alternative Weird: take this instead of Do Magic. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
     "fixed": false
    },
    {
     "name": "Strange Craft \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
+    "text": "Alternative Weird: take this instead of Do Magic (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
     "fixed": false
    }
   ],
@@ -1121,7 +1121,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "The Geek in the Chair",
-    "text": "Your ally watches and guides you from afar. You may spend 1 hold from Read the Room to warn someone about to suffer harm, preventing 2 harm. You gain +1 forward to Read the Room in each new location.",
+    "text": "Your ally watches and guides you from afar. You may spend 1 hold from Read a Bad Situation to warn someone about to suffer harm, preventing 2 harm. You gain +1 forward to Read a Bad Situation in each new location.",
     "fixed": false
    },
    {
@@ -1184,12 +1184,12 @@ const PLAYBOOKS = [
    },
    {
     "name": "Reach",
-    "text": "When you work sorcery, you may choose one of these alternate effects: use Devour Evil at range; use Unleash Corruption at range; learn whether this magic may be devoured, and what the power and downside will be.",
+    "text": "When you do magic, you may choose one of these alternate effects: use Devour Evil at range; use Unleash Corruption at range; learn whether this magic may be devoured, and what the power and downside will be.",
     "fixed": false
    },
    {
     "name": "Curse Whispers",
-    "text": "When you search for clues, you may also ask: What sort of curse is this? Where did this curse come from? Is there a curse here that I can consume? If you discover a curse (by any method) matching one you have previously consumed, take +1 forward.",
+    "text": "When you investigate, you may also ask: What sort of curse is this? Where did this curse come from? Is there a curse here that I can consume? If you discover a curse (by any method) matching one you have previously consumed, take +1 forward.",
     "fixed": false
    },
    {
@@ -1209,7 +1209,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Let It Go",
-    "text": "When you have three or more consumed magics marked, you may spend all consumed magics in place of all requirements for Work Sorcery. For great sorcery, the Chronicler will tell you how many consumed magics you can lose in place of each requirement. Keep the corruption.",
+    "text": "When you have three or more consumed magics marked, you may spend all consumed magics in place of all requirements for Do Magic. For great sorcery, the Chronicler will tell you how many consumed magics you can lose in place of each requirement. Keep the corruption.",
     "fixed": false
    }
   ],
@@ -1263,7 +1263,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Too Much Has Been Lost",
-    "text": "When you research old tales to search for clues, ask one of these as well as your usual questions: What in this record is exaggerated? What is understated? What is manufactured? What is this record missing?",
+    "text": "When you research old tales to investigate, ask one of these as well as your usual questions: What in this record is exaggerated? What is understated? What is manufactured? What is this record missing?",
     "fixed": false
    },
    {
@@ -1278,7 +1278,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Servant of the Secret Fire",
-    "text": "Once per session, you may use a basic Weird move you do not normally have. If you are not playing with alternate Weird moves, you may instead work sorcery as if you had rolled a 10+.",
+    "text": "Once per session, you may use a basic Weird move you do not normally have. If you are not playing with alternate Weird moves, you may instead do magic as if you had rolled a 10+.",
     "fixed": false
    },
    {
@@ -1326,7 +1326,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Tactical Advice",
-    "text": "When working closely with your partner, you may pass any +1 ongoing benefits from Read the Room to them. You and your partner also have +1 ongoing to lend aid to each other.",
+    "text": "When working closely with your partner, you may pass any +1 ongoing benefits from Read a Bad Situation to them. You and your partner also have +1 ongoing to lend aid to each other.",
     "fixed": false
    },
 {
@@ -1351,7 +1351,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Pointing the Way",
-    "text": "When you remind someone of their obligations, you take +1 forward to persuade someone. When you read a room, add 'What should we do to keep our promises?' to your list of questions.",
+    "text": "When you remind someone of their obligations, you take +1 forward to persuade someone. When you read a bad situation, add 'What should we do to keep our promises?' to your list of questions.",
     "fixed": false
    }
   ],
@@ -1384,12 +1384,12 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Occult Confidential",
-    "text": "The first time in each voyage that you observe one of his captains, cutthroats, or cursed phenomena in action, you may ask one question from the Search for Clues list.",
+    "text": "The first time in each voyage that you observe one of his captains, cutthroats, or cursed phenomena in action, you may ask one question from the Investigate list.",
     "fixed": true
    },
    {
     "name": "The Naked City",
-    "text": "You have personal contacts wherever you go. Pick four contact types: academics, accountants, artists, tavern keepers, clergy, conspiracy theorists, builders, courts, organised criminals, dockside thieves, cultists, engineers, spies, players and bards, chirurgeons, fringe scholars, code-breakers, journalists, lawyers, shipwrights, heralds, healers, soldiers, the morgue, the occult, the local watch, the Crown's watch, politicians, prisons, private guards, landowners, stage magicians, artificers, hauliers. You can call on them for information (+1 to one Search for Clues roll) or small favours — though there may be a small cost. For greater help, the Chronicler decides the price case by case.",
+    "text": "You have personal contacts wherever you go. Pick four contact types: academics, accountants, artists, tavern keepers, clergy, conspiracy theorists, builders, courts, organised criminals, dockside thieves, cultists, engineers, spies, players and bards, chirurgeons, fringe scholars, code-breakers, journalists, lawyers, shipwrights, heralds, healers, soldiers, the morgue, the occult, the local watch, the Crown's watch, politicians, prisons, private guards, landowners, stage magicians, artificers, hauliers. You can call on them for information (+1 to one Investigate roll) or small favours — though there may be a small cost. For greater help, the Chronicler decides the price case by case.",
     "fixed": true
    },
    {
@@ -1424,7 +1424,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Just One More Thing",
-    "text": "When you ask a suspect leading questions, roll +Charm. On 10+ hold 2, on 7–9 hold 1, on a miss hold 1 but something bad is going to happen too. Spend hold to ask: one question from the Search for Clues list; Was that a lie? What is something you left out that you did not want me to notice? Are you complicit in any ongoing wrongdoing? Did you commit this specific crime?",
+    "text": "When you ask a suspect leading questions, roll +Charm. On 10+ hold 2, on 7–9 hold 1, on a miss hold 1 but something bad is going to happen too. Spend hold to ask: one question from the Investigate list; Was that a lie? What is something you left out that you did not want me to notice? Are you complicit in any ongoing wrongdoing? Did you commit this specific crime?",
     "fixed": false
    }
   ],
@@ -1451,27 +1451,27 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "Temptation — pick one",
-    "text": "A dangerous drive you pursue, sometimes at the cost of your own safety. Decide if your Temptation drove you to learn magic, or if learning magic drove you to it. Whenever you give in to your Temptation and act on it, mark experience. You need to keep your nerve to resist giving in when a perfect opportunity presents itself; if you fail that roll, you do not mark experience as you would have by giving in willingly. Temptations: Vengeance — use magic to take disproportionate revenge on someone who wronged you. Power — use magic to exert dominance over another. Addiction — use magic to do what you could do without it. Callousness — use magic without regard for the safety of others. Carnage — use magic to inflict gruesome violence. Secrets — use magic to discover forbidden, dangerous knowledge. Glory — use magic to steal someone's thunder."
+    "text": "A dangerous drive you pursue, sometimes at the cost of your own safety. Decide if your Temptation drove you to learn magic, or if learning magic drove you to it. Whenever you give in to your Temptation and act on it, mark experience. You need to act under pressure to resist giving in when a perfect opportunity presents itself; if you fail that roll, you do not mark experience as you would have by giving in willingly. Temptations: Vengeance — use magic to take disproportionate revenge on someone who wronged you. Power — use magic to exert dominance over another. Addiction — use magic to do what you could do without it. Callousness — use magic without regard for the safety of others. Carnage — use magic to inflict gruesome violence. Secrets — use magic to discover forbidden, dangerous knowledge. Glory — use magic to steal someone's thunder."
    },
    {
     "title": "Rotes — your known spells",
-    "text": "Whenever you work sorcery, you may afterwards decide that spell is a rote you know. Write down in detail what it does and what it requires, and choose two requirements: magic words and ritual gestures; an object of power (wand, talisman, orb, staff) which must be wielded; an expendable component (sulphur, sage, or incense) burned, blown, or scattered; runes or symbols written or engraved on a surface; a spilling of blood, inflicting 1-harm on you or a willing participant. Unlike ordinary sorcery, a rote's cost and the consequences of failing it are known to you in advance. After casting it the first time, treat each rote as a custom move — a specialised Work Sorcery, built with the Chronicler: write down what it does on 10+, 7–9, and a miss. A rote is a little stronger than a basic spell: its glitches are lighter and its effect may be a little bigger. You start knowing up to one rote; learn more through improvements. Roll +Weird to cast a rote, as with ordinary sorcery."
+    "text": "Whenever you do magic, you may afterwards decide that spell is a rote you know. Write down in detail what it does and what it requires, and choose two requirements: magic words and ritual gestures; an object of power (wand, talisman, orb, staff) which must be wielded; an expendable component (sulphur, sage, or incense) burned, blown, or scattered; runes or symbols written or engraved on a surface; a spilling of blood, inflicting 1-harm on you or a willing participant. Unlike ordinary sorcery, a rote's cost and the consequences of failing it are known to you in advance. After casting it the first time, treat each rote as a custom move — a specialised Do Magic, built with the Chronicler: write down what it does on 10+, 7–9, and a miss. A rote is a little stronger than a basic spell: its glitches are lighter and its effect may be a little bigger. You start knowing up to one rote; learn more through improvements. Roll +Weird to cast a rote, as with ordinary sorcery."
    }
   ],
   "moves": [
    {
     "name": "Bad Luck Charm",
-    "text": "Whenever you work sorcery and miss, the backlash never strikes you directly if someone else is near — it will go for your allies and innocent port folk nearby. Sometimes, every so often, it might even hit an enemy.",
+    "text": "Whenever you do magic and miss, the backlash never strikes you directly if someone else is near — it will go for your allies and innocent port folk nearby. Sometimes, every so often, it might even hit an enemy.",
     "fixed": true
    },
    {
     "name": "Burn Everything",
-    "text": "When you work sorcery to inflict harm, you may choose to inflict 3-harm area magic obvious, or 3-harm ignore-armour magic obvious.",
+    "text": "When you do magic to inflict harm, you may choose to inflict 3-harm area magic obvious, or 3-harm ignore-armour magic obvious.",
     "fixed": false
    },
    {
     "name": "Cast the Bones",
-    "text": "Once per voyage, you may perform a divination (cards, runes, entrails, or something like that) to learn about the future. When you seek guidance by divination, roll +Sharp. On 10+ hold 2; on 7–9 hold 1; on a miss you get information, but not what you want to hear. Spend hold to ask any Search for Clues question, or: What can I gain from this person, place, thing, or creature? Who has touched this person, place, thing, or creature before me? The Chronicler will answer truthfully, directly or by showing how to find out more.",
+    "text": "Once per voyage, you may perform a divination (cards, runes, entrails, or something like that) to learn about the future. When you seek guidance by divination, roll +Sharp. On 10+ hold 2; on 7–9 hold 1; on a miss you get information, but not what you want to hear. Spend hold to ask any Investigate question, or: What can I gain from this person, place, thing, or creature? Who has touched this person, place, thing, or creature before me? The Chronicler will answer truthfully, directly or by showing how to find out more.",
     "fixed": false
    },
    {
@@ -1481,62 +1481,62 @@ const PLAYBOOKS = [
    },
    {
     "name": "Luck of the Damned",
-    "text": "After you work sorcery or cast a rote, take +1 forward on the next roll you make.",
+    "text": "After you do magic or cast a rote, take +1 forward on the next roll you make.",
     "fixed": false
    },
    {
     "name": "Sympathetic Token",
-    "text": "As long as you carry a personal object belonging to someone — a lock of hair, a treasured family heirloom — you gain +1 ongoing to work sorcery against them, and can work sorcery against them at a distance. If you try and miss, the token is lost, destroyed, or loses its power.",
+    "text": "As long as you carry a personal object belonging to someone — a lock of hair, a treasured family heirloom — you gain +1 ongoing to do magic against them, and can do magic against them at a distance. If you try and miss, the token is lost, destroyed, or loses its power.",
     "fixed": false
    },
    {
     "name": "This Might Sting",
-    "text": "You can work sorcery to heal 3-harm, but the process is exceptionally painful. On a 7–9 it also leaves a gnarly scar.",
+    "text": "You can do magic to heal 3-harm, but the process is exceptionally painful. On a 7–9 it also leaves a gnarly scar.",
     "fixed": false
    },
    {
     "name": "Wise Soul",
-    "text": "Whenever you work sorcery, right before you roll, you may ask the Chronicler what exactly would happen on a miss. If you dislike the risk, you may stop at the last second and let the spell fizzle harmlessly. All the effort is wasted.",
+    "text": "Whenever you do magic, right before you roll, you may ask the Chronicler what exactly would happen on a miss. If you dislike the risk, you may stop at the last second and let the spell fizzle harmlessly. All the effort is wasted.",
     "fixed": false
    },
    {
     "name": "Illuminated \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Past Lives \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
+    "text": "Alternative Weird: take this instead of Do Magic. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
     "fixed": false
    },
    {
     "name": "Sensitive \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Empath \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to keep your nerve first.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to act under pressure first.",
     "fixed": false
    },
    {
     "name": "No Limits \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
     "fixed": false
    },
    {
     "name": "Telekinesis \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
+    "text": "Alternative Weird: take this instead of Do Magic. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
     "fixed": false
    },
    {
     "name": "Trust Your Gut \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
+    "text": "Alternative Weird: take this instead of Do Magic. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
     "fixed": false
    },
    {
     "name": "Strange Craft \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
+    "text": "Alternative Weird: take this instead of Do Magic (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
     "fixed": false
    }
   ],
@@ -1577,7 +1577,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Defensive Adaptation",
-    "text": "Your symbiote protects you. Pick one: silk threads (0-harm close entangle sticky); acid spray (1-harm close blinding acid); soothing thoughts (0-harm intimate/hand sedative calming); scales (1-armour); camouflage (+1 ongoing to stay out of sight); whispered advice (+1 hold to Read the Room, even on a miss).",
+    "text": "Your symbiote protects you. Pick one: silk threads (0-harm close entangle sticky); acid spray (1-harm close blinding acid); soothing thoughts (0-harm intimate/hand sedative calming); scales (1-armour); camouflage (+1 ongoing to stay out of sight); whispered advice (+1 hold to Read a Bad Situation, even on a miss).",
     "fixed": true
    },
    {
@@ -1592,7 +1592,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Open Your Mind",
-    "text": "When you search for clues, you may also ask: What about the creature is not immediately obvious? What forms can it take? What does it need?",
+    "text": "When you investigate, you may also ask: What about the creature is not immediately obvious? What forms can it take? What does it need?",
     "fixed": false
    },
    {
@@ -1645,7 +1645,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Provocateur",
-    "text": "You can read a room on any dangerous, thinking being. When you do, you may also ask: What will infuriate them? What do they want most? On a miss, they act while you are making plans.",
+    "text": "You can read a bad situation on any dangerous, thinking being. When you do, you may also ask: What will infuriate them? What do they want most? On a miss, they act while you are making plans.",
     "fixed": false
    },
    {
@@ -1655,7 +1655,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Take the Shot",
-    "text": "You may forgo +1 ongoing from Read the Room to gain +2 forward on a single relevant roll.",
+    "text": "You may forgo +1 ongoing from Read a Bad Situation to gain +2 forward on a single relevant roll.",
     "fixed": false
    },
    {
@@ -1665,47 +1665,47 @@ const PLAYBOOKS = [
    },
    {
     "name": "Curse Whisperer",
-    "text": "When you quarantine or create a spreading curse, roll +Cool. On 10+ pick two; on 7–9 pick one: you safely contain the curse; it erases or changes specific information; it locks down the mechanism; ask one question from the Search for Clues list.",
+    "text": "When you quarantine or create a spreading curse, roll +Cool. On 10+ pick two; on 7–9 pick one: you safely contain the curse; it erases or changes specific information; it locks down the mechanism; ask one question from the Investigate list.",
     "fixed": false
    },
    {
     "name": "Illuminated \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Ask the Hidden Patrons for aid, roll +Weird. On 10+, they reveal a key fact, clue or technique that will help you. On 7-9, they need you to complete a task for them first \u2014 once it is done, they reveal it. On a miss, their reply is terrible, garbled, or dangerously wrong. On 12+, you may ask one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Past Lives \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
+    "text": "Alternative Weird: take this instead of Do Magic. Channel your previous incarnations: pose your question and roll +Weird. On 10+, a past life has something useful \u2014 ask the Chronicler two questions from the list. On 7-9, ask one. On a miss, a past life takes over for a while. On 12+, a past life knows exactly what you were after \u2014 ask one listed question and one free-form question, and take +1 ongoing while acting on the answers. Questions: What did a past life discover about ___? How did a past life deal with ___? What important hidden secret can a past life show me the way to? What did a past life learn too late to help them? What does a past life advise me to do now?",
     "fixed": false
    },
    {
     "name": "Sensitive \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to the unseen, roll +Weird. On 10+, you gain a definite impression (a vision, a tangible aura, an overheard thought) about something important. On 7-9, a hazy impression. On a miss, your mind makes contact with something dangerous. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly.",
     "fixed": false
    },
    {
     "name": "Empath \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to keep your nerve first.",
+    "text": "Alternative Weird: take this instead of Do Magic. Open your mind to feel the emotions of something right in front of you, roll +Weird. On 10+, a clear impression of their emotional state and intentions; take +1 forward when acting on it. On 7-9, a hazy impression. On a miss, your mind is overwhelmed with emotion. On 12+, as for 10+, plus one follow-up question the Chronicler will answer honestly. You can use it on anything with emotions \u2014 the less human they are, the less safe it is. If the emotions are especially strong or alien, you may need to act under pressure first.",
     "fixed": false
    },
    {
     "name": "No Limits \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
+    "text": "Alternative Weird: take this instead of Do Magic. Push your body past its limits, roll +Weird. On 10+, your body obeys your will, to the limits of physical possibility, for a moment. On 7-9, you do it but choose one: suffer 1-harm, take -1 forward, or rest right now. On a miss, something goes horribly wrong. On 12+, you can keep acting at your body's limits for 30 seconds. 'Physical possibility' means conceivably possible for a human \u2014 lift a cart, leap a wagon, punch through a door \u2014 not lift a ship or fly.",
     "fixed": false
    },
    {
     "name": "Telekinesis \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
+    "text": "Alternative Weird: take this instead of Do Magic. Fling something with your mind, roll +Weird. On 10+, you move it: choose two options and mark 1-harm. On 7-9, you move it but it hurts: choose one option and mark 2-harm. On a miss, something goes horribly wrong. Options: something is held fast; something is hurt (2-harm smash); something catches fire; you fling something bigger than a person; you keep it basically under your control; you suffer 1 less harm. On 12+, choose three options, and you may also choose: something explodes (3-harm close fire area messy); something implodes (3-harm close crush); lots of stuff flies under your control; you have perfect, precise control. By default you can move something smaller than a person, with little control, and not hard enough to hurt anything.",
     "fixed": false
    },
    {
     "name": "Trust Your Gut \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
+    "text": "Alternative Weird: take this instead of Do Magic. Consult your instincts about what to do next, roll +Weird. On 10+, the Chronicler will tell you where you should go \u2014 wherever that is, it will be important; take +1 ongoing on the way. On 7-9, a general direction; take +1 forward as you explore. On a miss, your instincts lead you into danger. On 12+, the Chronicler also tells you about one important thing you should investigate further.",
     "fixed": false
    },
    {
     "name": "Strange Craft \u2014 Alternative Weird",
-    "text": "Alternative Weird: take this instead of Work Sorcery (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
+    "text": "Alternative Weird: take this instead of Do Magic (the weird-science move, reskinned). Create or adapt a device to analyse or deal with strangeness: say what it will do and roll +Weird. On 10+, pick two requirements; on 7-9, pick one and the Chronicler picks a second; on a miss, something goes horribly wrong \u2014 you can still create it, but the Chronicler picks three requirements. On 12+, take +1 ongoing when operating the device. Requirements: it needs a rare and/or weird material; it won't be very reliable; it requires huge amounts of power or fuel; it will take a long time to get working; it won't work exactly as intended; you'll need help beyond your company to finish it.",
     "fixed": false
    }
   ],
@@ -1808,7 +1808,7 @@ const PLAYBOOKS = [
   "features": [
    {
     "title": "First Encounter — pick one, and take its move",
-    "text": "Cryptid Sighting: you take note of any reports of strange creatures. Whenever you first see a new type of creature, you may immediately ask one Search for Clues question. · Zone of Strangeness: things are not fixed. You never need to keep your nerve when hidden forces alter the world around you, and you count as having 2-armour against harm from sudden changes to the laws of the world. · Psychic Event: your mind is awakened. You may keep your nerve to use the sensitive strange move — or, if sensitive is your strange move, take empath (see the Tome of Mysteries). · Higher Power: something looks out for you. You start with an extra Luck. · Strange Dangers: you are always watching for hazards. When you have no armour, you still count as having 1-armour. · Abduction: they taught you hidden knowledge. Gain +1 to any move when you research strange or ancient secrets to do it. · Cosmic Insight: you have encompassed the soul of the universe. You never need to keep your nerve because of fear, despair, or isolation."
+    "text": "Cryptid Sighting: you take note of any reports of strange creatures. Whenever you first see a new type of creature, you may immediately ask one Investigate question. · Zone of Strangeness: things are not fixed. You never need to act under pressure when hidden forces alter the world around you, and you count as having 2-armour against harm from sudden changes to the laws of the world. · Psychic Event: your mind is awakened. You may act under pressure to use the sensitive strange move — or, if sensitive is your strange move, take empath (see the Tome of Mysteries). · Higher Power: something looks out for you. You start with an extra Luck. · Strange Dangers: you are always watching for hazards. When you have no armour, you still count as having 1-armour. · Abduction: they taught you hidden knowledge. Gain +1 to any move when you research strange or ancient secrets to do it. · Cosmic Insight: you have encompassed the soul of the universe. You never need to act under pressure because of fear, despair, or isolation."
    }
   ],
   "moves": [
@@ -1834,7 +1834,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Just Another Day",
-    "text": "When you must keep your nerve because of a cursed creature, a phenomenon, or a mystical effect, you may roll +Weird instead of +Cool.",
+    "text": "When you must act under pressure because of a cursed creature, a phenomenon, or a mystical effect, you may roll +Weird instead of +Cool.",
     "fixed": false
    },
    {
@@ -1892,12 +1892,12 @@ const PLAYBOOKS = [
    },
    {
     "name": "We'll Fix It in Post",
-    "text": "You can use anything you could conceivably have recorded as evidence for Search for Clues, letting you check previous interviews, attack sites, and so on from the comfort of your ledger.",
+    "text": "You can use anything you could conceivably have recorded as evidence for Investigate, letting you check previous interviews, attack sites, and so on from the comfort of your ledger.",
     "fixed": false
    },
    {
     "name": "Press Accreditation",
-    "text": "When you search for clues by talking to witnesses, interviewing locals, or anything else needing people skills, roll +Charm instead of +Sharp.",
+    "text": "When you investigate by talking to witnesses, interviewing locals, or anything else needing people skills, roll +Charm instead of +Sharp.",
     "fixed": false
    },
    {
@@ -1970,7 +1970,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "The Game Is Fixed",
-    "text": "When you work sorcery in a crowded and chaotic place (like a fairground), take +1 forward. You may also choose the following effects whenever you work sorcery: someone fails a skilled task; you disappear unnoticed and untraceable in a crowded and chaotic scene; you instantly set up or pack away a market stall or camp; track someone; get a bunch of coin.",
+    "text": "When you do magic in a crowded and chaotic place (like a fairground), take +1 forward. You may also choose the following effects whenever you do magic: someone fails a skilled task; you disappear unnoticed and untraceable in a crowded and chaotic scene; you instantly set up or pack away a market stall or camp; track someone; get a bunch of coin.",
     "fixed": false
    }
   ],
@@ -2031,7 +2031,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Taste of Home",
-    "text": "When you and another hunter share something one of you loves that is new to the other, they explain how it is important to them or their culture. The other hunter picks one: relate a similar memory or element of your culture — each hunter gains +1 ongoing to aid each other until the voyage ends; relate a contrasting memory or element — each hunter marks experience; relate how this is entirely alien to you — each hunter gains +1 forward to search for clues or read a room, because it has put them in a questioning frame of mind.",
+    "text": "When you and another hunter share something one of you loves that is new to the other, they explain how it is important to them or their culture. The other hunter picks one: relate a similar memory or element of your culture — each hunter gains +1 ongoing to aid each other until the voyage ends; relate a contrasting memory or element — each hunter marks experience; relate how this is entirely alien to you — each hunter gains +1 forward to investigate or read a bad situation, because it has put them in a questioning frame of mind.",
     "fixed": false
    },
 {
