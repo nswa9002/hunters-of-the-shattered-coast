@@ -220,7 +220,7 @@ const PLAYBOOKS = [
     "text": "When a hunter asks your counsel and follows it, they take +1 ongoing while they follow it, and you mark experience.",
     "fixed": false
    },
-   {
+{
     "name": "Prepared Mind",
     "text": "When you search for clues, on a miss you may instead recall one relevant fact from your studies — true, but incomplete.",
     "fixed": false
@@ -237,7 +237,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Field Chirurgeon",
-    "text": "With your kit and a quiet hour, treat a hunter's wounds: roll +Sharp to heal 1 harm, or stabilise the dying without sorcery.",
+    "text": "With your kit and a quiet hour, treat another person's wounds: roll +Sharp to heal 1 harm, or stabilise the dying without sorcery.",
     "fixed": false
    }
   ],
@@ -285,7 +285,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "See It Coming",
-    "text": "You have a sailor's sense for ambush. When his cutthroats spring a trap on the company, roll +Sharp: on a hit you shout a warning in time — everyone takes +1 forward; on 10+ you spotted it early enough to turn the trap on them.",
+    "text": "You have a sailor's sense for ambush. When his cutthroats spring a trap on the company, roll +Sharp: on a hit you shout a warning in time — take +1 forward; on 10+ you spotted it early enough to turn the trap on them.",
     "fixed": false
    },
    {
@@ -352,7 +352,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Sanctuary",
-    "text": "The order's houses, shrines and lighthouse chapels open to the company in any port — beds, healing and silence, unless you are in disgrace.",
+    "text": "The order's houses, shrines and lighthouse chapels open to you and your allies in any port — beds, healing and silence, unless you are in disgrace.",
     "fixed": false
    },
    {
@@ -492,7 +492,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Always the One in Trouble",
-    "text": "When another hunter guards you, they mark experience. Whenever his crew captures you, you mark experience. It happens a lot. You have made a talent of it.",
+    "text": "Whenever his crew captures you, you mark experience. It happens a lot. You have made a talent of it.",
     "fixed": false
    },
    {
@@ -512,7 +512,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Heart of the Hearth",
-    "text": "A hot meal, a dry bed and a listening ear, provided by you, heals 1 harm for the whole company and clears one frightened or shaken condition. Needs an hour and a fire.",
+    "text": "A hot meal, a dry bed and a listening ear, provided by you, heals 1 harm for you and any port folk sharing it and clears one frightened or shaken condition. Needs an hour and a fire.",
     "fixed": false
    },
    {
@@ -574,7 +574,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Company Surgeon",
-    "text": "Your field kit and training stabilise any wounded hunter and heal 1 harm with ten quiet minutes. In your patrons' infirmaries, double it.",
+    "text": "Your field kit and training stabilise any wounded person and heal 1 harm with ten quiet minutes. In your patrons' infirmaries, double it.",
     "fixed": false
    },
    {
@@ -1024,7 +1024,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Renewal",
-    "text": "You speed the healing of those around you. When companions and allies in your presence recover harm by any means, they recover 1 extra harm.",
+    "text": "You speed the healing of those around you. When allies in your presence recover harm by any means, they recover 1 extra harm.",
     "fixed": false
    },
    {
@@ -1278,7 +1278,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Servant of the Secret Fire",
-    "text": "When you lend aid to another hunter using hidden or strange means, you also gain +1 forward. Once per session, you may use a basic Weird move you do not normally have. If you are not playing with alternate Weird moves, you may instead work sorcery as if you had rolled a 10+.",
+    "text": "Once per session, you may use a basic Weird move you do not normally have. If you are not playing with alternate Weird moves, you may instead work sorcery as if you had rolled a 10+.",
     "fixed": false
    },
    {
@@ -1286,7 +1286,7 @@ const PLAYBOOKS = [
     "text": "Your style of cooperation can look dishonest. When you use deceit to persuade port folk or allies, roll +Cool. On 10+ everything goes smoothly. On 7–9 there is collateral damage you did not expect — was the success worth the cost? On a miss, it went badly.",
     "fixed": false
    },
-   {
+{
     "name": "No One Listens to Zathras",
     "text": "Once per voyage for each hunter, when you give cryptic advice to another hunter, they may ask the Chronicler 'What have I missed?' If they choose not to, they mark experience.",
     "fixed": false
@@ -1321,7 +1321,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Partner",
-    "text": "Choose another hunter, or create an ally, to be your wielder and partner, then pick two bonds and one burden. The partner can be changed by a great ritual (perhaps a duel or a gift), or if they die. Bonds (pick two): a telepathic link; locational awareness; speaking in each other's name; imitating your partner; something else. Burdens (pick one): emotional bleed-over; a dire curse; separation pains; a covetous seeker; a dread enemy; something else.",
+    "text": "Create an ally to be your wielder and partner, then pick two bonds and one burden. The partner can be changed by a great ritual (perhaps a duel or a gift), or if they die. Bonds (pick two): a telepathic link; locational awareness; speaking in each other's name; imitating your partner; something else. Burdens (pick one): emotional bleed-over; a dire curse; separation pains; a covetous seeker; a dread enemy; something else.",
     "fixed": true
    },
    {
@@ -1329,7 +1329,7 @@ const PLAYBOOKS = [
     "text": "When working closely with your partner, you may pass any +1 ongoing benefits from Read the Room to them. You and your partner also have +1 ongoing to lend aid to each other.",
     "fixed": false
    },
-   {
+{
     "name": "My Outlet",
     "text": "You have a hobby that deepens your sense of self — you hope. Once per voyage, when you spend time on your hobby, roll +Cool. On 10+ hold 2; on 7–9 hold 1; on a miss something happens to shake your confidence. Spend 1 hold for +1 forward. Spend 2 hold to raise your level of success: a miss becomes a 7–9, a 7–9 becomes a 10+, and if the move is advanced, a 10+ becomes a 12+.",
     "fixed": false
@@ -1346,7 +1346,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Don't Worry About Me",
-    "text": "When you neglect your own needs to aid someone, mark experience, and if it is for your partner, take +1 forward. When you assure a hunter who is not your partner that you are fine after suffering harm, they gain +1 forward.",
+    "text": "When you neglect your own needs to aid someone, mark experience, and if it is for your partner, take +1 forward.",
     "fixed": false
    },
    {
@@ -1461,7 +1461,7 @@ const PLAYBOOKS = [
   "moves": [
    {
     "name": "Bad Luck Charm",
-    "text": "Whenever you work sorcery and miss, the backlash never strikes you directly if someone else is near — it will go for allies, other hunters, and innocent port folk. Sometimes, every so often, it might even hit an enemy.",
+    "text": "Whenever you work sorcery and miss, the backlash never strikes you directly if someone else is near — it will go for your allies and innocent port folk nearby. Sometimes, every so often, it might even hit an enemy.",
     "fixed": true
    },
    {
@@ -1605,7 +1605,7 @@ const PLAYBOOKS = [
     "text": "You understand working with others better. When you lend aid, grant +1 forward to another hunter. This may be the same hunter you are aiding — if so, they gain +1 forward on their next two rolls.",
     "fixed": false
    },
-   {
+{
     "name": "Separation Anxiety",
     "text": "Your symbiote can leave your body for short periods to carry out tasks. During this time it counts as an ally, and moves tied to the union may be unavailable or suffer −1 ongoing. Roll +Cool. On 10+ mark unstable in 30 minutes; on 7–9 mark unstable in 10 minutes; on a miss mark unstable right now. Remove unstable if you rejoin.",
     "fixed": false
@@ -1660,7 +1660,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Secret Passages",
-    "text": "You immediately know whether a mechanism you are attuned to has hidden passages or connections. When you successfully work a mechanism, give another hunter +1 forward.",
+    "text": "You immediately know whether a mechanism you are attuned to has hidden passages or connections.",
     "fixed": false
    },
    {
@@ -1756,9 +1756,9 @@ const PLAYBOOKS = [
     "text": "When you lend aid to your Guide, you do not need to roll +Cool — you help as though you had rolled a 10. If your Guide is another hunter, the same applies when they help you.",
     "fixed": false
    },
-   {
+{
     "name": "Do As the Hidden Do",
-    "text": "You can take an unnatural move from your Guide's playbook (if they are a hunter). If they are a cursed creature, choose a move from a suitable hidden playbook. The Chronicler may offer you a custom move instead.",
+    "text": "You can take an unnatural move from a suitable hidden playbook for your Guide's nature. The Chronicler may offer you a custom move instead.",
     "fixed": false
    },
    {
@@ -1824,7 +1824,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Fellow Believer",
-    "text": "People understand you have also known strangeness. Port folk will talk to you about strange things they would not trust another hunter (or a harbour official) to believe.",
+    "text": "People understand you have also known strangeness. Port folk will talk to you about strange things they would not trust a harbour official to believe.",
     "fixed": false
    },
    {
@@ -1960,7 +1960,7 @@ const PLAYBOOKS = [
    },
    {
     "name": "Pay It Backward",
-    "text": "Give yourself or someone else an advantage on any roll: roll three dice and take the best two for your result. Whenever you do this, the Chronicler gains 1 hold. That hold may be spent to give any hunter (but usually you) a disadvantage: roll three dice and take the worst two instead.",
+    "text": "Give yourself an advantage on any roll: roll three dice and take the best two for your result. Whenever you do this, the Chronicler gains 1 hold. That hold may be spent to give you a disadvantage: roll three dice and take the worst two instead.",
     "fixed": false
    },
    {
@@ -2034,7 +2034,7 @@ const PLAYBOOKS = [
     "text": "When you and another hunter share something one of you loves that is new to the other, they explain how it is important to them or their culture. The other hunter picks one: relate a similar memory or element of your culture — each hunter gains +1 ongoing to aid each other until the voyage ends; relate a contrasting memory or element — each hunter marks experience; relate how this is entirely alien to you — each hunter gains +1 forward to search for clues or read a room, because it has put them in a questioning frame of mind.",
     "fixed": false
    },
-   {
+{
     "name": "Alien Anatomy",
     "text": "When you suffer harm from someone not from your homeworld, take 1 less harm.",
     "fixed": false

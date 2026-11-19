@@ -95,7 +95,17 @@ How to Play section and no Keeper content on this site.
   few original move titles still carry their old flavour (they are not
   renamed), the Far-Traveller's alien gear stays strange by design, and
   one move still says "cursed phenomena" — Jeremy has not said whether
-  that word goes from it too.
+  that word goes from it too. Moves were also audited 2026-11-19 so the
+  group's persuasion never targets another hunter: Persuade Someone
+  (the basic move) has no "another hunter" result clauses — it only
+  ever works on other humans (port folk and other NPCs) — and 15 other
+  moves were reworded so their effects target other people or benefit
+  only the hunter themself. Seven moves whose whole effect was on
+  another hunter (Lend Aid, Often Right, No One Listens to Zathras,
+  Collaborative Effort, The Power of Love, Taste of Home, Tactical
+  Advice) were removed and then restored again the same day at Jeremy's
+  word, with their original texts — no migration remap is needed, since
+  the removal never went live.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
   dependencies. Save format: hunters carry `photo` (data URL), `level` (1 for new
   hunters), `luckMax` (fixed at 5 for every hunter — the track shows 7
