@@ -31,7 +31,11 @@ How to Play section and no Keeper content on this site.
   is an icon in a double-rule stamp ring (a skull for harm, a star for
   experience and luck), an empty slot is a stamp frame holding only a
   faint ghost of its icon, and the Unstable line
-  is a stamp button under Harm (at 4+ harm you are unstable). Harm is
+  is a stamp button under Harm whose text reflects the hunter's current
+  state — "Stable — you are steady for now. At 4+ harm you become
+  unstable." with an empty stamp slot, or "Unstable — you are unstable;
+  your wounds will get worse unless treated." with the filled skull
+  stamp. The toggle stays manual; nothing marks it automatically. Harm is
   one non-wrapping line of 7 boxes with a drawn red divider after the
   3rd box — a vertical line with a small skull and an "Unstable" label —
   and boxes 4-7 tinted as the danger zone; the line and the zone deepen
