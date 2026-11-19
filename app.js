@@ -178,6 +178,24 @@
     for (var i = 0; i < n; i++) out += '<button type="button" class="box box-' + kind + '" data-box="' + label + '" data-i="' + i + '" aria-label="' + esc(label) + ' ' + (i + 1) + '">' + (i < filled ? '<span class="stamp stamp-' + kind + '">' + stampIcon(icon) + '</span>' : '<span class="stamp-slot stamp-slot-' + kind + '" aria-hidden="true"><span class="stamp-ghost">' + stampIcon(icon) + '</span></span>') + '</button>';
     return out;
   }
+  // Harm is one non-wrapping line with a drawn threshold at the
+  // unstable point (4+): a vertical divider after the 3rd box, and
+  // boxes 4-7 tinted as the danger zone. The divider is always
+  // visible; when harm reaches 4 the track gets `danger-active` and
+  // the line and the zone deepen, so it is obvious the hunter is in
+  // the danger zone right now. The divider is a plain span (not a
+  // button), so the click handler — which keys off data-box/data-i —
+  // is unchanged. In blank mode harm is 0, so the quiet state shows.
+  function harmBoxes(h) {
+    var harm = h.harm || 0;
+    var out = '';
+    var i;
+    for (i = 0; i < 7; i++) {
+      if (i === 3) out += '<span class="harm-divider" aria-hidden="true"><span class="harm-divider-col"><span class="harm-divider-skull">' + stampIcon('skull') + '</span><span class="harm-divider-bar"></span></span><span class="harm-divider-label">Unstable</span></span>';
+      out += '<button type="button" class="box box-harm' + (i >= 3 ? ' box-danger' : '') + '" data-box="harm" data-i="' + i + '" aria-label="Harm ' + (i + 1) + '">' + (i < harm ? '<span class="stamp stamp-harm">' + stampIcon('skull') + '</span>' : '<span class="stamp-slot stamp-slot-harm" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('skull') + '</span></span>') + '</button>';
+    }
+    return out;
+  }
   // The luck track always shows 7 boxes. Every hunter has 5 luck, so
   // the first 2 boxes are always marked used — luck spent in past
   // adventures — rendered as faded, unclickable star stamps (no X ever).
@@ -403,7 +421,7 @@
       '<p class="sheet-ratings-line muted">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + (bonus && !blankMode ? ' · Improvements: ' + esc(bonus) : '') + '</p>' +
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
       '<div class="tracker-row harm-row"><div class="tracker-head"><strong>Harm</strong><span class="tracker-note">At 4+ harm you are unstable — mark the Unstable line below.</span></div>' +
-      '<div class="tracker-boxes">' + boxes(7, h.harm, 'harm', 'skull') + '</div>' +
+      '<div class="tracker-boxes harm-track' + ((h.harm || 0) >= 4 ? ' danger-active' : ' danger-quiet') + '">' + harmBoxes(h) + '</div>' +
       '<button type="button" class="unstable-line" data-action="toggle-unstable" aria-pressed="' + (h.unstable ? 'true' : 'false') + '">' + (h.unstable ? '<span class="stamp stamp-harm">' + stampIcon('skull') + '</span>' : '<span class="stamp-slot stamp-slot-harm" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('skull') + '</span></span>') + ' <strong>Unstable</strong> — at 4+ harm you are unstable; your wounds will get worse unless treated.</button></div>' +
       '<div class="tracker-row luck-row"><div class="tracker-head"><strong>Luck</strong><span class="tracker-note">You have 5 luck. Two boxes are already marked — luck spent in past adventures — and you cannot earn more luck.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></div>' +
       '<div class="tracker-boxes">' + luckBoxes(h) + '</div></div>' +

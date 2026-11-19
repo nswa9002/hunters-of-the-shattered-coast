@@ -31,7 +31,12 @@ How to Play section and no Keeper content on this site.
   is an icon in a double-rule stamp ring (a skull for harm, a star for
   experience and luck), an empty slot is a stamp frame holding only a
   faint ghost of its icon, and the Unstable line
-  is a stamp button under Harm (at 4+ harm you are unstable) — the luck track
+  is a stamp button under Harm (at 4+ harm you are unstable). Harm is
+  one non-wrapping line of 7 boxes with a drawn red divider after the
+  3rd box — a vertical line with a small skull and an "Unstable" label —
+  and boxes 4-7 tinted as the danger zone; the line and the zone deepen
+  when harm reaches 4, so it is obvious the hunter is in the danger zone.
+  The luck track
   always shows 7 boxes: you have 5 luck, and two boxes are already marked,
   spent in past adventures, a Level Up button next to Experience (enabled at 5
   experience — it walks you through picking one improvement, step by

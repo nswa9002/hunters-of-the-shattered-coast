@@ -228,6 +228,26 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .tracker-boxes .box{font-size:1.6rem;padding:0 .25rem}
 .character-sheet .unstable-line{display:block;width:100%;margin-top:.6rem;padding:.55rem .7rem;border:2px solid #a33c2e;border-radius:6px;background:#f9e2cf;font:inherit;font-size:1.05rem;color:inherit;text-align:left;cursor:pointer}
 .character-sheet .unstable-line .stamp,.character-sheet .unstable-line .stamp-slot{font-size:1.25rem;margin-right:.5rem;vertical-align:middle}
+/* Harm is one non-wrapping line with a drawn threshold at the unstable
+   point (4+): a vertical divider after the 3rd box, and boxes 4-7
+   tinted as the danger zone. Quiet (harm < 4) shows the threshold
+   faded; active (harm >= 4) deepens the line, the skull and the zone
+   so it is obvious the hunter is in the danger zone right now. */
+.character-sheet .tracker-boxes.harm-track{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:.15rem}
+.character-sheet .tracker-boxes.harm-track .box{flex:0 0 auto;min-width:1.9rem;min-height:1.9rem}
+.character-sheet .harm-divider{display:inline-flex;align-items:stretch;gap:.12rem;flex:none;height:2.9rem;color:#c65b4a}
+.character-sheet .harm-divider-col{display:flex;flex-direction:column;align-items:center;gap:.1rem}
+.character-sheet .harm-divider-skull{font-size:.8rem;line-height:1}
+.character-sheet .harm-divider-bar{width:3px;flex:1;background:currentColor;border-radius:2px}
+.character-sheet .harm-divider-label{writing-mode:vertical-rl;font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;line-height:1}
+.character-sheet .harm-track.danger-quiet .harm-divider{opacity:.55}
+.character-sheet .harm-track .box-danger{color:#c65b4a}
+.character-sheet .harm-track .box-danger .stamp-slot{border-color:#c65b4a;background:rgba(198,91,74,.07)}
+.character-sheet .harm-track .box-danger .stamp-slot .stamp-ghost{border-color:#c65b4a}
+.character-sheet .harm-track.danger-active .harm-divider{opacity:1;color:#a33c2e}
+.character-sheet .harm-track.danger-active .harm-divider-bar{width:4px}
+.character-sheet .harm-track.danger-active .box-danger .stamp-slot{background:rgba(163,60,46,.16);border-color:#a33c2e}
+@media(max-width:400px){.character-sheet .tracker-boxes.harm-track .box{font-size:1.35rem;padding:0 .15rem}}
 .character-sheet .sheet-level{text-align:center;font-size:1.15rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase;color:#7a5c14;margin:.3rem 0 0}
 .character-sheet .levelup-row{margin:.6rem 0 0}
 .character-sheet .level-up-btn{font-size:1.15rem;padding:.6rem 1.4rem}
@@ -235,6 +255,10 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 @media print{
   .levelup-overlay{display:none !important}
   .character-sheet .unstable-line{border:1px solid #333;background:#fff}
+  .character-sheet .harm-divider{opacity:1 !important;color:#333}
+  .character-sheet .harm-divider-bar{width:3px;background:#333}
+  .character-sheet .harm-track .box-danger{color:#111}
+  .character-sheet .harm-track .box-danger .stamp-slot{border-color:#666;background:#eee}
 }
 
 /* --- Level Up wizard --- */
