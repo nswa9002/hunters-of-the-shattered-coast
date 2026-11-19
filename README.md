@@ -48,7 +48,12 @@ How to Play section and no Keeper content on this site.
   experience — it walks you through picking one improvement, step by
   step), your level, My Moves as
   readable cards (including any cross-playbook moves, marked with where
-  they came from), and improvements taken.
+  they came from), and improvements taken. The Level Up wizard always
+  offers "Take a new move from your own playbook", even for the
+  original 12 playbooks whose improvements lists no longer name one.
+  The playbook's default (fixed) moves always show in My Moves, tagged
+  "Default" — old saves get any missing defaults backfilled on load,
+  and the setup moves picker always shows them stamped and untickable.
   There is no History section any more, no Notes section, and no Seasoned start section (no scar, famed deed, old debt,
   signature treasure or powers carried over). There is no gear section
   and no playbook background/features section either — hunters arrive
@@ -72,8 +77,7 @@ How to Play section and no Keeper content on this site.
 - `reference.html` — **Moves Reference**: the player-facing condensed
   reference sheets — Hunter Agenda, all 8 basic moves in full (10+ /
   7-9 / 12+ and the Work Sorcery glitch list), the Alternative Weird moves
-  and Phenomena (player-facing: the extra Search for Clues questions and
-  phenomenon types), and harm / armour / luck / recovery / levelling /
+  and harm / armour / luck / recovery / levelling /
   end of session (player side only).
 - `data.js` — all 28 playbooks' data (quotes, looks, ratings, moves, gear,
   history, improvements), shared by the Hunters page. 236 moves total:
@@ -102,7 +106,9 @@ How to Play section and no Keeper content on this site.
   bought but never chosen), own-move picks are dropped (moves are
   unlimited and free now — the hunter keeps every move they picked), old
   hunters are set to 5 luck (`luckUsed` clamped to 5) and keep whatever
-  improvements they already bought, and `level` defaults to 1. Old scar /
+  improvements they already bought, and `level` defaults to 1. Default
+  (fixed) moves missing from an old save are backfilled into `moves`.
+  Old scar /
   deed / debt / treasure / powers fields may linger in stored JSON; they
   are never rendered.
 - `style.css` — dark nautical styling, mobile-friendly, with a wanted-poster
