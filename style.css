@@ -248,6 +248,11 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 .character-sheet .harm-track.danger-active .harm-divider-bar{width:4px}
 .character-sheet .harm-track.danger-active .box-danger .stamp-slot{background:rgba(163,60,46,.16);border-color:#a33c2e}
 @media(max-width:400px){.character-sheet .tracker-boxes.harm-track .box{font-size:1.35rem;padding:0 .15rem}}
+/* Luck is one non-wrapping line too, same treatment as harm: all 7
+   boxes (2 faded past-adventure stars + 5 spendable) on a single row. */
+.character-sheet .tracker-boxes.luck-track{display:flex;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:.15rem}
+.character-sheet .tracker-boxes.luck-track .box{flex:0 0 auto;min-width:1.9rem;min-height:1.9rem}
+@media(max-width:400px){.character-sheet .tracker-boxes.luck-track .box{font-size:1.35rem;padding:0 .15rem}}
 .character-sheet .sheet-level{text-align:center;font-size:1.15rem;font-weight:bold;letter-spacing:.12em;text-transform:uppercase;color:#7a5c14;margin:.3rem 0 0}
 .character-sheet .levelup-row{margin:.6rem 0 0}
 .character-sheet .level-up-btn{font-size:1.15rem;padding:.6rem 1.4rem}

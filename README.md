@@ -43,7 +43,7 @@ How to Play section and no Keeper content on this site.
   and boxes 4-7 tinted as the danger zone; the line and the zone deepen
   when harm reaches 4, so it is obvious the hunter is in the danger zone.
   The luck track
-  always shows 7 boxes: you have 5 luck, and two boxes are already marked,
+  always shows 7 boxes on one line: you have 5 luck, and two boxes are already marked,
   spent in past adventures, a Level Up button next to Experience (enabled at 5
   experience — it walks you through picking one improvement, step by
   step), your level, My Moves as
