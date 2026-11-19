@@ -3,7 +3,7 @@
 A player-facing static site for the *Hunters of the Shattered Coast*
 playbooks: a fantasy game in which hunters hunt the
 Twelve Pirate Lords across the Shattered Coast — a different lord each
-voyage, and that week's lord is the voyage's monster. **28 playbooks**
+voyage, and that week's lord is the voyage's quarry. **28 playbooks**
 in one grouped list — the original 12, plus 16 more from the
 consolidated 2025 pack. The site is focused on the themed roles and
 the character sheet: pick a playbook, build your hunter, print the
@@ -76,16 +76,26 @@ How to Play section and no Keeper content on this site.
   it is now the home page.)
 - `reference.html` — **Moves Reference**: the player-facing condensed
   reference sheets — Hunter Agenda, all 8 basic moves in full (10+ /
-  7-9 / 12+ and the Work Sorcery glitch list), the Alternative Weird moves
-  and harm / armour / luck / recovery / levelling /
-  end of session (player side only).
+  7-9 / 12+ and the Work Sorcery glitch list) and the Alternative Weird moves,
+  laid out as easy-to-read tables — one compact table per move, with a
+  row for each result band (10+ / 7–9 / Miss / 12+), plus the Work
+  Sorcery effects and glitches as tables — and harm / armour / luck /
+  recovery / levelling / end of session (player side only).
 - `data.js` — all 28 playbooks' data (quotes, looks, ratings, moves, gear,
   history, improvements), shared by the Hunters page. 236 moves total:
   188 playbook moves + 48 Alternative Weird moves (8 each on the 6 magic
   playbooks). The last two improvements of every playbook's list were
   removed — the look lists, gear lists and history text are still in the
   data, but the setup no longer shows the look helper lists, and the
-  sheet shows no gear and no playbook background features.
+  sheet shows no gear and no playbook background features. Move, gear,
+  look and feature wording was audited 2026-11-18 against each move's
+  title and the pirate-lord, ship-and-sea setting: "monster" wording and
+  modern leftovers (guns, vehicles, film-crew jobs, recording gear and
+  the like) were reworded to ship/sea terms with mechanics unchanged. A
+  few original move titles still carry their old flavour (they are not
+  renamed), the Far-Traveller's alien gear stays strange by design, and
+  one move still says "cursed phenomena" — Jeremy has not said whether
+  that word goes from it too.
 - `app.js` — the Hunters sheet app. No build step, no server, no external
   dependencies. Save format: hunters carry `photo` (data URL), `level` (1 for new
   hunters), `luckMax` (fixed at 5 for every hunter — the track shows 7

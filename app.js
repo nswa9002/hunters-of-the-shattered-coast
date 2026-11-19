@@ -93,6 +93,10 @@
     }
     var pb = playbook(h.playbook);
     var items = impItems(pb);
+    // Default (fixed) moves are always yours: backfill any that are
+    // missing from an old save, so they show in My Moves.
+    pb.moves.forEach(function (m, i) { if (m.fixed && h.moves.indexOf(i) === -1) h.moves.push(i); });
+    h.moves.sort(function (a, b) { return a - b; });
     // Old improvement picks become stepper levels: +1 rating picks are
     // counts in h.impRatings, cross-playbook picks become xMoveLevels,
     // a bought "Gain an ally" becomes one ally in h.allyCount;
@@ -306,7 +310,7 @@
   // you like. Fixed moves are always included and cannot be unticked.
   function movesPickerHtml(h, pb) {
     return pb.moves.map(function (m, i) {
-      var checked = h.moves.indexOf(i) !== -1;
+      var checked = m.fixed || h.moves.indexOf(i) !== -1;
       var disabled = m.fixed;
       return '<li><div class="movepick"><button type="button" class="move-stamp" data-move="' + i + '"' + (disabled ? ' disabled' : '') + ' aria-pressed="' + (checked ? 'true' : 'false') + '" aria-label="' + esc(m.name) + '">' + (checked ? '<span class="stamp stamp-move">' + stampIcon('star') + '</span>' : '<span class="stamp-slot stamp-slot-move" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('star') + '</span></span>') + '</button>' +
         '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></div></li>';
@@ -315,10 +319,16 @@
   function myMovesHtml(h, pb) {
     // A blank sheet has no moves picked: ruled lines to write them in by hand.
     if (blankMode) return '<div class="blank-lines" aria-label="Write your moves here"><span></span><span></span><span></span><span></span><span></span></div>';
-    var list = h.moves.map(function (i) {
+    // Default (fixed) moves are always yours: render the union of the
+    // hunter's picked moves and the playbook's fixed moves, so the
+    // defaults can never be missing from the sheet, however old the save.
+    var idxs = (h.moves || []).slice();
+    pb.moves.forEach(function (m, i) { if (m.fixed && idxs.indexOf(i) === -1) idxs.push(i); });
+    idxs.sort(function (a, b) { return a - b; });
+    var list = idxs.map(function (i) {
       var m = pb.moves[i];
       if (!m) return '';
-      return '<article class="move-card"><h4>' + esc(m.name) + '</h4><p>' + esc(m.text) + '</p></article>';
+      return '<article class="move-card' + (m.fixed ? ' move-default' : '') + '"><h4>' + esc(m.name) + (m.fixed ? ' <span class="move-default-tag">Default</span>' : '') + '</h4><p>' + esc(m.text) + '</p></article>';
     }).join('');
     // Moves taken from other playbooks (via improvements) show here,
     // marked with where they came from.
@@ -498,9 +508,11 @@
     var opts = [];
     var items = impItems(pb);
     var hasX = false;
+    var hasOwn = false;
     items.forEach(function (g, i) {
       var info = impInfo(g);
       if (info.type === 'ownmove') {
+        hasOwn = true;
         var left = pb.moves.filter(function (m, mi) { return !m.fixed && h.moves.indexOf(mi) === -1; }).length;
         opts.push({ type: 'ownmove', label: g, note: 'Pick one more move from your own playbook', disabled: left === 0, why: 'No more moves left in your playbook' });
       } else if (info.type === 'rating') {
@@ -517,6 +529,16 @@
         opts.push({ type: 'other', label: g, note: info.type === 'advanced' ? 'Advanced improvement' : '', idx: i, disabled: taken, why: 'Already taken' });
       }
     });
+    // The original 12 playbooks lost their "Another <Playbook> move"
+    // item when the last two improvements were cut, so their lists name
+    // no own-move option at all — always offer one anyway, the same
+    // way the cross-playbook option is always offered below. It wires
+    // into the existing own-move flow (step 2 picks one unticked
+    // non-fixed move from your own playbook).
+    if (!hasOwn) {
+      var ownLeft = pb.moves.filter(function (m, mi) { return !m.fixed && h.moves.indexOf(mi) === -1; }).length;
+      opts.push({ type: 'ownmove', label: 'Take a new move from your own playbook', note: 'Pick one more move from your own playbook', disabled: ownLeft === 0, why: 'No more moves left in your playbook' });
+    }
     if (!hasX) opts.push({ type: 'xmove', label: 'Take a new move from a different playbook', note: 'Pick a move from another playbook', idx: null });
     return opts;
   }

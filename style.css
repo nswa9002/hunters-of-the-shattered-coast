@@ -30,6 +30,16 @@ section{scroll-margin-top:3.5rem}
 table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.95rem}
 th,td{border:1px solid var(--line);padding:.55rem .6rem;text-align:left;vertical-align:top}
 th{background:var(--panel2);color:var(--paper)}
+/* --- Moves Reference tables: one compact table per move, result bands
+   as rows (10+ / 7-9 / Miss / 12+), narrow gold result column, banded
+   rows so the bands are easy to scan on a phone and in print. --- */
+.move-table{margin:.6rem 0 1rem;font-size:.95rem}
+.move-table th.result{width:4rem;white-space:nowrap;background:var(--panel2);color:var(--gold);text-align:center}
+.move-table tbody tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+.move-table ul{margin:.35rem 0;padding-left:1.2rem}
+.move-table li{margin:.25rem 0}
+.move-ref .move-trigger{font-style:italic;color:var(--ink-dim)}
+.move-ref .move-note{font-size:.92rem;color:var(--muted)}
 ul,ol{padding-left:1.4rem}
 li{margin:.35rem 0}
 blockquote{border-left:3px solid var(--gold);margin:1rem 0;padding:.2rem 1rem;font-style:italic;color:var(--ink-dim)}
@@ -52,6 +62,9 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   a{color:#111;text-decoration:none}
   main{max-width:none}
   section{break-inside:avoid-page}
+  .move-table th,.move-table td{border:1px solid #666}
+  .move-table th.result{background:#eee;color:#111}
+  .move-table tbody tr:nth-child(even) td{background:#f7f7f7}
 }
 
 /* --- Hunters: interactive sheets --- */
@@ -189,6 +202,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
 }
 .character-sheet .move-card h4{margin:.1em 0 .3em;font-size:1.05rem;color:#3a2a12}
 .character-sheet .move-card p{margin:.2rem 0}
+.character-sheet .move-card .move-default-tag{font-size:.68rem;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;color:#6b5636;border:1px solid #b39b62;border-radius:3px;padding:.1rem .35rem;margin-left:.4rem;vertical-align:.12em;white-space:nowrap}
 .imp-stepper{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap}
 .imp-stepper .stepper-btns{display:flex;gap:.4rem}
 .imp-stepper .stepper-btns button{font-family:inherit;font-size:1.1rem;line-height:1;min-width:2.2rem;padding:.35rem .6rem;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
@@ -217,6 +231,7 @@ footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;colo
   .character-sheet .unstable-line .stamp,.character-sheet .unstable-line .stamp-slot{color:#111}
   .sheet-photo{max-width:140px;max-height:140px;border:1px solid #666}
   .character-sheet .move-card.xmove{border-left-color:#666}
+  .character-sheet .move-card .move-default-tag{color:#333;border-color:#666}
 }
 
 /* --- Standing (poster trackers) --- */
