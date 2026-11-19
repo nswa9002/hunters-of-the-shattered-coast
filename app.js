@@ -420,7 +420,7 @@
       '<h3 class="sheet-h">Ratings</h3><div class="stat-row">' + statBoxesHtml(h, pb) + '</div>' +
       '<p class="sheet-ratings-line muted">' + esc(pb.ratings[h.ratingIdx] || pb.ratings[0]) + (bonus && !blankMode ? ' · Improvements: ' + esc(bonus) : '') + '</p>' +
       '<h3 class="sheet-h">Standing</h3><div class="trackers">' +
-      '<div class="tracker-row harm-row"><div class="tracker-head"><strong>Harm</strong><span class="tracker-note">At 4+ harm you are unstable — mark the Unstable line below.</span></div>' +
+      '<div class="tracker-row harm-row"><div class="tracker-head"><strong>Harm</strong><span class="tracker-note">At 4+ harm you become unstable automatically — tap the line below to mark yourself stable again once treated.</span></div>' +
       '<div class="tracker-boxes harm-track' + ((h.harm || 0) >= 4 ? ' danger-active' : ' danger-quiet') + '">' + harmBoxes(h) + '</div>' +
       '<button type="button" class="unstable-line" data-action="toggle-unstable" aria-pressed="' + (h.unstable ? 'true' : 'false') + '">' + (h.unstable ? '<span class="stamp stamp-harm">' + stampIcon('skull') + '</span>' : '<span class="stamp-slot stamp-slot-harm" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('skull') + '</span></span>') + ' ' + (h.unstable ? '<strong>Unstable</strong> — you are unstable; your wounds will get worse unless treated.' : '<strong>Stable</strong> — you are steady for now. At 4+ harm you become unstable.') + '</button></div>' +
       '<div class="tracker-row luck-row"><div class="tracker-head"><strong>Luck</strong><span class="tracker-note">You have 5 luck. Two boxes are already marked — luck spent in past adventures — and you cannot earn more luck.' + (pb.luck ? ' ' + esc(pb.luck) : '') + '</span></div>' +
@@ -715,7 +715,12 @@
       var h = active(); var key = box.getAttribute('data-box'); var i = +box.getAttribute('data-i');
       var cur = key === 'harm' ? h.harm : key === 'luck' ? h.luckUsed : key === 'xp' ? h.xp : (h.trackers[key.slice(3)] || 0);
       var next = (cur === i + 1) ? i : i + 1;
-      if (key === 'harm') h.harm = next; else if (key === 'luck') h.luckUsed = next; else if (key === 'xp') h.xp = next; else h.trackers[key.slice(3)] = next;
+      // Unstable switches on automatically when a harm increase lands at
+      // 4+ harm — and only then. Tapping the Unstable line back to Stable
+      // (after treatment) stays put: nothing here, on load, on render or
+      // in migration re-marks the hunter, and a harm decrease never does.
+      // Only taking more harm (another increase landing at 4+) does.
+      if (key === 'harm') { h.harm = next; if (next > cur && next >= 4) h.unstable = true; } else if (key === 'luck') h.luckUsed = next; else if (key === 'xp') h.xp = next; else h.trackers[key.slice(3)] = next;
       save(); renderAll();
     }
     var ms = e.target.closest('.move-stamp');

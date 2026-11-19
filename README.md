@@ -35,7 +35,9 @@ How to Play section and no Keeper content on this site.
   state — "Stable — you are steady for now. At 4+ harm you become
   unstable." with an empty stamp slot, or "Unstable — you are unstable;
   your wounds will get worse unless treated." with the filled skull
-  stamp. The toggle stays manual; nothing marks it automatically. Harm is
+  stamp. The line switches to Unstable on its own when a harm increase
+  lands at 4+ harm; tapping it by hand marks the hunter stable again
+  (after treatment), and it stays stable until more harm is taken. Harm is
   one non-wrapping line of 7 boxes with a drawn red divider after the
   3rd box — a vertical line with a small skull and an "Unstable" label —
   and boxes 4-7 tinted as the danger zone; the line and the zone deepen
