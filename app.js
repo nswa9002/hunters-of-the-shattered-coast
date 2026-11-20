@@ -10,9 +10,10 @@
 // from your playbook's list. One improvement per level — no points, no
 // budget. Ratings can be raised more than once, up to their listed max;
 // "Gain an ally" adds one ally each time; a move from another playbook
-// can be taken again at a later level. Moves are unlimited: tick as many
-// of your own playbook's moves as you like. D&D weapons convert on the
-// chart in setup. Every hunter has 5 luck. The luck track always shows
+// can be taken again at a later level. You start with 3 moves from your
+// own playbook (Monster of the Week rule): the fixed moves count toward
+// the 3, and you pick the rest. D&D weapons convert on the chart in
+// setup. Every hunter has 5 luck. The luck track always shows
 // 7 boxes; two boxes are already marked used — luck spent in past
 // adventures — and luck can no longer be earned. Tracker boxes are
 // marked with rubber-stamp SVG images: a skull for harm, a star for
@@ -306,12 +307,37 @@
   }
 
   // ---------- shared bits for both views ----------
-  // Moves are unlimited: tick as many of your own playbook's moves as
-  // you like. Fixed moves are always included and cannot be unticked.
+  // You start with 3 moves from your playbook (Monster of the Week rule).
+  // Fixed moves count toward the 3 and cannot be unticked. Alternative
+  // Weird moves are a separate choice (take one instead of Do Magic) and
+  // do not count toward the 3. Level-up moves are separate too: the
+  // wizard can add a move beyond the starting 3, as per the rulebook.
+  var STARTING_MOVES = 3;
+  function isAltWeirdMove(m) { return m && /Alternative Weird/i.test(m.name || ''); }
+  function countedMoves(h, pb) {
+    // Moves that count toward the starting 3: the fixed moves plus the
+    // ones picked, excluding Alternative Weird moves. Old saves with
+    // more than 3 are grandfathered — this only ever counts, never trims.
+    var idxs = (h.moves || []).slice();
+    pb.moves.forEach(function (m, i) { if (m.fixed && idxs.indexOf(i) === -1) idxs.push(i); });
+    return idxs.filter(function (i) { var m = pb.moves[i]; return m && !isAltWeirdMove(m); }).length;
+  }
+  function atMoveCap(h, pb) { return countedMoves(h, pb) >= STARTING_MOVES; }
+  function moveCountHtml(h, pb) {
+    var n = countedMoves(h, pb);
+    if (n > STARTING_MOVES) return '<p class="muted"><strong>' + n + ' moves chosen</strong> — more than the starting 3, kept from before the cap. Remove one to pick a different move.</p>';
+    if (n === STARTING_MOVES) return '<p class="muted"><strong>3 of 3 moves chosen.</strong></p>';
+    return '<p class="muted"><strong>' + n + ' of 3 moves chosen</strong> — pick ' + (STARTING_MOVES - n) + ' more.</p>';
+  }
   function movesPickerHtml(h, pb) {
+    var cap = atMoveCap(h, pb);
     return pb.moves.map(function (m, i) {
       var checked = m.fixed || h.moves.indexOf(i) !== -1;
-      var disabled = m.fixed;
+      // At the cap, unticked counted moves are disabled; ticked ones stay
+      // tickable so a hunter can swap. Fixed moves are always disabled
+      // (you get them) and Alternative Weird moves never count, so they
+      // are never disabled by the cap.
+      var disabled = m.fixed || (!checked && !isAltWeirdMove(m) && cap);
       return '<li><div class="movepick"><button type="button" class="move-stamp" data-move="' + i + '"' + (disabled ? ' disabled' : '') + ' aria-pressed="' + (checked ? 'true' : 'false') + '" aria-label="' + esc(m.name) + '">' + (checked ? '<span class="stamp stamp-move">' + stampIcon('star') + '</span>' : '<span class="stamp-slot stamp-slot-move" aria-hidden="true"><span class="stamp-ghost">' + stampIcon('star') + '</span></span>') + '</button>' +
         '<span><strong>' + esc(m.name) + '</strong>' + (m.fixed ? ' <em>(you get this)</em>' : '') + ' — ' + esc(m.text) + '</span></div></li>';
     }).join('');
@@ -381,8 +407,9 @@
       (h.photo ? '<div class="photo-preview-wrap"><img class="photo-preview" src="' + esc(h.photo) + '" alt="Hunter portrait preview"><br><button type="button" data-action="remove-photo">Remove photo</button></div>' : '') +
       '<h3>Ratings — pick one line</h3><ul class="checklist">' + ratingHtml + '</ul>' +
       '<p class="muted">Ratings improve when you level up — fill all 5 experience boxes on your sheet, then tap Level Up and pick +1 to a rating (up to the max shown).</p>' +
-      '<h3>Moves — as many as you want</h3>' +
-      '<p class="muted">Tick as many moves as you like — from your own playbook, as many as you want. Moves from other playbooks come when you level up. Picked moves will show up in <strong>My Moves</strong> on your sheet. The eight Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Do Magic.</p>' +
+      '<h3>Moves — pick 3</h3>' +
+      '<p class="muted">You start with 3 moves from your playbook. Moves marked <em>(you get this)</em> count toward the 3 — pick the rest yourself. Moves from other playbooks come when you level up. Picked moves will show up in <strong>My Moves</strong> on your sheet. The Alternative Weird moves are listed at the end for the magic playbooks — take one instead of Do Magic; it does not count toward the 3.</p>' +
+      moveCountHtml(h, pb) +
       '<ul class="checklist moves">' + movesPickerHtml(h, pb) + '</ul>' +
       '<p><button type="button" class="primary big" data-action="build-sheet">Build my sheet — see my sheet</button></p>' +
       '</article>';
@@ -749,6 +776,11 @@
     if (ms && !ms.disabled) {
       var mi = +ms.getAttribute('data-move');
       var hm = active();
+      var pbm = playbook(hm.playbook);
+      // Starting cap: ticking a new counted move while at 3 is refused
+      // (the button is disabled too — this is the backstop). Unticking
+      // is always allowed, and Alternative Weird moves never count.
+      if (hm.moves.indexOf(mi) === -1 && !isAltWeirdMove(pbm.moves[mi]) && atMoveCap(hm, pbm)) return;
       hm.moves = hm.moves.indexOf(mi) !== -1 ? hm.moves.filter(function (x) { return x !== mi; }) : hm.moves.concat([mi]).sort(function (a, b) { return a - b; });
       save(); renderAll(); return;
     }

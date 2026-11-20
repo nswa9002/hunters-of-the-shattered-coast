@@ -147,7 +147,15 @@ How to Play section and no Keeper content on this site.
   moves picker. A full PDF of all 28 playbooks, **The Playbook**
   (`the-playbook.pdf`, original 12 first then the 16 new), was built
   2026-11-19 from the current data; it is not linked from the site and
-  does not replace `playbooks.pdf`.
+  does not replace `playbooks.pdf`. Also 2026-11-19: the Fight and Guard
+  Another 10+ results no longer say "As 7–9" — they just say you choose
+  the extra effect — and the intro paragraph under the "Moves Reference"
+  heading was removed (the "How to read a move" paragraph stays). Also
+  2026-11-19: starting moves are capped at 3 per playbook, as in Monster
+  of the Week (all 8 basic moves plus 3 playbook moves); fixed/Default
+  moves count toward the 3, the picker shows a counter, and the
+  Alternative Weird choice does not count. Old saves with more than 3
+  moves keep them. Level-ups can still add moves beyond the starting 3.
 
 ## Saving (Hunters page)
 
