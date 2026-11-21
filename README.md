@@ -51,6 +51,15 @@ How to Play section and no Keeper content on this site.
   they came from), and improvements taken. The Level Up wizard always
   offers "Take a new move from your own playbook", even for the
   original 12 playbooks whose improvements lists no longer name one.
+  Every playbook's improvements list also names **"Perfect a move"**:
+  pick it at a level-up and then choose one of the 8 basic moves to
+  perfect — perfecting unlocks that move's 12+ version: a 12+ on a
+  perfected move gives you its 12+ result, while a 12+ on a move you
+  haven't perfected counts as a 10+. Only the 8 basic moves have 12+ versions,
+  so only they can be perfected, each one only once; the option stays
+  available on later level-ups until all 8 are perfected. Perfected
+  moves show on the sheet under My Moves, in a "Perfected moves"
+  section — a blank sheet shows nothing there.
   The playbook's default (fixed) moves always show in My Moves, tagged
   "Default" — old saves get any missing defaults backfilled on load,
   and the setup moves picker always shows them stamped and untickable.
@@ -112,8 +121,9 @@ How to Play section and no Keeper content on this site.
   boxes, two marked used from past adventures), `xMoveLevels`
   (cross-playbook moves taken through level-ups),
   `xMoves` (an array of cross-playbook picks, one per level), `allyCount`
-  (allies gained through "Gain an ally"), `impRatings` (repeatable +1
-  rating counts). Old `gear` and `expatriation` values may linger in
+  (allies gained through "Gain an ally"), `perfected` (an array of the
+  basic moves the hunter has perfected, at most one entry per move),
+  `impRatings` (repeatable +1 rating counts). Old `gear` and `expatriation` values may linger in
   stored JSON; they are never rendered — the gear section and the
   playbook background/features sections (including the Far-Traveller's
   Expatriation box) were removed 2026-11-17, because hunters arrive
@@ -161,6 +171,13 @@ How to Play section and no Keeper content on this site.
   moves count toward the 3, the picker shows a counter, and the
   Alternative Weird choice does not count. Old saves with more than 3
   moves keep them. Level-ups can still add moves beyond the starting 3.
+  Also 2026-11-20: a new improvement, **"Perfect a move"**, was added
+  to all 28 playbooks' improvements lists (the original 12 now list 5
+  improvements each). Perfecting a move unlocks its 12+ version — a 12+
+  on a perfected move gives you its 12+ result, and a 12+ on a move you
+  haven't perfected counts as a 10+; only the 8 basic moves can be
+  perfected, each one only once. Old
+  saves migrate with an empty perfected list and keep everything else.
 
 ## Saving (Hunters page)
 

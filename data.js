@@ -58,7 +58,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Protective garb worth 1-armour, if you wish · Your fated weapon (built above)",
   "history": "Close kin — say exactly how. / Fated to be your mentor — say how you know. / They will betray you, says the prophecy — do they know? / You saved them at the cost fate demanded — say what it cost. / They stand between you and your doom.",
-  "improvements": "+1 Charm (max +3) · +1 Tough (max +3) · +1 Cool (max +2) · +1 Weird (max +2)"
+  "improvements": "+1 Charm (max +3) · +1 Tough (max +3) · +1 Cool (max +2) · +1 Weird (max +2) · Perfect a move"
  },
  {
   "id": "cutpurse",
@@ -120,7 +120,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Boarding axe (2-harm hand messy) · Hand crossbow (2-harm close reload quiet) · Short bow (2-harm close/far quiet) · Rapier (2-harm hand precise) · Throwing knives (1-harm close many) · Armoured coat (1-armour hidden)",
   "history": "You stole something precious from them — do they know? / They sprang you from the gaol — what did you promise? / You sold them out once, cheap. They forgave you. Mostly. / They are your only honest friend. / You owe a Pirate Lord's fence a fortune, together.",
-  "improvements": "+1 Sharp (max +3) · +1 Charm (max +3) · +1 Cool (max +2) · +1 Tough (max +2)"
+  "improvements": "+1 Sharp (max +3) · +1 Charm (max +3) · +1 Cool (max +2) · +1 Tough (max +2) · Perfect a move"
  },
  {
   "id": "blessed",
@@ -182,7 +182,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Longsword (2-harm hand messy) · War hammer (2-harm hand heavy holy) · Spear (2-harm hand/close) · Mail shirt (1-armour) · Shield (1-armour, carried) · Blessed blade (2-harm hand holy silver)",
   "history": "Your patron marked them as significant — say how. / You healed them when no one else could — or would. / They doubt the gods, loudly, in your hearing. / You fought side by side against the drowned dead. / They carry a darkness your order would burn out.",
-  "improvements": "+1 Tough (max +3) · +1 Weird (max +3) · +1 Cool (max +2) · +1 Charm (max +2)"
+  "improvements": "+1 Tough (max +3) · +1 Weird (max +3) · +1 Cool (max +2) · +1 Charm (max +2) · Perfect a move"
  },
  {
   "id": "lorekeeper",
@@ -244,7 +244,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Silver dagger (2-harm hand silver) · Cold-iron blade (2-harm hand iron) · Blessed knife (2-harm hand holy) · Crossbow (2-harm close/far reload) · Sun-oil flasks (2-harm close fire) · Staff of rowan (1-harm hand warding)",
   "history": "They came to you broken by a curse; you lifted it — mostly. / You taught them to read the old charts. / They stole a book from your library and never returned it. / You have studied their bloodline. They do not know what you found. / They guard your haven when you sail.",
-  "improvements": "+1 Sharp (max +3) · +1 Weird (max +3) · +1 Cool (max +2) · +1 Charm (max +2)"
+  "improvements": "+1 Sharp (max +3) · +1 Weird (max +3) · +1 Cool (max +2) · +1 Charm (max +2) · Perfect a move"
  },
  {
   "id": "chart-reader",
@@ -302,7 +302,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Honest: crossbow (2-harm close/far reload) · long bow (2-harm far quiet) · war bow (3-harm far loud-of-creak) · short sword (2-harm hand). Hidden (pick two): boot dagger · sleeve knife · garrotte · poisoned needle (quiet, slow).",
   "history": "They are tied into it all — you have a chart proving it. Show them? / They humoured your theory once, in front of the wrong people. / You warned them about a wreck and they did not listen. / They are the only one who reads your charts without laughing. / You saw their name in his cipher. You have not told them. Yet.",
-  "improvements": "+1 Sharp (max +3) · +1 Weird (max +2) · +1 Cool (max +2) · +1 Charm (max +2)"
+  "improvements": "+1 Sharp (max +3) · +1 Weird (max +2) · +1 Cool (max +2) · +1 Charm (max +2) · Perfect a move"
  },
  {
   "id": "sworn",
@@ -364,7 +364,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Order blade (2-harm hand, sigil-marked) · Trident (2-harm hand/close) · Long bow (2-harm far) · Reinforced garb (1-armour) · Silver chain (1-harm hand area silver) · Old war banner (+1 to steady allies)",
   "history": "Your order sheltered them when the fleet came hunting. / They refused the order's oath, to your face. / You trained together as novices, once. / The order has marked them for watching — say why you have not reported them. / They saved your apprentice's life.",
-  "improvements": "+1 Tough (max +3) · +1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +2)"
+  "improvements": "+1 Tough (max +3) · +1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · Perfect a move"
  },
  {
   "id": "cursed",
@@ -466,7 +466,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Cutlass (2-harm hand) · Hand crossbow (2-harm close reload) · Great knife (1-harm hand) · Harpoon (2-harm close, barbed)",
   "history": "You lost control once and nearly killed them — how did they stop you? / They tried to end you, and you proved your heart — what convinced them? / You saved them from another of your kind. / You are bound to them by an old sea-oath. / One of the Twelve offered you a place. They know. Nobody else does.",
-  "improvements": "+1 Weird (max +3) · +1 Tough (max +3) · +1 Cool (max +2) · +1 Charm (max +2)"
+  "improvements": "+1 Weird (max +3) · +1 Tough (max +3) · +1 Cool (max +2) · +1 Charm (max +2) · Perfect a move"
  },
  {
   "id": "commoner",
@@ -524,7 +524,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Ship's gaff or boat hook (2-harm hand, reach) · Kitchen cleaver (1-harm hand) · Wood axe (2-harm hand heavy) · Hunting bow (2-harm far) · Heavy frypan (1-harm hand, a legend in its own right). Transport: your mule and cart / fishing smack / sturdy rowboat.",
   "history": "Close relations — say exactly how. / You keep their home, shop or tavern running between voyages. / They saved your life the first time the fleet came. / You nursed them back from the brink, with soup and stubbornness. / You are the reason they cannot retire, and they love you for it.",
-  "improvements": "+1 Charm (max +3) · +1 Sharp (max +2) · +1 Cool (max +2) · +1 Tough (max +2)"
+  "improvements": "+1 Charm (max +3) · +1 Sharp (max +2) · +1 Cool (max +2) · +1 Tough (max +2) · Perfect a move"
  },
  {
   "id": "quartermaster",
@@ -586,7 +586,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Fine cutlass (2-harm hand, balanced) · Heavy crossbow (3-harm far reload slow) · Breastplate (2-armour, Company-marked) · Pike (2-harm hand/close) · Signal flags and spyglass · Surgeon's kit and strong spirits",
   "history": "The Company assigned you to watch them — say whether you still file reports. / They saved a Company ship you were sworn to lose. / You recruited them, and vouched for them with your name. / They owe the Company a debt you quietly keep rescheduling. / You served together before the Company bought your swords.",
-  "improvements": "+1 Cool (max +3) · +1 Sharp (max +2) · +1 Tough (max +2) · +1 Charm (max +2)"
+  "improvements": "+1 Cool (max +3) · +1 Sharp (max +2) · +1 Tough (max +2) · +1 Charm (max +2) · Perfect a move"
  },
  {
   "id": "battle-mage",
@@ -687,7 +687,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Heirloom sword (2-harm hand messy) · Ritual dagger (1-harm hand) · Old ship's pistol-crossbow (2-harm close reload) · Ward-stone (1-armour, once per voyage)",
   "history": "You dueled beside them against his weather-witch. / They carried you out when a spell went wrong — what did it cost them? / You taught them one small, true magic. / They distrust sorcery since the fleet's curses — say what you do about it. / Your master died hunting him. They were there.",
-  "improvements": "+1 Weird (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Tough (max +2)"
+  "improvements": "+1 Weird (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Tough (max +2) · Perfect a move"
  },
  {
   "id": "touched",
@@ -789,7 +789,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "Silver needle-knives (1-harm hand silver, many) · Driftwood staff (1-harm hand warding) · Short bow (2-harm close/far) · A charm against your own gift (it aches — that is how you know it works)",
   "history": "You read their mind once, uninvited — and kept what you found. / They pulled you from the sea when the gift first took you. / Your voices name them, nightly, by a name they do not use. / They alone know what the price will be. / You warned them of a death. It came for someone else.",
-  "improvements": "+1 Weird (max +3) · +1 Charm (max +2) · +1 Cool (max +2) · +1 Sharp (max +2)"
+  "improvements": "+1 Weird (max +3) · +1 Charm (max +2) · +1 Cool (max +2) · +1 Sharp (max +2) · Perfect a move"
  },
  {
   "id": "bereaved",
@@ -847,7 +847,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Signature (pick one): a great boarding axe (3-harm hand heavy messy); the harbour bell-hammer (3-harm hand heavy holy); a matched pair of cutlasses (2-harm hand, +1 when both are drawn); a harpoon-thrower of your own making (3-harm far reload barbed). Practical (pick two): cutlass (2-harm hand); heavy crossbow (3-harm far reload); boarding pike (2-harm hand/close); mourning armour (1-armour). Your mount or boat: a black-sailed skiff, a warhorse that fears nothing.",
   "history": "They were there the day it happened — ask what they remember that you cannot. / They pulled you from the wreckage, or the bottle. / You have sworn to protect them as you could not protect yours. / They counsel mercy, and you are trying to hear them. / They lost people to him too — different names, same graves.",
-  "improvements": "+1 Tough (max +3) · +1 Sharp (max +2) · +1 Cool (max +2) · +1 Weird (max +2)"
+  "improvements": "+1 Tough (max +3) · +1 Sharp (max +2) · +1 Cool (max +2) · +1 Weird (max +2) · Perfect a move"
  },
  {
   "id": "philosopher",
@@ -900,7 +900,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Toolkits for your science, engineering, and analysis. Strange weapons (pick two): lightning rod (3-harm close loud area lightning, needs charging); storm-caster (3-harm close/far messy, needs charging); sun-lens (2-harm close/far quiet, needs charging); net launcher (0-harm close entangling); scalpel (1-harm intimate/hand); force knife (2-harm hand, needs charging); sleeping draught crossbow (1-harm close/far sedating); stun-ray (0-harm close sedating); clockwork hound (2-harm far autonomous); alchemist's fire-rod (3-harm close fire). Protective gear (pick one): sealed plague suit; chemical-resistant coat; engineer's coveralls; diving suit (sealed, climate-proof); alchemist's armour (2-armour heavy, needs charging). A weapon that needs charging is liable to run dry at the worst moment, like a bow without arrows.",
   "history": "Relations, most likely distant — say how. / Academic colleagues once — decide where and when. / On-again, off-again romance — decide if it is off or on right now. / Friends since a grand experiment together — decide which rival savant you defeated. / Just companions, at ease together after the hunt. / They once helped you deal with an experiment that got out of hand — say what it was, and let them decide how they helped. / They were there when your career changed from scholar to hunter — decide how they helped when you fought your first cursed thing. / You used your craft to get them out of a jam, and they still owe you — ask what the jam was, then tell them what you did.",
-  "improvements": "+1 Sharp (max +3) · +1 Cool (max +2) · +1 Weird (max +2) · +1 Tough (max +2) · Another Natural Philosopher move · A workshop with staff, facilities, and instruments suited to your study"
+  "improvements": "+1 Sharp (max +3) · +1 Cool (max +2) · +1 Weird (max +2) · +1 Tough (max +2) · Another Natural Philosopher move · A workshop with staff, facilities, and instruments suited to your study · Perfect a move"
  },
  {
   "id": "bard",
@@ -968,7 +968,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Copies of your work, posters, ballads, and books, ready to be signed and handed to admirers. A ride (pick one): a painted touring wagon; a fine racing horse; a rickety captured war-wagon; a carriage with a driver; a classic old coach; a powerful warhorse. Normal weapons (pick two): hand crossbow (2-harm close reload loud); heavy crossbow (3-harm close messy); hunting bow (2-harm far loud); short bow (2-harm close loud); great knife (1-harm hand); two-handed saw (2-harm hand heavy messy loud).",
   "history": "A professional relationship — are they your agent, lawyer, bodyguard, assistant, or co-star? / Best rivals — you met competing over something. Was it a hunt or a performance? Decide how it turned out. / The broadsheets caught you out together once — was it a date, or were you hunting? / They knew you before you were famous: a cousin, a fellow student, or just an old friend. / A history of romance with this hunter (with the player's agreement) — how long, and how steady? / They are (or were) your biggest admirer and still keep some memorabilia — ask what their favourite piece is. / They recruited you for your first hunt — what did you hunt, and how did it go? / Your work includes advice that once saved their life — ask what it was.",
-  "improvements": "+1 Charm (max +3) · +1 Tough (max +2) · +1 Sharp (max +2) · +1 Cool (max +2) · Another Famed Bard move · An entourage as an ally group"
+  "improvements": "+1 Charm (max +3) · +1 Tough (max +2) · +1 Sharp (max +2) · +1 Cool (max +2) · Another Famed Bard move · An entourage as an ally group · Perfect a move"
  },
  {
   "id": "fae",
@@ -1076,7 +1076,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Transport (pick one): a fast horse; a skiff; a small sailboat; an old cart; a warhorse; a wagon; a fine coach in decent condition; a classic coach in poor condition. Weapon (pick one): wooden club (2-harm hand innocuous messy); pocket knife (1-harm hand useful small); hand crossbow (2-harm close loud); hunting bow (3-harm far loud reload); sledgehammer (2-harm hand messy slow); fire axe (2-harm hand messy heavy); talisman or relic (1-harm close magic ignore-armour). Mementos (pick two): a childhood toy; a scrying ledger; a knapsack; a music box or game device; old portraits; jewellery; a favourite piece of clothing; a journal; letters from home.",
   "history": "They discovered you are not human — ask how they realised, and how (or if) they told you. / You suspect they know more about your heritage than they say — ask if your suspicion is right. / They tried to slay you, but decided you were innocent — or at least not evil. Ask what convinced them. / You see them as your anchor to humanity — ask what example they set. / You are romantically involved with them, or a close relative of theirs — decide the exact relationship. / They are family in every way but blood — decide the details. / They claim you and your people are part of their destiny — ask what they told you, and tell them your reaction. / They see you as a protégé to train for hunting — ask how persistent they are.",
-  "improvements": "+1 Weird (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Charm (max +2) · Another Fae-Blooded move · An ally, tied to the mortal or the hidden world"
+  "improvements": "+1 Weird (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Charm (max +2) · Another Fae-Blooded move · An ally, tied to the mortal or the hidden world · Perfect a move"
  },
  {
   "id": "bonded",
@@ -1143,7 +1143,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "A way to reach your ally (pick one): messenger ravens; a summoning charm; signal flags; a far-speaking relic; a telepathic link; a message charm. A useful item (pick one): a wardrobe of socially fitting clothes; a mail shirt (1-armour); a cutting-edge charting kit; ritual gear; an extensive tool collection. A weapon (pick one): a heavy tool (2-harm hand utility innocuous); a summoned minion (2-harm close autonomous messy); a hand crossbow (2-harm close reload loud); a bag of curses (1-harm close magic ignore-armour); a heavy crossbow (3-harm close messy loud); a hunting bow (2-harm far loud); a sword (2-harm hand magic).",
   "history": "They introduced you to your ally — ask how that happened, and decide what the relationship is now. / The first time you met a cursed thing, they were there — ask whether they were already a veteran. / You introduced them to the hunting life — was it on purpose? Ask how they feel about being dragged into it. / Your ally is a great admirer of this hunter — has your ally approached them? Ask the other hunter if they have noticed. / They are related to your ally — ask what they think of your relationship. / You are always trying to show off in front of them — why? Ask what they think of it. / They shared a harrowing encounter with you and your ally — what detail do you all disagree on?",
-  "improvements": "+1 Cool (max +2) · +1 Weird (max +2) · +1 Charm (max +3) · +1 Sharp (max +2) · +1 Tough (max +2) · Another Bonded move · A move from another playbook"
+  "improvements": "+1 Cool (max +2) · +1 Weird (max +2) · +1 Charm (max +3) · +1 Sharp (max +2) · +1 Tough (max +2) · Another Bonded move · A move from another playbook · Perfect a move"
  },
  {
   "id": "curseeater",
@@ -1216,7 +1216,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Handy gear (pick three): a mystical focus used when eating curses (crystal, amulet, or ring); a pocket knife (1-harm hand useful small); a bag of occult ingredients and spell reagents; manacles and chains; rope and cord; a medallion of the Society of Curse-Eaters; improvised protective gear (1-armour); a great net; a grimoire of wardings and defences; dowsing rods and a pendulum. Practical weapons (pick two): a cudgel (1-harm hand innocuous); a short baton (1-harm hand small); a shocking rod (2-harm hand/close stun, crackling); a sleeping-draught crossbow (3-harm close sedating); a hand crossbow (2-harm close loud). A vessel (pick one): none; a wagon; an old cart; a cart; a wagon-train.",
   "history": "Friends and confidants — what do you know of each other's fears and secrets? / You saved them from a curse many years ago and have trusted each other since — ask what it was. / You are suspicious of their powers, and wonder if one day you will need to consume a curse from them. / They are suspicious of your powers — ask what they fear about you. / You were both hunting the same cursed thing and argued about killing it versus saving it — decide who won that debate. / Family — what is the relationship, and how does the rest of the family regard you? / On your first hunt together, you unleashed consumed magic and put them in great danger — ask what happened, and how they feel about it now. / They told you that you are fated to consume a curse that threatens the world — ask if they know anything more about what is coming.",
-  "improvements": "+1 Sharp (max +3) · +1 Weird (max +2) · +1 Tough (max +2) · +1 Charm (max +2) · Another Curse-Eater move · Make a consumed magic into a permanent custom move (with the group's agreement), then clear it",
+  "improvements": "+1 Sharp (max +3) · +1 Weird (max +2) · +1 Tough (max +2) · +1 Charm (max +2) · Another Curse-Eater move · Make a consumed magic into a permanent custom move (with the group's agreement), then clear it · Perfect a move",
   "trackers": [
    {
     "key": "corruption",
@@ -1295,7 +1295,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Resources (pick one): mysterious financial assets; access to exclusive spaces; messenger devices; diplomatic credentials. A weapon (pick one): a defensive charm (1-harm close magic, 1-armour); a holdout crossbow (2-harm close small); a rebuking touch (1-harm hand holy); a whispered revelation (0-harm intimate stun).",
   "history": "They were the first person you met after receiving your Task — tell them if they witnessed the event itself, and how they reacted. / A family member — ask what surprised them most about how you have changed. / They are somehow integral to your Task — ask why the Overseers are interested in them. / The Overseers have warned you about this hunter — what was the warning? Have you revealed it? / You enjoy every minute you spend with them — decide together what makes you get along so well. / They respect your Task and the work you do — ask if they respect the Overseers as much as the work. / They have always listened to your worries — have you ever taken advantage of their willingness to listen? / You work efficiently together — decide why others think you do not like each other.",
-  "improvements": "+1 Cool (max +3) · +1 Weird (max +2) · +1 Charm (max +2) · +1 Sharp (max +2) · Another Herald move · A move from another playbook · Pick a second resource from your gear"
+  "improvements": "+1 Cool (max +3) · +1 Weird (max +2) · +1 Charm (max +2) · +1 Sharp (max +2) · Another Herald move · A move from another playbook · Pick a second resource from your gear · Perfect a move"
  },
  {
   "id": "blade",
@@ -1358,7 +1358,7 @@ const PLAYBOOKS = [
   "pick": 1,
   "gear": "A sentimental object (pick one): a memento of a past partner you felt strongly about; a mysterious brand or mark that appears on both your forms; a gift given to you by a small child; a notebook you write poetry in; a favourite novel. A human-form defence (pick one): a natural warrior (1-harm intimate/hand); a wrestler (2-harm intimate/hand, grab, forceful); a dagger (1-harm intimate/hand); a holdout crossbow (1-harm close small).",
   "history": "They awakened your dormant form — did you appear as a human or a weapon first? Decide how you each reacted. / They know things about your legend that you do not — tell them a secret you did not know yourself, and ask if they have revealed it to you. / Prophecies say they are connected to your past — have you told them? Decide together what the connection is. / They always treat you as a person, whatever form you are in — what do you think of that? Ask why they do it. / They engineered the meeting between you and your current partner — ask why they did that. / They seem to think your weapon form is a curse you need freeing from — do you agree? / You share interests or hobbies — decide together what they are. / You were created to kill them — them, or their people. Tell them why you turned against this purpose, and ask if they know about it.",
-  "improvements": "+1 Charm (max +3) · +1 Weird (max +3) · +1 Tough (max +2) · +1 Sharp (max +2) · +1 Cool (max +2) · Another Living Blade move · A move from another playbook"
+  "improvements": "+1 Charm (max +3) · +1 Weird (max +3) · +1 Tough (max +2) · +1 Sharp (max +2) · +1 Cool (max +2) · Another Living Blade move · A move from another playbook · Perfect a move"
  },
  {
   "id": "inquisitor",
@@ -1431,7 +1431,7 @@ const PLAYBOOKS = [
   "pick": 1,
   "gear": "A ledger, a liquor flask, two recording devices, and one investigator's weapon. Recording devices (pick two): a night-sight spyglass; a wax-cylinder recorder; a tiny scrying lens; a clockwork raven; a sketching kit; a listening horn; a voice-capturing horn; a portrait lens. Investigator's weapons (pick one): brass knuckles (1-harm hand small); a hand crossbow (2-harm close reload loud); a short bow (2-harm close loud); a heavy crossbow (3-harm close reload loud); a great crossbow (3-harm close messy loud); a slim stiletto (1-harm hand small).",
   "history": "You are on the same (or rival) bowls team — ask what bowls-related disagreement rubbed them the wrong way. / You caught them committing a crime but let them go — ask them to describe the crime, then explain why your Code required you to look the other way. / They remind you of a former partner who was mysteriously murdered — describe the unsolved case that killed your partner, and how you hope to solve it. / You first approached them for help on a case — describe the case, and ask them what expertise solved it. / You were friends back in training, before you became an investigator — military, watch, or whatever; decide the details. / Ask if they live by a code, and what it is. If you approve, you have always respected them; if not (or if they have none), you have never trusted them. / They hired you for a job, but you were too drunk or high to take it — ask what they wanted, then tell them how you brushed them off. / You first met on a board for unsolved crimes — decide together what infamous crime fascinates you both.",
-  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +3) · +1 Tough (max +2) · Another Inquisitor move · Add another harm box to your track, before Dying"
+  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +3) · +1 Tough (max +2) · Another Inquisitor move · Add another harm box to your track, before Dying · Perfect a move"
  },
  {
   "id": "witch",
@@ -1543,7 +1543,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Whatever magical items or amulets you use to perform magic, including what you need to cast your rotes. Two witch's weapons (pick two): a hand crossbow (2-harm close reload loud); a heavy crossbow (3-harm close messy loud); an athame (2-harm hand magic silver); a shillelagh (1-harm hand balanced); a hunting crossbow (2-harm close slow); a staff (1-harm hand balanced large).",
   "history": "You once cast a powerful spell or curse on them — tell them why, and ask how it ended. / They fear your power, or what you might do with it — ask why. / You are madly in love with them — ask if they can tell. / They encourage you to indulge your temptation — ask why. / They keep you grounded, and are unfazed by your displays of power. / You were part of the same cult, order, or secret society — decide together what terrible things you did in the name of power. / You learned through divination that they are important and you should help them — decide whether you have told them or not. / They helped you out when a spell went awry — tell them what the spell was, and ask how they helped you.",
-  "improvements": "+1 Weird (max +3) · +1 Cool (max +2) · +1 Charm (max +2) · +1 Sharp (max +2) · Take another rote · Take another Hex move, or an additional rote",
+  "improvements": "+1 Weird (max +3) · +1 Cool (max +2) · +1 Charm (max +2) · +1 Sharp (max +2) · Take another rote · Take another Hex move, or an additional rote · Perfect a move",
   "trackers": [
    {
     "key": "rotes",
@@ -1614,7 +1614,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "A personal item (pick one): a journal recording the symptoms of your bonding; a journal of notes left between you and your symbiote; a ledger; a book of songs; tattered novels; a portrait of better times; art supplies and a sketchbook; a voice-capturing horn and spare wax cylinders. A weapon (pick one): a strange martial art (1-harm hand); a symbiotic blade (2-harm hand integrated retractable); a symbiotic stunner (0-harm close stun integrated retractable); a hand crossbow (2-harm close reload loud); a heavy crossbow (3-harm close reload loud); a sword (2-harm hand); a storm-rod (2-harm close messy energy); a scatter-crossbow (3-harm close messy loud).",
   "history": "They were instrumental in you meeting and bonding with your symbiote — decide together how it happened. / Your meeting with them was not coincidence — why did you seek them out? Ask if they are suspicious of you. / You are related, and another close relative has recently gone missing — ask if their memories of this person are good or bad, then tell them if yours are the same. / They have always treated you with respect — ask whether it is because of how you bonded with the symbiote, or how you handle it. / You will protect them before anybody else — do you know why you act this way? Ask how they feel about it. / They seem to always be watching you — ask what concerns them, and how you respond. / You have been friends since you met over a shared, relaxing interest — decide what it is, and whether it was before your symbiosis. / They used to bear the same symbiote you do — ask how they became separated, and how they feel about it. Have you discussed how they feel about their former symbiote being yours now?",
-  "improvements": "+1 Cool (max +3) · +1 Weird (max +2) · +1 Tough (max +2) · +1 Charm (max +2) · Another Vessel move · A move from another playbook · A haven like the Lorekeeper's, with two options · An ally — another with a symbiote like yours, or someone who helps you manage the condition"
+  "improvements": "+1 Cool (max +3) · +1 Weird (max +2) · +1 Tough (max +2) · +1 Charm (max +2) · Another Vessel move · A move from another playbook · A haven like the Lorekeeper's, with two options · An ally — another with a symbiote like yours, or someone who helps you manage the condition · Perfect a move"
  },
  {
   "id": "channeler",
@@ -1712,7 +1712,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "You have the tools needed to work on your craft, and an internal mechanism, integrated. You may take sturdy armour worth 1-armour if you wish. Mechanisms (pick three): a spy-raven you command from afar; a miniature calculating engine; a recording slate, integrated; a keen-sense array, integrated; spring-boots or a glider, integrated; a forgettable cart; a plain wagon. Weapons (pick two): take a weapon from the Quartermaster's gear and give it +integrated and +blatant; reinforced fists (1-harm hand useful integrated); a storm rod (2-harm close energy); clockwork hornets (1-harm close autonomous area); a spark-rod (0-harm close stun); a short bow (2-harm close loud); a fashionable blade (2-harm hand); a tool (1-harm close useful). Comforts (pick two): a nostalgic portrait; a much-reread letter; a project journal; a game board; all the strong coffee.",
   "history": "They knew you before your abilities really took off — ask what they think of the change. / You have learned a secret about them — decide together what it is, and if they know you know. / They are a relative — cousins or closer. Ask what part they played in you becoming what you are. / They always give you the space you need — what method do they use when they really need to get through to you? / Why can you never say the right thing to them, no matter how much you want to? Ask if they have noticed your struggle. / You suspect they know more about you than they are saying — ask what they suspect. / You share a surprising hobby — what is it? / How did you ruin an important day in their life?",
-  "improvements": "+1 Sharp (max +3) · +1 Tough (max +2) · +1 Cool (max +2) · +1 Weird (max +2) · Another Channeler move · A move from another playbook · Add, remove, or change three tags on gear (may be spread across several pieces) · A haven like the Lorekeeper's, with a workshop, a calculating engine, and two other options · Add an Upgrade or change a Fault"
+  "improvements": "+1 Sharp (max +3) · +1 Tough (max +2) · +1 Cool (max +2) · +1 Weird (max +2) · Another Channeler move · A move from another playbook · Add, remove, or change three tags on gear (may be spread across several pieces) · A haven like the Lorekeeper's, with a workshop, a calculating engine, and two other options · Add an Upgrade or change a Fault · Perfect a move"
  },
  {
   "id": "starcrossed",
@@ -1780,7 +1780,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "Choose two ordinary things: a wooden club (2-harm hand innocuous messy); a pocket knife (1-harm hand useful small); a hand crossbow (2-harm close loud reload); a horse; a fine coach in decent condition; a warhorse. And choose one gift from your Guide — it must be periodically recharged by time with your Guide. Gifts: part of their body (a vial of blood, a lock of hair, tears in a phial, faerie dust) — it either helps you heal, or counts as a weakness against a specific sort of cursed thing. A piece of jewellery (a golden ring, a tribal pendant, a silver locket) — it either gives 1-armour magic, or protects you from the powers of a specific sort of cursed thing. A memento of when they were human (a portrait, a diary, a favourite hat, a doll, a lighter) — +1 on bond abuse rolls. A strange or antique weapon (a family sword, an ancient staff, a holy mace, 2-harm hand messy) — add 'magic', 'silver', 'holy', or 'iron' to the weapon.",
   "history": "Your best friend in the world — you trust them totally. / You are blood-kin — decide your exact relationship together. / Your ex — ask why you are not together any more. / A romantic entanglement, or one fated to be. / They know some of your dark secrets, but have agreed to keep quiet — tell them what they know. / An old rivalry has turned into a tight friendship — ask what (or who) you once fought over. / A mentor from another life — ask what they taught you.",
-  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Weird (max +2) · Another Star-Crossed move · Gain an ally · A move from another playbook · Take a second gift from your Guide, or add another property to an existing gift · Change your Guide, as you fall for another creature",
+  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Weird (max +2) · Another Star-Crossed move · Gain an ally · A move from another playbook · Take a second gift from your Guide, or add another property to an existing gift · Change your Guide, as you fall for another creature · Perfect a move",
   "trackers": [
    {
     "key": "relationship",
@@ -1856,7 +1856,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "A ledger, a horse or warhorse, a spyglass, a far-seeing lens, two sets of investigation tools, and one self-defence weapon. Investigation tools (pick two): a bag of lenses and listening horns; clue-hunting tools; ghost-hunting tools; scientific measuring tools; sea-beast hunting gear; historical documents and witness reports of strange events; maps, plans, and surveys for significant places. Self-defence weapons (pick one): a walking stick (1-harm hand innocuous); a hand crossbow (2-harm close reload loud); a small knife (1-harm hand messy); martial arts training (1-harm hand innocuous); an incapacitating spray (0-harm hand irritating); a heavy lantern (1-harm hand innocuous).",
   "history": "In your researches, you found accounts (and portraits) of someone matching their description perfectly — but long before they were born. Tell them if you have mentioned this. / A relative — decide between you how close. / They were involved in a strange event like your first encounter — perhaps the same event, or one you investigated later. Ask how it affected them. / You worked out a hidden secret they keep — ask what it is. / You met when you were each investigating separate voyages — tell them what trick you used to protect them from strangeness, and ask how they saved you from a danger. / You are both veterans of a support group or treatment programme — work out the details. / Some creature or force is stalking them — ask what it is, then decide if you have told them, or if they are still happily unaware. / You found their pet when it went missing — where had it gone?",
-  "improvements": "+1 Sharp (max +3) · +1 Weird (max +3) · +1 Charm (max +2) · +1 Cool (max +2) · Another Seeker move · Gain an ally · Take a second first-encounter move, based on a recent voyage"
+  "improvements": "+1 Sharp (max +3) · +1 Weird (max +3) · +1 Charm (max +2) · +1 Cool (max +2) · Another Seeker move · Gain an ally · Take a second first-encounter move, based on a recent voyage · Perfect a move"
  },
  {
   "id": "broadsheet",
@@ -1919,7 +1919,7 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "A ledger, three recording devices, two detectors, and one subtle weapon. Recording devices (pick three): a motion-portrait lens; a tiny portrait lens; a sketching kit; a voice-capturing horn; a wax-cylinder recorder; a heat-seeing lens; fine sound gear; a clockwork raven; a starlight lens; a braced stand; a listening horn; a portrait lens; a fine sketchbook. Detectors (pick two): a lodestone detector; a cold-spot gauge; a spirit board; a damp-gauge; dowsing rods; a chemistry test kit; a lodestone rod; a compass; a charting device; a rangefinder; a pendulum; a tarot deck. Subtle weapons (pick one): a pocket knife (1-harm hand hidden useful); a shocking rod (1-harm hand stun); a cudgel (2-harm hand innocuous messy); a hand crossbow (2-harm close loud); a knife (1-harm hand hidden).",
   "history": "Best friends from school or university (a playwriting class, maybe?). / You met this hunter when they slew a cursed thing you were doing a story on — ask what it was. / This hunter almost defeated a cursed thing, but you did something to prevent it — ask what it was, then tell them what you did. Was it an accident, or on purpose? / This hunter was in danger of unhelpful publicity, but you got the story killed. / You have a crush on this hunter — ask if they have noticed. / This hunter saved you when you did something foolish — ask what you did. / This hunter is a huge admirer of your work — ask if they keep quiet about it, or if everyone knows. / This hunter is a relation, close or distant — decide between you exactly what.",
-  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Weird (max +2) · +1 Sharp (max +2) · Another Broadsheet move · An ally: one of your existing crew members, or the whole crew as an ally team · A haven, like the Lorekeeper's, with one option plus a print shop and editing room"
+  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Weird (max +2) · +1 Sharp (max +2) · Another Broadsheet move · An ally: one of your existing crew members, or the whole crew as an ally team · A haven, like the Lorekeeper's, with one option plus a print shop and editing room · Perfect a move"
  },
  {
   "id": "showmaster",
@@ -1977,7 +1977,7 @@ const PLAYBOOKS = [
   "pick": 2,
   "gear": "One camp tool, one wagon, one mystical item, and all the paraphernalia. Camp tools (pick one): a pocket knife (1-harm hand useful small); a mallet (1-harm hand useful blunt); a crowbar (2-harm hand useful messy); a cudgel or similar (2-harm hand); a hatchet (2-harm hand messy); a sock full of coins (1-harm hand stun). Vehicles (pick one): a cart; a wagon; a covered wagon; a horse and trap. Mystical items (pick one): Ghost Shades — spectacles that can see into the spirit world (it seems darker than usual, obviously); a Really Big Cloth Dog (animated) — somehow it came to life, rather like a regular dog; a Returning Coin — spend it, and it will come back in a day or so; a Scamulet — it heats up whenever someone is running a scam on you; a Wizard's Tent — worn and shabby outside, big and luxurious inside. Paraphernalia — you have all of this: tickets to a show, snack tokens, decks of cards, pairs of dice, magic-trick props, camping gear, makeup, costume accessories.",
   "history": "This hunter worked the Show with you — ask for how long; it was at least a few months, time enough to become friends. / This hunter knew you as a child — ask what town you both hail from. Did you run away to join the Show? / 'No, I certainly did not rip you off in that town a few years back. Must have been a different show, friend.' / This hunter was chasing a cursed thing when the Show was in town, and thought it might be one of the crew — was it? How did you resolve things? / This hunter is an estranged family member — decide the exact relationship together. / Something got loose from the Show, a few years back, and this hunter ended up helping you secure it again — tell them what got loose, then ask how they ended up hunting it too. / A fortune-teller told you this hunter is part of your destiny — ask what the rest of the fortune said. / A strange old person pointed this hunter out to you when you were in a bad spot — ask why they helped you get back on track.",
-  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Weird (max +3) · Another Showmaster move · Gain an ally · Take another Show option",
+  "improvements": "+1 Charm (max +3) · +1 Cool (max +2) · +1 Sharp (max +2) · +1 Weird (max +3) · Another Showmaster move · Gain an ally · Take another Show option · Perfect a move",
   "trackers": [
    {
     "key": "favour",
@@ -2048,6 +2048,6 @@ const PLAYBOOKS = [
   "pick": 3,
   "gear": "You have the vessel that brought you here, but it is broken — what does it look like? You also have: Far-traveller gear (pick two): an information crystal; a pocket medkit; a universal translator; an instant climate bubble; a food replicator with four recipes; a holographic disguise; a hoverbike; a portable power generator (enough to light a small town). A far-traveller weapon (pick one): a warp ray (2-harm close disorienting); a psionic blade (2-harm hand ignore-armour magic); a lightning rod (3-harm close messy); a freeze ray (0-harm close stun); a harvester gem (1-harm far energy life-drain); a destabilising seed (3-harm area messy loud). Local gear (pick two): a game board; a book of songs, full; an old music box; a speaking-slate; camping gear; a collection of portraits; favourite snacks; good shoes; a cart.",
   "history": "They were the first local resident you ever had a conversation with — was there a language barrier? What was the conversation about? / This hunter seems to know things about the history of your homeland you only vaguely know about. / Tests indicate that one of their ancestors was from your people — did you know this was possible? Have you told them? / You frequently have deep conversations with this hunter about your respective cultures. / It especially bothers you to be misunderstood by this hunter — you do not understand why. Ask if they have noticed. / One of the hunters has had a past experience with your people — ask whether it was a good experience or a bad one, and whether you were there. / How have you and this hunter shared hobbies from each other's upbringings? / One of you mistook the other for a threat people needed protecting from — decide together how that played out.",
-  "improvements": "+1 Sharp (max +3) · +1 Weird (max +3) · +1 Tough (max +2) · +1 Charm (max +2) · +1 Cool (max +2) · Gain an ally: a far-traveller, a local animal, or a local friend · Another Far-Traveller move · A move from another playbook"
+  "improvements": "+1 Sharp (max +3) · +1 Weird (max +3) · +1 Tough (max +2) · +1 Charm (max +2) · +1 Cool (max +2) · Gain an ally: a far-traveller, a local animal, or a local friend · Another Far-Traveller move · A move from another playbook · Perfect a move"
  }
 ];

@@ -10,7 +10,12 @@
 // from your playbook's list. One improvement per level — no points, no
 // budget. Ratings can be raised more than once, up to their listed max;
 // "Gain an ally" adds one ally each time; a move from another playbook
-// can be taken again at a later level. You start with 3 moves from your
+// can be taken again at a later level. "Perfect a move" can be taken
+// again too, for a different basic move each time: perfecting a basic
+// move unlocks its 12+ version — a 12+ on a perfected move gives you
+// that move's 12+ result, while a 12+ on a move you haven't perfected
+// counts as a 10+. Only the 8 basic moves have 12+
+// versions, so only basic moves can be perfected. You start with 3 moves from your
 // own playbook (Monster of the Week rule): the fixed moves count toward
 // the 3, and you pick the rest. D&D weapons convert on the chart in
 // setup. Every hunter has 5 luck. The luck track always shows
@@ -43,7 +48,7 @@
       id: uid(), playbook: pb.id, name: '', pronouns: '', look: '', photo: '',
       ratingIdx: 0, harm: 0, luckUsed: 0, luckMax: 5, xp: 0, level: 1, unstable: false,
       gear: [], moves: moves, improvements: [], impRatings: {},
-      xMoveLevels: 0, xMoves: [], allyCount: 0,
+      xMoveLevels: 0, xMoves: [], allyCount: 0, perfected: [],
       trackers: {}, expatriation: '', view: 'setup'
     };
   }
@@ -58,6 +63,9 @@
     hunters = [newHunter('foretold')];
     activeId = hunters[0].id;
   }
+  // The 8 basic moves — the only moves with 12+ versions, so the only
+  // moves that can be perfected. Names match reference.html exactly.
+  var BASIC_MOVES = ['Act Under Pressure', 'Investigate', 'Persuade Someone', 'Guard Another', 'Fight', 'Lend Aid', 'Read a Bad Situation', 'Do Magic'];
   // Migrate old saves: no `view` field yet — named hunters open on their
   // finished sheet, unnamed ones open in setup. Nothing else changes.
   // Later migrations: gear was stored as indices into the playbook gear
@@ -83,6 +91,9 @@
     if (!Array.isArray(h.xMoves)) h.xMoves = [];
     if (typeof h.xMoveLevels !== 'number') h.xMoveLevels = 0;
     if (typeof h.allyCount !== 'number') h.allyCount = 0;
+    if (!Array.isArray(h.perfected)) h.perfected = [];
+    // Keep only real basic-move names, in case the list was edited by hand.
+    h.perfected = h.perfected.filter(function (m) { return BASIC_MOVES.indexOf(m) !== -1; });
     delete h.ownMoveLevels; // paid extra move slots no longer exist — moves are free ticks now
     if (!h.trackers) h.trackers = {};
     if (typeof h.level !== 'number' || h.level < 1) h.level = 1;
@@ -118,6 +129,9 @@
         // dropped — own moves are free ticks now
       } else if (info.type === 'xmove') {
         h.xMoveLevels++;
+      } else if (info.type === 'perfect') {
+        // dropped — a perfected move is recorded in h.perfected, not as
+        // an improvement index, so an index here means nothing
       } else {
         kept.push(i);
       }
@@ -228,7 +242,9 @@
   // (repeatable at later levels), an own-move grant (your own book's
   // moves are free ticks, so these are offered in the Level Up
   // walkthrough as "take another move from your own playbook"),
-  // "Gain an ally" (adds one ally each time), or any other one-off
+  // "Gain an ally" (adds one ally each time), "Perfect a move" (pick
+  // one basic move to perfect — repeatable, a different move each
+  // time, max 1 per move), or any other one-off
   // improvement (max 1). No playbook list currently names an
   // improvement "advanced" in so many words (the Witch's was among
   // the removed last two), so the advanced branch below is dormant —
@@ -237,6 +253,7 @@
   function impInfo(item) {
     var m = /^\+1 (Charm|Cool|Sharp|Tough|Weird) \(max \+(\d)\)/.exec(item || '');
     if (m) return { cost: 1, type: 'rating', rating: m[1], max: +m[2] };
+    if (/^Perfect a move/i.test(item)) return { cost: 2, type: 'perfect' };
     if (/move from another playbook/i.test(item)) return { cost: 3, type: 'xmove' };
     if (/another .*move/i.test(item) || /another rote/i.test(item)) return { cost: 2, type: 'ownmove' };
     if (/advanced/i.test(item)) return { cost: 3, type: 'advanced' };
@@ -468,6 +485,7 @@
       trackerHtml(h, pb) +
       '</div>' +
       '<h3 class="sheet-h">My Moves</h3>' + myMovesHtml(h, pb) +
+      ((!blankMode && (h.perfected || []).length) ? '<h3 class="sheet-h">Perfected moves</h3><p class="muted">A perfected move\'s 12+ version is unlocked — a 12+ on it gives you that move\'s 12+ result; a 12+ on a move you haven\'t perfected counts as a 10+.</p><ul class="sheet-list"><li>' + h.perfected.map(esc).join('</li><li>') + '</li></ul>' : '') +
       (pickedImp.length ? '<h3 class="sheet-h">Improvements taken</h3><p class="muted">Earned by levelling up — one improvement per level.</p><ul class="sheet-list"><li>' + pickedImp.map(esc).join('</li><li>') + '</li></ul>' : '') +
       '<p class="no-print sheet-actions"><button type="button" data-action="edit-setup">\u2190 Edit setup</button> <button type="button" data-action="print-sheet" class="primary">Print sheet</button></p>' +
       '</article>';
@@ -551,6 +569,12 @@
         opts.push({ type: 'xmove', label: g, note: 'Pick a move from another playbook', idx: i });
       } else if (info.type === 'ally') {
         opts.push({ type: 'ally', label: g, note: 'You have ' + (h.allyCount || 0) + ((h.allyCount || 0) === 1 ? ' ally' : ' allies') + ' — gain one more', idx: i });
+      } else if (info.type === 'perfect') {
+        // Repeatable across different moves, one-off per move: disabled
+        // only once all 8 basic moves are perfected.
+        var perfected = h.perfected || [];
+        var allPerfect = BASIC_MOVES.every(function (m) { return perfected.indexOf(m) !== -1; });
+        opts.push({ type: 'perfect', label: g, note: 'Unlock a basic move\'s 12+ version — pick which basic move to perfect', idx: i, disabled: allPerfect, why: 'All 8 basic moves already perfected' });
       } else {
         var taken = h.improvements.indexOf(i) !== -1;
         opts.push({ type: 'other', label: g, note: info.type === 'advanced' ? 'Advanced improvement' : '', idx: i, disabled: taken, why: 'Already taken' });
@@ -587,13 +611,14 @@
       return 'You will learn ' + (xm ? xm.name : 'a move') + ' — a move from the ' + xpb.name + '.';
     }
     if (o.type === 'ally') return 'You will gain another ally — you will have ' + ((h.allyCount || 0) + 1) + ((h.allyCount || 0) + 1 === 1 ? ' ally' : ' allies') + '.';
+    if (o.type === 'perfect') return 'You will perfect ' + (o.perfectMove || 'a basic move') + ' — a 12+ on it will give you its 12+ result.';
     var it = impItems(pb)[o.idx];
     return 'You will take: ' + (it || 'an improvement') + '.';
   }
   function openLevelUp() {
     var h = active();
     if (blankMode || (h.xp || 0) < 5) return;
-    levelUp = { step: 1, opt: null, type: null, label: '', rating: null, idx: null, ownMoveIdx: null, xPb: null, xMoveIdx: null };
+    levelUp = { step: 1, opt: null, type: null, label: '', rating: null, idx: null, ownMoveIdx: null, xPb: null, xMoveIdx: null, perfectMove: null };
     renderWizard();
   }
   function levelUpPick(optIdx) {
@@ -602,8 +627,9 @@
     var o = opts[optIdx];
     if (!o || o.disabled || !levelUp) return;
     levelUp.opt = optIdx; levelUp.type = o.type; levelUp.label = o.label; levelUp.rating = o.rating || null; levelUp.idx = (o.idx == null ? null : o.idx);
-    if (o.type === 'ownmove' || o.type === 'xmove') {
+    if (o.type === 'ownmove' || o.type === 'xmove' || o.type === 'perfect') {
       levelUp.step = 2;
+      if (o.type === 'perfect') levelUp.perfectMove = null;
       if (o.type === 'xmove') {
         var other = PLAYBOOKS.filter(function (p) { return p.id !== pb.id; })[0];
         levelUp.xPb = other.id;
@@ -619,6 +645,15 @@
   function levelUpOwnMove(moveIdx) {
     if (!levelUp) return;
     levelUp.ownMoveIdx = moveIdx;
+    levelUp.step = 3;
+    renderWizard();
+  }
+  function levelUpPerfectMove(moveName) {
+    if (!levelUp) return;
+    var h = active();
+    if ((h.perfected || []).indexOf(moveName) !== -1) return; // already perfected — cannot pick it again
+    if (BASIC_MOVES.indexOf(moveName) === -1) return;
+    levelUp.perfectMove = moveName;
     levelUp.step = 3;
     renderWizard();
   }
@@ -642,6 +677,9 @@
       h.xMoves.push({ pb: o.xPb, moveIdx: o.xMoveIdx });
     } else if (o.type === 'ally') {
       h.allyCount = (h.allyCount || 0) + 1;
+    } else if (o.type === 'perfect') {
+      if (!Array.isArray(h.perfected)) h.perfected = [];
+      if (o.perfectMove && h.perfected.indexOf(o.perfectMove) === -1) h.perfected.push(o.perfectMove);
     } else if (o.type === 'other') {
       if (h.improvements.indexOf(o.idx) === -1) h.improvements.push(o.idx);
     }
@@ -668,6 +706,16 @@
       html = '<h2>Level Up — pick a move</h2><p>One more move from your own playbook, ' + esc(pb.name) + ':</p>' +
         '<div class="lu-opts">' + left.map(function (o) {
           return '<button type="button" class="lu-opt" data-action="lu-ownmove" data-move="' + o.i + '"><strong>' + esc(o.m.name) + '</strong><span>' + esc(o.m.text) + '</span></button>';
+        }).join('') + '</div>' +
+        '<p class="lu-actions"><button type="button" data-action="lu-back">\u2190 Back</button> <button type="button" data-action="lu-cancel">Cancel</button></p>';
+    } else if (levelUp.step === 2 && levelUp.type === 'perfect') {
+      // Only the 8 basic moves have 12+ versions, so only they can be
+      // perfected — and each one only once.
+      var perfected = h.perfected || [];
+      html = '<h2>Level Up — pick a basic move to perfect</h2><p>Perfecting a move unlocks its 12+ version — a 12+ on a perfected move gives you that move\'s 12+ result; a 12+ on a move you haven\'t perfected counts as a 10+. Only the 8 basic moves have 12+ versions, so only they can be perfected, and each one only once:</p>' +
+        '<div class="lu-opts">' + BASIC_MOVES.map(function (m) {
+          var done = perfected.indexOf(m) !== -1;
+          return '<button type="button" class="lu-opt" data-action="lu-perfect" data-move="' + esc(m) + '"' + (done ? ' disabled' : '') + '><strong>' + esc(m) + '</strong>' + (done ? '<span class="lu-why">Already perfected</span>' : '') + '</button>';
         }).join('') + '</div>' +
         '<p class="lu-actions"><button type="button" data-action="lu-back">\u2190 Back</button> <button type="button" data-action="lu-cancel">Cancel</button></p>';
     } else if (levelUp.step === 2 && levelUp.type === 'xmove') {
@@ -744,6 +792,7 @@
       if (a === 'lu-back') { if (levelUp) { levelUp.step = 1; levelUp.opt = null; renderWizard(); } return; }
       if (a === 'lu-pick') { levelUpPick(+act.getAttribute('data-opt')); return; }
       if (a === 'lu-ownmove') { levelUpOwnMove(+act.getAttribute('data-move')); return; }
+      if (a === 'lu-perfect') { levelUpPerfectMove(act.getAttribute('data-move')); return; }
       if (a === 'lu-xmove-continue') { levelUpXMoveContinue(); return; }
       if (a === 'lu-confirm') { applyLevelUp(); return; }
       if (a === 'build-sheet') { active().view = 'sheet'; save(); renderAll(); return; }
@@ -756,7 +805,7 @@
       var npb = playbook(b.getAttribute('data-pb'));
       active().playbook = npb.id;
       active().moves = npb.moves.map(function (m, i) { return m.fixed ? i : -1; }).filter(function (i) { return i >= 0; });
-      active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().allyCount = 0; active().trackers = {}; active().level = 1;
+      active().improvements = []; active().impRatings = {}; active().xMoveLevels = 0; active().xMoves = []; active().allyCount = 0; active().perfected = []; active().trackers = {}; active().level = 1;
       save(); renderAll(); return;
     }
     var box = e.target.closest('[data-box]');
