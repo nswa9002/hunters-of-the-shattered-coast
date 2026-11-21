@@ -134,9 +134,11 @@ How to Play section and no Keeper content on this site.
 - `style.css` — dark nautical styling, mobile-friendly, with a wanted-poster
   character sheet and a print stylesheet (Print Sheet prints only the
   finished sheet, light background, no wasted ink).
-- `playbooks.pdf` — the full 18-page playbook PDF for **the first 12
-  playbooks only**. The site now covers 28 playbooks; the PDF is kept as
-  the printable version of the original 12.
+- `master-playbook.pdf` — the site's download (76 pages): the **Everyone
+  Playbook** (the 8 basic moves everyone has) then all 28 playbooks,
+  original 12 first then the 16 new, every move as a wanted-poster card.
+  `playbooks.pdf` (the old 18-page PDF for the first 12 playbooks only)
+  is still in the repo but no longer linked from the site.
 
   **2026-11-19 changes:** the four basic moves were renamed to **Act
   Under Pressure**, **Investigate**, **Read a Bad Situation** and **Do
@@ -146,8 +148,11 @@ How to Play section and no Keeper content on this site.
   live in their home playbooks (the 6 magic playbooks) and in the setup
   moves picker. A full PDF of all 28 playbooks, **The Playbook**
   (`the-playbook.pdf`, original 12 first then the 16 new), was built
-  2026-11-19 from the current data; it is not linked from the site and
-  does not replace `playbooks.pdf`. Also 2026-11-19: the Fight and Guard
+  2026-11-19 from the current data; it is not linked from the site.
+  On 2026-11-20 the site's download was swapped to the **Master
+  Playbook** (`master-playbook.pdf`, 76 pages — Everyone Playbook first,
+  then all 28 playbooks, every move as a poster card); the old
+  `playbooks.pdf` stays in the repo unlinked. Also 2026-11-19: the Fight and Guard
   Another 10+ results no longer say "As 7–9" — they just say you choose
   the extra effect — and the intro paragraph under the "Moves Reference"
   heading was removed (the "How to read a move" paragraph stays). Also
@@ -171,7 +176,7 @@ the saved hunter's sheet straight back.
 
 Push these files to the root of the repository's `main` branch:
 `index.html`, `hunters.html`, `reference.html`, `data.js`,
-`app.js`, `style.css`, `playbooks.pdf`, `README.md`. Pages is already enabled from
+`app.js`, `style.css`, `master-playbook.pdf`, `README.md`. Pages is already enabled from
 `main` / (root) at `https://nswa9002.github.io/hunters-of-the-shattered-coast/`.
 
 NOTE: `keepers.html` was deleted from this local site and from the
